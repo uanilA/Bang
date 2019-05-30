@@ -1,0 +1,110 @@
+<resources>
+    <string name="app_name">Bang</string>
+    <string name="welcome_to">Welcome To Bang</string>
+    <string name="bang">Bang</string>
+    <string name="login_to_continue">Login to continue</string>
+    <string name="login">LOGIN</string>
+    <string name="or_login_with">OR Login With</string>
+    <string name="facebook">   Facebook</string>
+    <string name="gmail">Gmail</string>
+    <string name="don_t_have_an_account">Don\'t have an account ?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="mobile_verification">Mobile Verification</string>
+    <string name="send_otp">SEND OTP</string>
+    <string name="select_country">Select Country</string>
+    <string name="search_country">Search Country</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="please_enter_your_mobile_number_we_will_send_verification_code">Please enter your mobile number we will send verification code.</string>
+    <string name="we_have_sent_you_access_code_via_sms_for_mobile_number_verification">We have sent you access code via SMS for mobile number verification</string>
+    <string name="don_t_receive_the_otp">Don\'t receive the OTP?</string>
+    <string name="resend">Resend</string>
+    <string name="otp_star">*</string>
+    <string name="complete_your_profile">Complete your profile</string>
+    <string name="lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="full_name">Full Name</string>
+    <string name="done">Done</string>
+    <string name="verify">VERIFY</string>
+
+    <string name="crop_image_activity_title">Crop Image</string>
+    <string name="crop_image_menu_crop">Crop</string>
+    <string name="pick_image_intent_chooser_title">Select source</string>
+    <string name="pick_image_intent_text">Choose an image</string>
+    <string name="alert_no_network">No network connection</string>
+
+    <string name="alertImageException">The file is corrupt &amp; cannot be opened.</string>
+    <string name="alertOutOfMemory">This device doesn\'t have enough space , free up storage space</string>
+    <string name="i_am">I AM</string>
+    <string name="male">MALE</string>
+    <string name="female">FEMALE</string>
+    <string name="transgender_male">TRANSGENDER MALE</string>
+    <string name="transgender_female">TRANSGENDER FEMALE</string>
+    <string name="non_gender">NON GENDER</string>
+    <string name="preferes">PREFERS</string>
+    <string name="todo">TODO</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preferences">PREFERENCES</string>
+    <string name="what_image_best_represent_your_ideal_partners_hygiene">What image Best Represent your Ideal partners Hygiene?</string>
+
+    // Facebook Integration
+    <string name="facebook_app_id">612964105845425</string>
+    <string name="fb_login_protocol_scheme">fb612964105845425</string>
+
+
+    <string name="alert_api_fail">Something went wrong, please check after some time.</string>
+    <string name="size">SIZE</string>
+    <string name="what_image_best_identifies_your_partner_size">What Image Best Identifies Your Partner Size?</string>
+    <string name="strength">STRENGTH</string>
+    <string name="what_image_best_represents_strength">What Image Best Represents Strength?</string>
+    <string name="stamina">STAMINA</string>
+    <string name="what_image_best_represents_your_partners_stamina">What Image Best Represents Your Partners Stamina?</string>
+    <string name="skills">SKILLS</string>
+    <string name="what_image_best_represent_your_partners_skills">What image Best Represent Your Partners Skills?</string>
+    <string name="hygiene">HYGIENE</string>
+    <string name="what_icon_best_represent_your_partners_hygiene">What Icon Best Represent Your Partners Hygiene?</string>
+    <string name="connection">CONNECTION</string>
+    <string name="what_image_best_represent_the_connection_you_have_with">What Image Best Represent The Connection You Have With?</string>
+    <string name="news_feed">Newsfeed</string>
+    <string name="near_you">Near You </string>
+    <string name="messages">Messages</string>
+    <string name="survey">Survey</string>
+    <string name="_10">10</string>
+    <string name="no_message_yet">No Message Yet !</string>
+    <string name="no_message_in_your_inbox_yet_start_chatting_with_your_followers_or_near_you_people">No Message in your inbox yet ! Start chatting with your followers or near you people.</string>
+    <string name="click_again_to_exit">Click again to exit</string>
+    <string name="oliver_smith">Oliver Smith</string>
+    <string name="follow">FOLLOW</string>
+    <string name="pref_key_transition_time" translatable="false">pref_key_transition_time</string>
+    <string name="may_2_2018">May 2 , 2018</string>
+    <string name="smith">Smith</string>
+    <string name="william_ethan_is_addictive_with_james">William ethan is Addictive with @james</string>
+    <string name="_30_likes">30 Likes</string>
+    <string name="profile">Profile</string>
+    <string name="followers">Followers</string>
+    <string name="post">Post</string>
+    <string name="addictive">ADDICTIVE</string>
+    <string name="unsatisfied">UNSATISFIED</string>
+    <string name="satisfied">SATISFIED</string>
+    <string name="bang_requests">Bang Requests</string>
+    <string name="you_can_view_all_bang_requests">You can view all bang requests.</string>
+    <string name="you_can_view_and_edit_your_preferences">You can view and edit your preferences.</string>
+    <string name="my_preferences">Preferences</string>
+    <string name="setting">Settings</string>
+    <string name="you_can_manage_your_notifications_password_etc">You can manage your notifications, password etc.</string>
+    <string name="you_can_get_your_subscription_plans">You can get your subscription plans.</string>
+    <string name="select_image">Please select profile image</string>
+    <string name="select_name">Please enter full name</string>
+    <string name="settings">Settings</string>
+    <string name="notification">Notification</string>
+    <string name="about_us">About Us</string>
+    <string name="terms_amp_condition"><![CDATA[Terms & Conditions]]></string>
+    <string name="faq_s">FAQ\'s</string>
+    <string name="logout">Logout</string>
+    <string name="internet_connection">Server down or no internet connection</string>
+    <string name="oops_wrong">oops something went wrong</string>
+    <string name="_568_56985_023">568-56985-023</string>
+
+</resources>

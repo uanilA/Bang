@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".module.authentication.verification.MobileVerificationActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/colorLoginBg">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_110sdp"
+                    android:src="@drawable/mobile_verification_img"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mobile_verification"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:textSize="@dimen/_18ssp"
+                        android:textColor="@color/colorWelcomeText"
+                        android:fontFamily="@font/roboto_medium"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_marginEnd="@dimen/_28sdp"
+                    android:layout_marginStart="@dimen/_28sdp"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/colorLoginText"
+                    android:gravity="center"
+                    android:text="Please enter your mobile number we will send verification code."/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:background="@drawable/login_background">
+
+                    <LinearLayout
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:id="@+id/llMobileVerificationGoingToCountryCode"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_weight=".4">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:layout_width="@dimen/_26sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="center"
+                            android:id="@+id/ivMobileVerifyFlag"
+                            android:src="@drawable/flag_us"/>
+
+                        <ImageView
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_gravity="center|end"
+                            android:src="@drawable/login_arrow"/>
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:background="@color/colorShapeLine"
+                        />
+
+
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".6"
+                        android:paddingStart="@dimen/_30sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:hint="568-56985-023"
+                        android:textSize="@dimen/_11sdp"
+                        android:id="@+id/edtSignUpNumber"
+                        android:inputType="number"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/colorTextHint"
+                        android:textColorHint="@color/colorTextHint"
+                        android:background="@android:color/transparent"/>
+
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:id="@+id/tvSendOtpButton"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/send_otp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textSize="@dimen/_13ssp"
+                    android:gravity="center"
+                    android:background="@drawable/login_rounded_border"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".module.authentication.genderselection.GenderSelectionActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/colorLoginBg">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="@string/i_am"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textSize="@dimen/_23ssp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:weightSum="3"
+                    tools:ignore="DisableBaselineAlignment">
+
+                    <LinearLayout
+                        android:id="@+id/llMaleGender"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/not_selected_image_border"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:contentDescription="@string/todo"
+                            android:src="@drawable/boy_icon" />
+
+                        <TextView
+                            android:id="@+id/tvMaleGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/male"
+                            android:textColor="@color/colorLoginText"
+                            android:textSize="@dimen/_10ssp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llFemaleGender"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/not_selected_image_border"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:contentDescription="@string/todo"
+                            android:src="@drawable/girl_icon" />
+
+                        <TextView
+                            android:id="@+id/tvFemaleGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/female"
+                            android:textColor="@color/colorLoginText"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llTransgenderMale"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/not_selected_image_border"
+                        android:fontFamily="@font/roboto_medium"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:contentDescription="@string/todo"
+                            android:src="@drawable/transgender_male_icon" />
+
+                        <TextView
+                            android:id="@+id/txtTransGenderMale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center_horizontal"
+                            android:text="@string/transgender_male"
+                            android:textColor="@color/colorLoginText"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/_185sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:weightSum="2"
+                    tools:ignore="DisableBaselineAlignment">
+
+                    <LinearLayout
+                        android:id="@+id/llTransgemderFemale"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/not_selected_image_border"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:contentDescription="@string/todo"
+                            android:src="@drawable/transgender_female" />
+
+                        <TextView
+                            android:id="@+id/tvTransgenderFemale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center_horizontal"
+                            android:text="@string/transgender_female"
+                            android:textColor="@color/colorLoginText"
+                            android:textSize="@dimen/_10ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llNonGender"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/not_selected_image_border"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:contentDescription="@string/todo"
+                            android:src="@drawable/non_gender" />
+
+                        <TextView
+                            android:id="@+id/tvNotGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/non_gender"
+                            android:textColor="@color/colorLoginText"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/preferes"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textSize="@dimen/_23ssp" />
+
+
+                <RelativeLayout
+                    android:id="@+id/rlMalePrefers"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_background">
+
+                    <TextView
+                        android:id="@+id/tvMalePrefer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/male"
+                        android:textColor="@color/colorSelectCountry"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <ImageView
+                        android:id="@+id/ivMaleSelected"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_round_done_button"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlFemalePrefers"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_background">
+
+                    <TextView
+                        android:id="@+id/tvFemalePrefer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/female"
+                        android:textColor="@color/colorSelectCountry"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                    <ImageView
+                        android:id="@+id/ivFemaleSelected"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_round_done_button"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlTransgenderMalePrefers"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_background">
+
+                    <TextView
+                        android:id="@+id/tvTransgenderMalePrefer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/transgender_male"
+                        android:textColor="@color/colorSelectCountry"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <ImageView
+                        android:id="@+id/ivTransGenderMaleSelected"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_round_done_button"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlTransgenderFemalePrefersMalePrefers"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_background">
+
+                    <TextView
+                        android:id="@+id/tvTransgenderFemalePrefer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/transgender_female"
+                        android:textColor="@color/colorSelectCountry"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <ImageView
+                        android:id="@+id/ivTransGenderFamaleSelected"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_round_done_button"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlNonGenderPrefers"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_background">
+
+                    <TextView
+                        android:id="@+id/tvNonGenderPrefer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/non_gender"
+                        android:textColor="@color/colorSelectCountry"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <ImageView
+                        android:id="@+id/ivNonGenderSelected"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_round_done_button"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvGenderSelectionNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_35sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/login_rounded_border"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="@string/next"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textSize="@dimen/_13ssp" />
+
+                <TextView
+                    android:id="@+id/tvGenderSelectionSkip"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@string/skip"
+                    android:textColor="@color/colorSkip"
+                    android:textSize="@dimen/_13ssp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

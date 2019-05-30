@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent"
+    tools:context=".module.authentication.otpverification.OtpVerificationActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/colorLoginBg">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_110sdp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:src="@drawable/mobile_verification_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/enter_otp"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textSize="@dimen/_18ssp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_28sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_28sdp"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:padding="@dimen/_10sdp"
+                    android:text="@string/we_have_sent_you_access_code_via_sms_for_mobile_number_verification"
+                    android:textColor="@color/colorLoginText"
+                    android:textSize="@dimen/_13ssp" />
+
+                <com.goodiebag.pinview.Pinview
+                    android:id="@+id/pinview"
+                    app:pinBackground="@drawable/example_drawable"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    app:pinWidth="40dp"
+                    app:pinHeight="40dp"
+                    app:pinLength="4"
+                    android:visibility="gone"
+                    android:focusableInTouchMode="true"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:cursorVisible="true"
+                    app:forceKeyboard="false"
+                    app:hint="*"
+                    app:inputType="number"
+                    app:password="false"/>
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <EditText
+                        android:id="@+id/etOtpOne"
+                        android:layout_width="@dimen/_38sdp"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_otp_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:hint="@string/otp_star"
+                        android:maxLength="1"
+                        android:textColor="@color/colorTextHint"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <EditText
+                        android:id="@+id/etOtpTwo"
+                        android:layout_width="@dimen/_38sdp"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_otp_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:hint="@string/otp_star"
+                        android:maxLength="1"
+                        android:textColor="@color/colorTextHint"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <EditText
+                        android:id="@+id/etOtpThree"
+                        android:layout_width="@dimen/_38sdp"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_otp_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:hint="@string/otp_star"
+                        android:maxLength="1"
+                        android:textColor="@color/colorTextHint"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <EditText
+                        android:id="@+id/etOtpFour"
+                        android:layout_width="@dimen/_38sdp"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:background="@drawable/rounded_otp_background"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:hint="@string/otp_star"
+                        android:maxLength="1"
+                        android:textColor="@color/colorTextHint"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_14sdp" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:id="@+id/tvSendOtpButton"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_rounded_border"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="@string/verify"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textSize="@dimen/_13ssp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="@string/don_t_receive_the_otp"
+                        android:textColor="@color/colorDontHaveAnAccount"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/llResendOtp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/resend"
+                            android:textColor="@color/colorWelcomeText"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:layout_marginTop="@dimen/_minus3sdp"
+                            android:layout_marginEnd="@dimen/_3sdp"
+                            android:background="@color/colorWelcomeText" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+
+</ScrollView>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvCountryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_1sdp"
+        app:cardBackgroundColor="@color/colorFacebookGmail">
+
+        <RelativeLayout
+            android:id="@+id/rl_user_info"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp">
+
+            <RelativeLayout
+                android:id="@+id/rl_user_image"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_centerVertical="true">
+
+                <com.github.siyamed.shapeimageview.CircularImageView
+                    android:id="@+id/ivCountryImage"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:src="@drawable/flag_ad"
+                    android:scaleType="fitCenter"
+                    android:layout_centerInParent="true" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/rl_user_image"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvCountryName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_15sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="start"
+                    android:maxLines="1"
+                    android:text="United State"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textSize="@dimen/_12ssp" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp">
+
+                    <TextView
+                        android:id="@+id/tvCountryCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_18sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:text="Code"
+                        android:textColor="@color/colorLoginText"
+                        android:textSize="@dimen/_12ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RadioButton
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:id="@+id/rbSelectCountry"
+                android:background="@drawable/radio_flat_selector"
+                android:layout_centerVertical="true"
+                android:button="@android:color/transparent"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
