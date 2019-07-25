@@ -1,20 +1,15 @@
 package com.bang.module.authentication.verification.manager;
 
 
-
 import android.content.Context;
 import android.support.annotation.NonNull;
-
 import com.bang.errorResponse.APIErrors;
 import com.bang.errorResponse.ErrorUtils;
-import com.bang.errorResponse.ServiceGenerator;
-import com.bang.helper.AppHelper;
+import com.bang.network.ServiceGenerator;
 import com.bang.module.authentication.verification.model.LoginResponse;
-import com.bang.serverhandling.API;
-import com.bang.serverhandling.ApiCallback;
-
+import com.bang.network.API;
+import com.bang.network.ApiCallback;
 import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,11 +28,11 @@ public class LoginManager {
         this.mContext=mContext;
     }
 
-    public void callLoginApi(String countryCode, String number) {
+    public void callLoginApi(String email, String password ,String deviceToken ,String deviceType) {
         loginManagerCallback.onShowBaseLoader();
-      ///  if (AppHelper.isConnectingToInternet(mContext)) {
+      //  if (AppHelper.isConnectingToInternet(mContext)) {
             API api = ServiceGenerator.createService(API.class);
-            Call<LoginResponse> callLoginApi = api.callLoginApi(countryCode, number);
+            Call<LoginResponse> callLoginApi = api.callLoginApi(email, password, deviceToken , deviceType);
             callLoginApi.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
@@ -45,11 +40,12 @@ public class LoginManager {
                     if (response.isSuccessful()) {
                         loginManagerCallback.onSuccessLogin(response.body());
                     } else {
-                        APIErrors apiErrors = ErrorUtils.parseError(response);
-                        loginManagerCallback.onError(apiErrors.getMessage());
+                        try {
+                            APIErrors apiErrors = ErrorUtils.parseError(response);
+                            loginManagerCallback.onError(apiErrors.getMessage());
+                        }catch (Exception e){e.printStackTrace();}
                     }
                 }
-
                 @Override
                 public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                     loginManagerCallback.onHideBaseLoader();

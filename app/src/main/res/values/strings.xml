@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Bang</string>
     <string name="welcome_to">Welcome To Bang</string>
     <string name="bang">Bang</string>
@@ -9,17 +9,17 @@
     <string name="gmail">Gmail</string>
     <string name="don_t_have_an_account">Don\'t have an account ?</string>
     <string name="sign_up">Sign Up</string>
-    <string name="mobile_verification">Mobile Verification</string>
+    <string name="mobile_verification">Email Verification</string>
     <string name="send_otp">SEND OTP</string>
     <string name="select_country">Select Country</string>
     <string name="search_country">Search Country</string>
     <string name="enter_otp">Enter OTP</string>
-    <string name="please_enter_your_mobile_number_we_will_send_verification_code">Please enter your mobile number we will send verification code.</string>
+    <string name="please_enter_your_mobile_number_we_will_send_verification_code" tools:ignore="ExtraTranslation">Please enter your Email address we will send verification code.</string>
     <string name="we_have_sent_you_access_code_via_sms_for_mobile_number_verification">We have sent you access code via SMS for mobile number verification</string>
     <string name="don_t_receive_the_otp">Don\'t receive the OTP?</string>
     <string name="resend">Resend</string>
     <string name="otp_star">*</string>
-    <string name="complete_your_profile">Complete your profile</string>
+    <string name="complete_yourwelcome_to_profile">Complete your profile</string>
     <string name="lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
     <string name="full_name">Full Name</string>
     <string name="done">Done</string>
@@ -45,14 +45,17 @@
     <string name="skip">SKIP</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello blank settingFragment</string>
     <string name="preferences">PREFERENCES</string>
+    <string name="small_pref">Preferences</string>
     <string name="what_image_best_represent_your_ideal_partners_hygiene">What image Best Represent your Ideal partners Hygiene?</string>
 
     // Facebook Integration
     <string name="facebook_app_id">612964105845425</string>
     <string name="fb_login_protocol_scheme">fb612964105845425</string>
 
+    //Validation
+    <string name="acc_name_invalid">Name allow alphabets and space only</string>
 
     <string name="alert_api_fail">Something went wrong, please check after some time.</string>
     <string name="size">SIZE</string>
@@ -70,19 +73,18 @@
     <string name="news_feed">Newsfeed</string>
     <string name="near_you">Near You </string>
     <string name="messages">Messages</string>
-    <string name="survey">Survey</string>
     <string name="_10">10</string>
     <string name="no_message_yet">No Message Yet !</string>
     <string name="no_message_in_your_inbox_yet_start_chatting_with_your_followers_or_near_you_people">No Message in your inbox yet ! Start chatting with your followers or near you people.</string>
     <string name="click_again_to_exit">Click again to exit</string>
     <string name="oliver_smith">Oliver Smith</string>
     <string name="follow">FOLLOW</string>
+    <string name="unfollow">UNFOLLOW</string>
     <string name="pref_key_transition_time" translatable="false">pref_key_transition_time</string>
     <string name="may_2_2018">May 2 , 2018</string>
     <string name="smith">Smith</string>
     <string name="william_ethan_is_addictive_with_james">William ethan is Addictive with @james</string>
     <string name="_30_likes">30 Likes</string>
-    <string name="profile">Profile</string>
     <string name="followers">Followers</string>
     <string name="post">Post</string>
     <string name="addictive">ADDICTIVE</string>
@@ -106,5 +108,84 @@
     <string name="internet_connection">Server down or no internet connection</string>
     <string name="oops_wrong">oops something went wrong</string>
     <string name="_568_56985_023">568-56985-023</string>
+    <string name="update">UPDATE</string>
+    <string name="update_profile">Edit Profile</string>
+    <string name="under_development">Under Development</string>
+    <string name="subscription">Subscription</string>
+    <string name="william_lian">William Lian</string>
+    <string name="invite">Invite</string>
+    <string name="no_servey_body">There are many variation of passages of Lorem Ipsum available, but the majority.</string>
+    <string name="no_survey_sent_yet">No Survey Sent Yet!</string>
+    <string name="choose_contact">Choose Contact</string>
+    <string name="date_event_occurred">DATE EVENT OCCURRED</string>
+    <string name="select_mobile">Please enter mobile number</string>
+    <string name="go_back">GO BACK</string>
+    <string name="currently_there_is_no_question_s_available_for_this_gender">Currently there is no question\'s available for this gender.</string>
+    <string name="congratulation">Congratulations</string>
+    <string name="as_per_your_given_survey_you_are_addicted">As per your given survey you are Addicted</string>
+    <string name="do_you_want_to_share_with_your_partner">Do you want to share with your partner?</string>
+    <string name="privates">PRIVATE</string>
+    <string name="publics">PUBLIC</string>
+    <string name="share">SHARE</string>
+    <string name="there_are_many_variations_of_passages_of_lorem_ipsum_available_but_the_majority_have_suffered_alteration">There are many variations of passages of Lorem ipsum available, but the majority have suffered alteration.</string>
+    <string name="complete">Completed</string>
+    <string name="pending">Pending</string>
+    <string name="out_of_cat"> remaining out of </string>
+    <string name="was_your_experience_with_a_male_female_transgender_male_transgender_female_non_gender">Was Your Experience With A Male, Female, Transgender Male, Transgender Female, Non Gender?</string>
+    <string name="selecting_partner" tools:ignore="ExtraTranslation">SELECTING PARTNER</string>
+    <string name="space">_ _</string>
+    <string name="am">AM</string>
+    <string name="search_contact">Search Contact</string>
+    <string name="not_found_gnder_title">Preferences Not  Completed</string>
+    <string name="share_with_bang_follower">Share with Bang Follower</string>
+    <string name="share_with_other">Share With Other</string>
+    <string name="share_with_social_media">Share with social media</string>
+    <string name="permission_necessary">Permission Necessary</string>
+    <string name="storage_permission_is_encessary_to_wrote_event">Storage Permission Is Necessary To Wrote Event</string>
+    <string name="survey">Survey</string>
+    <string name="view_survey">View Survey</string>
+    <string name="comment">Comments</string>
+    <string name="write_a_comments">Write a comments...</string>
+    <string name="survey_detail">Survey Details</string>
+    <string name="was_your_experience_with_a_male_or_female">Was Your Experience With A Male Or Female?</string>
+    <string name="no_comments_yet">No comments yet!</string>
+    <string name="email">Email address</string>
+    <string name="password">Password</string>
+    <string name="change">Change Email</string>
+    <string name="invalid_email">Please ener valid email</string>
+    <string name="invalid_password">Please enter valid password</string>
+    <string name="invalid_number">Please enter valid number</string>
+    <string name="enable_gps">Please Turn On Your Location</string>
+    <string name="number">Mobile Number</string>
+    <string name="change_pass_level">Change Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="new_password">New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add_new_post">Add New Post</string>
+    <string name="give_survey">Give Survey</string>
+    <string name="total_send_survey">Total Send Survey</string>
+    <string name="following">Following</string>
+    <string name="add_your_post">Add Your Post</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="video">Video</string>
+    <string name="image">Image</string>
+    <string name="create_post">Create Post</string>
+    <string name="receive_survey">Receive Survey</string>
+    <string name="ok">Ok</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="report_a_user">Report a user</string>
+    <string name="select_reasons">Select Reasons</string>
+    <string name="description">Description</string>
+    <string name="report">Report</string>
+    <string name="search_people">Search People</string>
+    <string name="update_your_profile">Update your profile</string>
+    <string name="complete_your_profile">Complete your profile</string>
+    <string name="no_followers">No Followers</string>
+    <string name="news_feed_not_found">No Newsfeed Yet!</string>
+    <string name="my_post">My Post</string>
+    <string name="profile">Profile</string>
 
 </resources>

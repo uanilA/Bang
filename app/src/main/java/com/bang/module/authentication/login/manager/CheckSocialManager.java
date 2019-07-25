@@ -1,16 +1,17 @@
 package com.bang.module.authentication.login.manager;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.bang.R;
 import com.bang.errorResponse.APIErrors;
 import com.bang.errorResponse.ErrorUtils;
-import com.bang.errorResponse.ServiceGenerator;
+import com.bang.network.ServiceGenerator;
 import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.module.authentication.login.model.CheckSocialResponse;
-import com.bang.serverhandling.API;
-import com.bang.serverhandling.ApiCallback;
+import com.bang.network.API;
+import com.bang.network.ApiCallback;
 
 import java.io.IOException;
 
@@ -28,24 +29,26 @@ public class CheckSocialManager {
         this.mContext=mContext;
     }
 
-    public void callSocialCheck(String countryCode,String mobileNumber){
+    public void callSocialCheck(String countryCode,String mobileNumber , String deviceToken,String deviceType ){
         checkSocialCallback.onShowBaseLoader();
         if (AppHelper.isConnectingToInternet(mContext)) {
             API api = ServiceGenerator.createService(API.class);
-            Call<CheckSocialResponse> otpResponseCall = api.callcheckSocialStatusApi(countryCode,mobileNumber);
-            otpResponseCall.enqueue(new Callback<CheckSocialResponse>() {
+            Call<CheckSocialResponse> loginResponseCall = api.callcheckSocialStatusApi(countryCode,mobileNumber,deviceToken,deviceType);
+            loginResponseCall.enqueue(new Callback<CheckSocialResponse>() {
                 @Override
-                public void onResponse(Call<CheckSocialResponse> call, Response<CheckSocialResponse> response) {
+                public void onResponse(@NonNull Call<CheckSocialResponse> call, @NonNull Response<CheckSocialResponse> response) {
                     checkSocialCallback.onHideBaseLoader();
-                    if(response.isSuccessful()){
-                        checkSocialCallback.onSuccessCheckSocial(response.body());
-                    }else {
-                        APIErrors apiErrors = ErrorUtils.parseError(response);
-                        checkSocialCallback.onError(apiErrors.getMessage());
-                    }
+                    try {
+                        if (response.isSuccessful()) {
+                            checkSocialCallback.onSuccessCheckSocial(response.body());
+                        } else {
+                            APIErrors apiErrors = ErrorUtils.parseError(response);
+                            checkSocialCallback.onError(apiErrors.getMessage());
+                        }
+                    }catch (Exception e){e.printStackTrace();}
                 }
                 @Override
-                public void onFailure(Call<CheckSocialResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<CheckSocialResponse> call, @NonNull Throwable t) {
                     checkSocialCallback.onHideBaseLoader();
                     if(t instanceof IOException){
                         checkSocialCallback.onError(mContext.getString(R.string.internet_connection));

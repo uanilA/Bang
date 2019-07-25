@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:exp="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/colorLoginBg">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/colorLoginBg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/date_event_occurred"
+                android:textColor="@color/colorWelcomeText"
+                android:textSize="@dimen/_15ssp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/date_event_image_background">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:src="@drawable/date_bg" />
+
+            </RelativeLayout>
+
+
+                 <com.mikesu.horizontalexpcalendar.HorizontalExpCalendar
+                     android:id="@+id/calendar"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     exp:bottom_container_height="50dp"
+                     android:layout_margin="@dimen/_5sdp"
+                     exp:center_container_expanded_height="250dp"
+                     exp:top_container_height="50dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorSelectCountry" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_85sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.bang.TimeWheel.LoopView
+                    android:id="@+id/picker_hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_minus10sdp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5sdp">
+
+                        <TextView
+                            android:id="@+id/tv_hour_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_medium"
+                            android:hint="@string/space"
+                            android:textColor="@color/colorWelcomeText"
+                            android:textColorHint="@color/colorWelcomeText"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_medium"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:text=":"
+                            android:textColor="@color/colorWelcomeText"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_min_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_medium"
+                            android:hint="@string/space"
+                            android:textColor="@color/colorWelcomeText"
+                            android:textColorHint="@color/colorWelcomeText"
+                            android:textSize="@dimen/_15ssp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_am_pm_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/am_pm_background_circl"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/am"
+                        android:textColor="@color/colorWelcomeText"
+                        android:textSize="@dimen/_12ssp" />
+
+                </LinearLayout>
+
+
+                <com.bang.TimeWheel.LoopView
+                    android:id="@+id/picker_meridiem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_gray_circle"
+                    android:visibility="gone" />
+
+                <com.bang.TimeWheel.LoopView
+                    android:id="@+id/picker_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_minus10sdp"
+                    android:layout_weight="1" />
+
+                <com.bang.TimeWheel.LoopView
+                    android:id="@+id/picker_sec"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/colorSelectCountry" />
+
+            <TextView
+                android:id="@+id/tvDateEventNext"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_35sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/login_rounded_border"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="@string/next"
+                android:textColor="@color/colorWelcomeText"
+                android:textSize="@dimen/_13ssp" />
+
+            <TextView
+                android:id="@+id/tvDateEventSkip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="@string/skip"
+                android:textColor="@color/colorSkip"
+                android:textSize="@dimen/_13ssp" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <!--
+        </ScrollView>
+    -->
+</LinearLayout>

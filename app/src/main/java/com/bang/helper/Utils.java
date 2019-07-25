@@ -2,6 +2,7 @@ package com.bang.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -97,4 +98,8 @@ public class Utils {
         return text.replaceAll("[^\\d]", "");
     }
 
+    public static void popBackStack(FragmentManager manager){
+        FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+        manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
 }

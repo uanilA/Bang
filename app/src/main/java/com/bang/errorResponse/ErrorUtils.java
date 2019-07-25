@@ -1,5 +1,7 @@
 package com.bang.errorResponse;
 
+import com.bang.network.ServiceGenerator;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -13,8 +15,6 @@ public class ErrorUtils
     public static APIErrors parseError(Response<?> response) {
         Converter<ResponseBody, APIErrors> converter = ServiceGenerator.getRetrofit().responseBodyConverter(APIErrors.class, new Annotation[0]);
         APIErrors error;
-
-
         try {
             error = converter.convert(response.errorBody());
         } catch (IOException e) {

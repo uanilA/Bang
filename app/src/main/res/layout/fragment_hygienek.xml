@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLoginBg"
-    tools:context=".preference.fragment.formale.HygieneFragment">
+    tools:context=".module.preference.settingFragment.formale.HygieneFragment">
 
     <ScrollView
         android:layout_width="match_parent"

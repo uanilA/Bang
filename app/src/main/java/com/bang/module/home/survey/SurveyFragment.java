@@ -1,31 +1,33 @@
 package com.bang.module.home.survey;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bang.R;
+import com.bang.base.BaseFragment;
+import com.bang.module.home.MainActivity;
+import com.bang.module.home.addsurvey.AddSurveyActivity;
 import com.bang.module.home.survey.adapter.ViewPagerAdapter;
 
 
-public class SurveyFragment extends Fragment {
+public class SurveyFragment extends BaseFragment implements View.OnClickListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    Context mContext;
     private ViewPagerAdapter adapter;
+    private long mLastClickTime = 0;
 
     public SurveyFragment() {
         // Required empty public constructor
     }
-
 
     public static SurveyFragment newInstance() {
         SurveyFragment fragment = new SurveyFragment();
@@ -40,22 +42,23 @@ public class SurveyFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_survey, container, false);
         return view;
     }
 
 
+
     private void init(View view) {
+
+        view.findViewById(R.id.iv_addSurvey).setOnClickListener(this);
+        ((MainActivity) mContext).findViewById(R.id.main_tool_bar).setVisibility(View.GONE);
         viewPager = view.findViewById(R.id.viewpager);
-
         tabLayout = view.findViewById(R.id.tabs);
-       /* tabLayout.addTab(tabLayout.newTab().setText("Received"));
-        tabLayout.addTab(tabLayout.newTab().setText("Sent"));*/
-
-        adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
 
     }
 
@@ -65,15 +68,35 @@ public class SurveyFragment extends Fragment {
         init(view);
     }
 
-    @Override
+   /* @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = context;
+    }*/
+
+  /*  @Override
+    public void onDetach() {
+        super.onDetach();
+    }*/
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onClick(View v) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+        if (v.getId() == R.id.iv_addSurvey) {
+            startActivity(new Intent(mContext, AddSurveyActivity.class));
+        }
     }
+
+
 
 }

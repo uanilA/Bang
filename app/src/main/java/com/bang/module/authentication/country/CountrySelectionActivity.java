@@ -11,9 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bang.R;
-import com.bang.module.authentication.baseactivity.BangParentActivity;
+import com.bang.base.BangParentActivity;
 import com.bang.module.authentication.country.adapter.CountryAdapter;
-import com.bang.module.authentication.country.listener.CountryAdapterPositionListener;
 import com.bang.module.authentication.country.model.Country;
 import com.bang.utils.Utility;
 import com.google.gson.Gson;
@@ -66,11 +65,7 @@ public class CountrySelectionActivity extends BangParentActivity implements View
     }
 
     private void setChatHistoryAdapter() {
-        countryAdapter = new CountryAdapter(this, mCountries, new CountryAdapterPositionListener() {
-            @Override
-            public void getPosition(int position) {
-            }
-        });
+        countryAdapter = new CountryAdapter(this, mCountries);
         countryListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         countryListRecyclerView.setAdapter(countryAdapter);
     }

@@ -1,5 +1,6 @@
 package com.bang.module.authentication.login.model;
 
+import com.bang.module.authentication.verification.model.LoginData;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -13,7 +14,9 @@ public class CheckSocialResponse implements Serializable {
     private Integer socialStatus;
     @SerializedName("message")
     private String message;
-    private final static long serialVersionUID = 3485293638208020396L;
+    @SerializedName("data")
+    private LoginData data;
+    private final static long serialVersionUID = -3680354534752657295L;
 
     public Integer getCode() {
         return code;
@@ -45,5 +48,13 @@ public class CheckSocialResponse implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public LoginData getData() {
+        return data;
+    }
+
+    public void setData(LoginData data) {
+        this.data = data;
     }
 }

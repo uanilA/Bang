@@ -21,6 +21,8 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.List;
 
+import static com.bang.helper.Utils.popBackStack;
+
 
 public class NearYouFragment extends Fragment implements DiscreteScrollView.OnItemChangedListener {
 
@@ -107,5 +109,11 @@ public class NearYouFragment extends Fragment implements DiscreteScrollView.OnIt
     public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int position) {
         int positionInDataSet = infiniteAdapter.getRealPosition(position);
         onItemChanged(data.get(positionInDataSet));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

@@ -4,8 +4,14 @@ public class Constant {
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 101;
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 102;
 
+    public static final int REQUEST_VIDEO_CAPTURE = 300;
+    public static final int SELECT_VIDEO_REQUEST = 0;
+
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 103;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 104;
+    public static final int REQUEST = 112;
+
+
 
     public static final String USER_TABLE = "users";
     public static final String ONLINE_TABLE = "online";

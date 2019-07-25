@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvHeaderIv"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize">
 
@@ -9,60 +9,73 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <ImageView
+            android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_15sdp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/todo"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back_arrow" />
+
+
+        <TextView
             android:id="@+id/tvHeaderTitle"
-            android:textColor="@color/colorWelcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/news_feed"
+            android:textColor="@color/colorWelcomeText"
+            android:textSize="@dimen/_15sdp"
             tools:ignore="RelativeOverlap" />
 
         <LinearLayout
+            android:id="@+id/llHomeMenu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:orientation="horizontal"
-            android:layout_marginEnd="@dimen/_8sdp">
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:orientation="horizontal">
 
             <RelativeLayout
+                android:id="@+id/rlNotify"
                 android:layout_width="@dimen/_22sdp"
                 android:layout_height="@dimen/_22sdp"
-                android:layout_marginEnd="@dimen/_4sdp"
-                android:layout_gravity="center_vertical">
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_4sdp">
 
                 <ImageView
+                    android:id="@+id/ivNotification"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/ic_bell"
                     android:layout_centerInParent="true"
-                    android:contentDescription="@string/todo" />
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/ic_bell" />
 
                 <TextView
+                    android:id="@+id/ivAddPost"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
-                    android:text="@string/_10"
                     android:layout_alignParentEnd="true"
-                    android:gravity="center"
-                    android:textSize="@dimen/_6sdp"
                     android:background="@drawable/bg_circle"
-                    android:textColor="@color/colorLoginBg"/>
+                    android:gravity="center"
+                    android:text="@string/_10"
+                    android:textColor="@color/colorLoginBg"
+                    android:textSize="@dimen/_6sdp" />
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
                 android:id="@+id/iv_addSurvey"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_4sdp"
-                android:src="@drawable/ic_plus_button"
-                android:contentDescription="@string/todo" />
+                android:contentDescription="@string/todo"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_plus_button" />
 
         </LinearLayout>
-
-
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

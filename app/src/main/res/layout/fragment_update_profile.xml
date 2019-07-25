@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_110sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5sdp"
+                android:src="@drawable/complete_porfile" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/update_your_profile"
+                android:textColor="@color/colorWelcomeText"
+                android:textSize="@dimen/_18ssp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry"
+                android:textColor="@color/colorLoginText"
+                android:textSize="@dimen/_13ssp" />
+
+
+            <RelativeLayout
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="@dimen/_85sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivUserProfile"
+                    android:layout_width="@dimen/_85sdp"
+                    android:layout_height="@dimen/_85sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/user_img" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/ivCameraSelect"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:src="@drawable/camera_icon" />
+
+
+            </RelativeLayout>
+
+
+            <EditText
+                android:id="@+id/etUpdateEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/login_background"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:singleLine="true"
+                android:hint="@string/email"
+                android:textColor="@color/colorWelcomeText"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="@dimen/_13sdp"
+                tools:ignore="Autofill,TextFields" />
+
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/login_background"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:singleLine="true"
+                android:hint="@string/full_name"
+                android:textColor="@color/colorWelcomeText"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="@dimen/_13sdp"
+                tools:ignore="Autofill,TextFields"/>
+
+
+            <LinearLayout
+                android:id="@+id/llMobileNumberAtCompletePro"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/login_background"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:id="@+id/llUpdateSelectCountryGo"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight=".4">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/ivCountryFlag"
+                        android:layout_width="@dimen/_26sdp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_gravity="center|end"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:src="@drawable/login_arrow" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@color/colorShapeLine" />
+
+                <EditText
+                    android:id="@+id/etUpdateMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".6"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:background="@drawable/login_background"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center|start"
+                    android:singleLine="true"
+                    android:hint="@string/number"
+                    android:textColor="@color/colorWelcomeText"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="@dimen/_13sdp"
+                    tools:ignore="Autofill,RtlSymmetry,TextFields"/>
+            </LinearLayout>
+
+
+
+
+            <TextView
+                android:id="@+id/tvProfileDoneButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/login_rounded_border"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:text="@string/update"
+                android:textColor="@color/colorWelcomeText"
+                android:textSize="@dimen/_14ssp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

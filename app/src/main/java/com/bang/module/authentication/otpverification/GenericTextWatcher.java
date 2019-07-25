@@ -22,28 +22,30 @@ public class GenericTextWatcher implements TextWatcher
     public void afterTextChanged(Editable editable) {
         // TODO Auto-generated method stub
         String text = editable.toString();
-        switch(editText.getId()) {
-            case R.id.etOtpOne:
-                if(text.length()==1)
-                    editTextNext.requestFocus();
-                break;
-            case R.id.etOtpTwo:
-                if(text.length()==1)
-                    editTextNext.requestFocus();
-                else if(text.length()==0)
-                    editTextPrev.requestFocus();
-                break;
-            case R.id.etOtpThree:
-                if(text.length()==1)
-                    editTextNext.requestFocus();
-                else if(text.length()==0)
-                    editTextPrev.requestFocus();
-                break;
-            case R.id.etOtpFour:
-                if(text.length()==0)
-                    editTextPrev.requestFocus();
-                break;
-        }
+        try {
+            switch (editText.getId()) {
+                case R.id.etOtpOne:
+                    if (text.length() == 1)
+                        editTextNext.requestFocus();
+                    break;
+                case R.id.etOtpTwo:
+                    if (text.length() == 1)
+                        editTextNext.requestFocus();
+                    else if (text.length() == 0)
+                        editTextPrev.requestFocus();
+                    break;
+                case R.id.etOtpThree:
+                    if (text.length() == 1)
+                        editTextNext.requestFocus();
+                    else if (text.length() == 0)
+                        editTextPrev.requestFocus();
+                    break;
+                case R.id.etOtpFour:
+                    if (text.length() == 0)
+                        editTextPrev.requestFocus();
+                    break;
+            }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     @Override

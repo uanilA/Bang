@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLoginBg"
-    tools:context=".module.home.newsfeed.NewsFeedFragment">
+    tools:context=".module.home.newsfeed.fragment.NewsFeedFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcvNewsFeedList"
@@ -13,5 +13,13 @@
         android:layout_margin="@dimen/_5sdp"
         android:clipToPadding="false"
         android:overScrollMode="never" />
+
+    <include
+        android:id="@+id/no_survey_avail"
+        layout="@layout/survey_not_yet_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

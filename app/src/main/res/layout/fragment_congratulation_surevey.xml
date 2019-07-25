@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rlAddictedBg"
+        android:layout_width="match_parent"
+        android:background="@color/colorLoginBg"
+        android:layout_height="@dimen/_250sdp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:scaleType="fitXY"
+            android:id="@+id/ivBackImage"
+            android:src="@drawable/addictive_bg"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/ivCong"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_38sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/share_addicted" />
+
+
+        <TextView
+            android:id="@+id/tvCongrates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivCong"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/congratulation"
+            android:textColor="@color/colorSighUpText"
+            android:textSize="@dimen/_16ssp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvCongrates"
+            android:layout_centerInParent="true"
+            android:id="@+id/tvUserName"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/roboto_medium"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/colorWelcomeText"/>
+
+
+        <TextView
+            android:id="@+id/tvSurveyDescription"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvUserName"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:text="@string/as_per_your_given_survey_you_are_addicted"
+            android:textColor="@color/colorWelcomeText"
+            android:textSize="@dimen/_13ssp" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/do_you_want_to_share_with_your_partner"
+        android:textColor="@color/colorOrLoginWith"
+        android:textSize="@dimen/_13ssp" />
+
+    <RelativeLayout
+        android:id="@+id/rlPrivateSelected"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/login_background">
+
+        <TextView
+            android:id="@+id/tvPrivateSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="@string/privates"
+            android:textColor="@color/colorSelectCountry"
+            android:textSize="@dimen/_12ssp" />
+
+        <ImageView
+            android:id="@+id/ivPrivateSelected"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_round_done_button"
+            android:visibility="gone"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlPublicSelected"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/login_background">
+
+        <TextView
+            android:id="@+id/tvPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="@string/publics"
+            android:textColor="@color/colorSelectCountry"
+            android:textSize="@dimen/_12ssp" />
+
+        <ImageView
+            android:id="@+id/ivPublicSelected"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_round_done_button"
+            android:visibility="gone"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tvShareCongrate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/login_rounded_border"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text="@string/share"
+        android:textColor="@color/colorWelcomeText"
+        android:textSize="@dimen/_13ssp" />
+
+    <TextView
+        android:id="@+id/tvSkipCongrate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_10sdp"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center"
+        android:text="@string/skip"
+        android:textColor="@color/colorSkip"
+        android:textSize="@dimen/_13ssp" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -11,6 +11,7 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -22,8 +23,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +37,7 @@ import java.util.List;
 public final class ImagePicker {
 
     public static final int PICK_IMAGE_REQUEST_CODE = 234; // the number doesn't matter
+    public static final int CAMERA_IMAGE_REQUEST_CODE = 235; // the number doesn't matter
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
     private static final int DEFAULT_MIN_HEIGHT_QUALITY = 400;        // min pixels
     private static final String TAG = ImagePicker.class.getSimpleName();
@@ -41,6 +45,9 @@ public final class ImagePicker {
 
     private static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
     private static int minHeightQuality = DEFAULT_MIN_HEIGHT_QUALITY;
+
+    private static String currentPhotoPath;
+
 
     private ImagePicker() {
         // not called
@@ -105,6 +112,29 @@ public final class ImagePicker {
         Intent chooseImageIntent = getPickImageIntent(fragment.getContext(), chooserTitle);
         fragment.startActivityForResult(chooseImageIntent, PICK_IMAGE_REQUEST_CODE);
     }
+
+
+    public static File createImageFile(Context context) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    public static String getCurrentPhotoPath() {
+        return currentPhotoPath;
+    }
+
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     /**
      * Get an Intent which will launch a dialog to pick an image from camera/gallery apps.

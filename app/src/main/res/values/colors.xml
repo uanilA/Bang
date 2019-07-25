@@ -18,4 +18,12 @@
     <color name="transparent">#00000000</color>
     <color name="colorSkip">#494949</color>
     <color name="colorNearYouText">#000000</color>
+    <color name="completeTextColor">#028A4C</color>
+    <color name="pendingTextColor">#F66732</color>
+    <color name="colorTextName">#626262</color>
+    <color name="colorSurveyBg">#f5f5f5</color>
+    <color name="colorCommentText">#9e9e9e</color>
+    <color name="commentBackColor">#F8F7F7</color>
+    <color name="colorBackNumber">#f2f2f2</color>
+    <color name="colorFollowerName">#242424</color>
 </resources>

@@ -2,7 +2,6 @@ package com.bang.module.authentication.otpverification;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.helper.CustomToast;
-import com.bang.module.authentication.baseactivity.BangParentActivity;
+import com.bang.base.BangParentActivity;
 import com.bang.module.authentication.genderselection.GenderSelectionActivity;
 import com.bang.module.authentication.login.manager.SendOtpManager;
 import com.bang.module.authentication.login.model.SendOtpResponse;
@@ -20,33 +19,59 @@ import com.bang.module.authentication.profilecompletion.CompleteProfileActivity;
 import com.bang.module.authentication.verification.manager.LoginManager;
 import com.bang.module.authentication.verification.model.LoginResponse;
 import com.bang.module.home.MainActivity;
-import com.bang.serverhandling.ApiCallback;
+import com.bang.network.ApiCallback;
 import com.goodiebag.pinview.Pinview;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
-public class OtpVerificationActivity extends BangParentActivity implements View.OnClickListener, ApiCallback.LoginManagerCallback, ApiCallback.SendOtpCallback {
+public class OtpVerificationActivity extends BangParentActivity implements View.OnClickListener, ApiCallback.SendOtpCallback {
 
     private TextView tvSendOtpButton;
-    private long mLastClickTime = 0;
+   // private long mLastClickTime = 0;
     private EditText etOtpOne, etOtpTwo, etOtpThree, etOtpFour;
     private Session session;
     private String myOtp = "", verifyingLKey = "";
-    private String country_code = "";
-    private String mobileNumber = "";
+    private String password = "";
+    private String emailAddress = "";
     private String type = "";
     Pinview pinview;
     private LinearLayout llResendOtp;
+    private String device_token = "";
+    private String fb_name      = "",
+                   fb_image     = "",
+                   socialType   = "",
+                   socialId     = "",
+                   socialEmail  = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                device_token = instanceIdResult.getToken();
+                System.out.println("###########################Token"+device_token);
+            }
+        });
         init();
 
-        myOtp = getIntent().getStringExtra("loginOtp");
-        verifyingLKey = getIntent().getStringExtra("verifyingKey");
-        country_code = getIntent().getStringExtra("countryCode");
-        mobileNumber = getIntent().getStringExtra("mobileNumber");
-        type = getIntent().getStringExtra("type");
+        if (getIntent().getStringExtra("type") != null){
+            myOtp = getIntent().getStringExtra("loginOtp");
+            verifyingLKey = getIntent().getStringExtra("verifyingKey");
+            emailAddress = getIntent().getStringExtra("emailAddress");
+            password = getIntent().getStringExtra("password");
+            type = getIntent().getStringExtra("type");
+        }else {
+            myOtp = getIntent().getStringExtra("loginOtp");
+            fb_name = getIntent().getStringExtra("fullname");
+            fb_image = getIntent().getStringExtra("fb_image");
+            socialType = getIntent().getStringExtra("socialType");
+            socialId = getIntent().getStringExtra("socialId");
+            socialEmail = getIntent().getStringExtra("social_email");
+        }
 
         session = new Session(OtpVerificationActivity.this);
         tvSendOtpButton.setOnClickListener(this);
@@ -82,13 +107,13 @@ public class OtpVerificationActivity extends BangParentActivity implements View.
     @Override
     public void onClick(View v) {
         // Preventing multiple clicks, using threshold of 1/2 second
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+        /*if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();
+        mLastClickTime = SystemClock.elapsedRealtime();*/
         switch (v.getId()) {
             case R.id.llResendOtp:
-                new SendOtpManager(this, OtpVerificationActivity.this).callSendOtp(type, country_code, mobileNumber);
+                new SendOtpManager(this, OtpVerificationActivity.this).callSendOtp(type, emailAddress);
                 break;
             case R.id.tvSendOtpButton:
                 String otp = etOtpOne.getText().toString().trim() + etOtpTwo.getText().toString().trim() +
@@ -98,24 +123,33 @@ public class OtpVerificationActivity extends BangParentActivity implements View.
                 } else if (!myOtp.equals(otp)) {
                     CustomToast.getInstance(OtpVerificationActivity.this).showToast(OtpVerificationActivity.this, "otp is not valid");
                 } else {
-                    if (verifyingLKey.equals("ForSignIn")) {
-                        new LoginManager(this, OtpVerificationActivity.this).callLoginApi(country_code, mobileNumber);
-                    } else {
-                        startActivity(new Intent(OtpVerificationActivity.this, CompleteProfileActivity.class)
-                                .putExtra("countryCode", country_code)
-                                .putExtra("mobileNumber", mobileNumber));
-                        finish();
-                    }
+                  /*  if (verifyingLKey.equals("ForSignIn")) {
+                        new LoginManager(this, OtpVerificationActivity.this).callLoginApi(emailAddress, password,device_token,"0");
+                    } else {*/
+                        if (!verifyingLKey.equals("")) {
+                            startActivity(new Intent(OtpVerificationActivity.this, CompleteProfileActivity.class)
+                                    .putExtra("emailAddress", emailAddress)
+                                    .putExtra("verifyingKey", verifyingLKey));
+                            finish();
+                        }else {
+                            startActivity(new Intent(OtpVerificationActivity.this, CompleteProfileActivity.class)
+                                    .putExtra("fullname", fb_name)
+                                    .putExtra("fb_image", fb_image)
+                                    .putExtra("socialType", socialType)
+                                    .putExtra("socialId", socialId)
+                                    .putExtra("social_email", socialEmail));
+                            finish();
+                        }
+                    //}
                 }
                 break;
         }
-
     }
 
-    @Override
+   /* @Override
     public void onSuccessLogin(LoginResponse loginResponse) {
         if (loginResponse.getCode().equals(200)) {
-            session.createRegistration(loginResponse);
+            session.createRegistration(loginResponse.getData());
             session.setUserLoggedIn();
             System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+loginResponse.getData().getProfileStep());
             if (loginResponse.getData().getProfileStep().equals(1)) {
@@ -126,7 +160,7 @@ public class OtpVerificationActivity extends BangParentActivity implements View.
                 finish();
             }
         }
-    }
+    }*/
 
     @Override
     public void onShowBaseLoader() {

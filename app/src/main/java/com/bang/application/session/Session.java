@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.bang.module.authentication.login.LoginActivity;
+import com.bang.module.authentication.verification.model.LoginData;
 import com.bang.module.authentication.verification.model.LoginResponse;
 import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
@@ -55,19 +56,19 @@ public class Session {
         editor2.apply();
     }
 
-    public void createRegistration(LoginResponse loginResponse) {
+    public void createRegistration(LoginData loginData) {
         Gson gson = new Gson();
-        String json = gson.toJson(loginResponse);
+        String json = gson.toJson(loginData);
         editor.putString(RegisterInfo, json);
-        editor.putString(AuthToken, loginResponse.getData().getAuthToken());
+        editor.putString(AuthToken, loginData.getAuthToken());
         editor.commit();
     }
 
-    public LoginResponse getRegistration() {
+    public LoginData getRegistration() {
         Gson gson = new Gson();
         String string = mypref.getString(RegisterInfo, "");
         if (!string.isEmpty())
-            return gson.fromJson(string, LoginResponse.class);
+            return gson.fromJson(string, LoginData.class);
         else return null;
     }
 
@@ -117,9 +118,6 @@ public class Session {
     }
 */
     public void logout() {
-        final LoginManager loginManager = LoginManager.getInstance();
-        loginManager.logOut();
-        /*Intent showLogin = new Intent(context, LoginActivity.class);*/
         Intent showLogin = new Intent(context, LoginActivity.class);
         showLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         showLogin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,16 +1,17 @@
 package com.bang.module.authentication.login.manager;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.bang.R;
 import com.bang.errorResponse.APIErrors;
 import com.bang.errorResponse.ErrorUtils;
-import com.bang.errorResponse.ServiceGenerator;
+import com.bang.network.ServiceGenerator;
 import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.module.authentication.login.model.SendOtpResponse;
-import com.bang.serverhandling.API;
-import com.bang.serverhandling.ApiCallback;
+import com.bang.network.API;
+import com.bang.network.ApiCallback;
 
 import java.io.IOException;
 
@@ -28,21 +29,23 @@ public class SendOtpManager {
         this.mContext=mContext;
     }
 
-    public void callSendOtp(String type, String countryCode,String mobileNumber){
+    public void callSendOtp(String type,String email){
         signUpOtpCallback.onShowBaseLoader();
         if (AppHelper.isConnectingToInternet(mContext)) {
         API api = ServiceGenerator.createService(API.class);
-        Call<SendOtpResponse>otpResponseCall = api.callOTPApi(type, countryCode,mobileNumber);
+        Call<SendOtpResponse>otpResponseCall = api.callOTPApi(type, email);
         otpResponseCall.enqueue(new Callback<SendOtpResponse>() {
             @Override
-            public void onResponse(Call<SendOtpResponse> call, Response<SendOtpResponse> response) {
+            public void onResponse(@NonNull Call<SendOtpResponse> call, @NonNull Response<SendOtpResponse> response) {
                 signUpOtpCallback.onHideBaseLoader();
-                if(response.isSuccessful()){
-                    signUpOtpCallback.onSuccessSendOtp(response.body());
-                }else {
-                    APIErrors apiErrors = ErrorUtils.parseError(response);
-                    signUpOtpCallback.onError(apiErrors.getMessage());
-                }
+                try {
+                    if (response.isSuccessful()) {
+                        signUpOtpCallback.onSuccessSendOtp(response.body());
+                    } else {
+                        APIErrors apiErrors = ErrorUtils.parseError(response);
+                        signUpOtpCallback.onError(apiErrors.getMessage());
+                    }
+                }catch (Exception e){e.printStackTrace();}
             }
             @Override
             public void onFailure(Call<SendOtpResponse> call, Throwable t) {

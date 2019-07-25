@@ -11,12 +11,16 @@ public class LoginData implements Serializable {
     private String fullName;
     @SerializedName("phone_number")
     private String phoneNumber;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("password")
+    private String password;
     @SerializedName("country_code")
     private String countryCode;
     @SerializedName("social_type")
     private Object socialType;
     @SerializedName("social_id")
-    private String socialId;
+    private Object socialId;
     @SerializedName("profile_photo")
     private String profilePhoto;
     @SerializedName("is_profile_url")
@@ -28,19 +32,19 @@ public class LoginData implements Serializable {
     @SerializedName("prefers")
     private String prefers;
     @SerializedName("location")
-    private String location;
+    private Object location;
     @SerializedName("city")
-    private String city;
+    private Object city;
     @SerializedName("state")
-    private String state;
+    private Object state;
     @SerializedName("country")
-    private String country;
+    private Object country;
     @SerializedName("latitude")
-    private Integer latitude;
+    private Object latitude;
     @SerializedName("longitude")
-    private Integer longitude;
+    private Object longitude;
     @SerializedName("signup_from")
-    private Integer signupFrom;
+    private Object signupFrom;
     @SerializedName("device_type")
     private Integer deviceType;
     @SerializedName("device_token")
@@ -51,7 +55,7 @@ public class LoginData implements Serializable {
     private String createdOn;
     @SerializedName("updated_on")
     private String updatedOn;
-    private final static long serialVersionUID = 6044611642661310829L;
+    private final static long serialVersionUID = -547221136134188600L;
 
     public Integer getUserId() {
         return userId;
@@ -77,6 +81,22 @@ public class LoginData implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getCountryCode() {
         return countryCode;
     }
@@ -93,11 +113,11 @@ public class LoginData implements Serializable {
         this.socialType = socialType;
     }
 
-    public String getSocialId() {
+    public Object getSocialId() {
         return socialId;
     }
 
-    public void setSocialId(String socialId) {
+    public void setSocialId(Object socialId) {
         this.socialId = socialId;
     }
 
@@ -141,59 +161,59 @@ public class LoginData implements Serializable {
         this.prefers = prefers;
     }
 
-    public String getLocation() {
+    public Object getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Object location) {
         this.location = location;
     }
 
-    public String getCity() {
+    public Object getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Object city) {
         this.city = city;
     }
 
-    public String getState() {
+    public Object getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Object state) {
         this.state = state;
     }
 
-    public String getCountry() {
+    public Object getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Object country) {
         this.country = country;
     }
 
-    public Integer getLatitude() {
+    public Object getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(Object latitude) {
         this.latitude = latitude;
     }
 
-    public Integer getLongitude() {
+    public Object getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Integer longitude) {
+    public void setLongitude(Object longitude) {
         this.longitude = longitude;
     }
 
-    public Integer getSignupFrom() {
+    public Object getSignupFrom() {
         return signupFrom;
     }
 
-    public void setSignupFrom(Integer signupFrom) {
+    public void setSignupFrom(Object signupFrom) {
         this.signupFrom = signupFrom;
     }
 
@@ -236,6 +256,4 @@ public class LoginData implements Serializable {
     public void setUpdatedOn(String updatedOn) {
         this.updatedOn = updatedOn;
     }
-
-
 }

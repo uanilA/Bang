@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".module.home.addsurvey.AddSurveyActivity">
+
+    <include
+        android:id="@+id/main_tool_bar"
+        layout="@layout/action_bar_for_all_screens"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize" />
+
+    <FrameLayout
+        android:id="@+id/frameAddSurvey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_tool_bar"
+        android:layout_margin="@dimen/_5sdp" />
+
+
+</RelativeLayout>

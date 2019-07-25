@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.bang.R;
 
+import static com.bang.helper.Utils.popBackStack;
+
 
 public class ChatHistoryFragment extends Fragment {
 
@@ -48,5 +50,9 @@ public class ChatHistoryFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
+    }
 }

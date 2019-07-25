@@ -1,8 +1,8 @@
 package com.bang.module.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -12,36 +12,44 @@ import android.widget.TextView;
 
 import com.bang.R;
 import com.bang.application.session.Session;
+import com.bang.base.BangParentActivity;
+import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
-import com.bang.module.authentication.baseactivity.BangParentActivity;
-import com.bang.module.authentication.login.LoginActivity;
 import com.bang.module.home.chatmodule.ChatHistoryFragment;
 import com.bang.module.home.nearyou.fragment.NearYouFragment;
-import com.bang.module.home.newsfeed.NewsFeedFragment;
-import com.bang.module.home.profile.ProfileFragment;
+import com.bang.module.home.newsfeed.fragment.NewsFeedFragment;
+import com.bang.module.home.profile.getprofile.ProfileFragment;
 import com.bang.module.home.survey.SurveyFragment;
 
 public class MainActivity extends BangParentActivity implements View.OnClickListener {
 
 
-    private RelativeLayout rlNewsFeed,rlNearYou,rlSurvey,rlChat,rlProfile;
-    private ImageView ivNewsFeed,ivNearYou,ivSurvey,ivChat,ivProfile;
-    private View view_newsFeed_selected,view_near_you_selected,view_survey_selected,view_chat_selected,view_profile_selected;
+    private RelativeLayout rlNewsFeed, rlNearYou, rlSurvey, rlChat, rlProfile;
+    private ImageView ivNewsFeed, ivNearYou, ivSurvey, ivChat, ivProfile;
+    private View view_newsFeed_selected, view_near_you_selected, view_survey_selected, view_chat_selected, view_profile_selected;
     private View main_tool_bar;
     private ImageView iv_addSurvey;
     private TextView tvHeaderTitle;
     private boolean doubleBackToExitPressedOnce;
     private TextView txtLogout;
-    Session session;
+    private ImageView ivBack;
+    private Session session;
+    private boolean isReplace;
+    private long mLastClickTime = 0;
+
+    public void MainActivity() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         init();
 
-        newsFeedActive();
-        addFragment(NewsFeedFragment.newInstance(), false, R.id.frameLayout);
+        setSurveyActive();
+        addFragment(SurveyFragment.newInstance(), false, R.id.frameLayout);
         session = new Session(MainActivity.this);
         rlNewsFeed.setOnClickListener(this);
         rlNearYou.setOnClickListener(this);
@@ -59,11 +67,14 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
 
     }
 
-    private void init(){
+    private void init() {
         txtLogout = findViewById(R.id.txtLogout);
+        //txtLogout = findViewById(R.id.txtLogout);
         main_tool_bar = findViewById(R.id.main_tool_bar);
         tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
 
+        ivBack = findViewById(R.id.ivBack);
+        ivBack.setVisibility(View.GONE);
         iv_addSurvey = findViewById(R.id.iv_addSurvey);
 
         rlNewsFeed = findViewById(R.id.rlNewsFeed);
@@ -90,30 +101,70 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-           switch (v.getId()){
-               case R.id.rlNewsFeed:
-                   newsFeedActive();
-                   break;
-               case R.id.rlNearYou:
-                   setNearYouActive();
-                   break;
-               case R.id.rlSurvey:
-                   setSurveyActive();
-                   break;
-               case R.id.rlChat:
-                   setChatActive();
-                   break;
-               case R.id.rlProfile:
-                   setProfileActive();
-                   break;
-           }
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+        switch (v.getId()) {
+            case R.id.rlNewsFeed:
+                clicknewsFees();
+                break;
+            case R.id.rlNearYou:
+                clickNearYou();
+                break;
+            case R.id.rlSurvey:
+                clickServey();
+                break;
+            case R.id.rlChat:
+                clickChat();
+                break;
+            case R.id.rlProfile:
+                clickProfile();
+                break;
+        }
     }
 
-    private void newsFeedActive(){
 
-        replaceFragment(NewsFeedFragment.newInstance(),false,R.id.frameLayout);
+    private void clickServey() {
+        if (AppHelper.isConnectingToInternet(MainActivity.this)) {
+            setSurveyActive();
+            replaceFragment(SurveyFragment.newInstance(), false, R.id.frameLayout);
+        }
+    }
+
+    private void clicknewsFees() {
+        if (AppHelper.isConnectingToInternet(MainActivity.this)) {
+            newsFeedActive();
+            replaceFragment(NewsFeedFragment.newInstance(), false, R.id.frameLayout);
+        }
+    }
+
+    private void clickNearYou() {
+        if (AppHelper.isConnectingToInternet(MainActivity.this)) {
+            setNearYouActive();
+            replaceFragment(NearYouFragment.newInstance(), false, R.id.frameLayout);
+        }
+    }
+
+    private void clickChat() {
+        if (AppHelper.isConnectingToInternet(MainActivity.this)) {
+            setChatActive();
+            replaceFragment(ChatHistoryFragment.newInstance(), false, R.id.frameLayout);
+        }
+    }
+
+    private void clickProfile() {
+        if (AppHelper.isConnectingToInternet(MainActivity.this)) {
+            setProfileActive();
+            replaceFragment(ProfileFragment.newInstance(), false, R.id.frameLayout);
+        }
+    }
+
+
+    private void newsFeedActive() {
+
         tvHeaderTitle.setText(getString(R.string.news_feed));
-
         main_tool_bar.setVisibility(View.VISIBLE);
         iv_addSurvey.setVisibility(View.VISIBLE);
 
@@ -133,9 +184,8 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
         view_profile_selected.setVisibility(View.GONE);
     }
 
-    private void setNearYouActive(){
+    private void setNearYouActive() {
         tvHeaderTitle.setText(getString(R.string.near_you));
-        replaceFragment(NearYouFragment.newInstance(),false,R.id.frameLayout);
         main_tool_bar.setVisibility(View.VISIBLE);
 
         iv_addSurvey.setVisibility(View.GONE);
@@ -155,12 +205,11 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
         ivProfile.setImageResource(R.drawable.ic_inactive_profile);
         view_profile_selected.setVisibility(View.GONE);
     }
-    private void setSurveyActive(){
 
+    private void setSurveyActive() {
+        main_tool_bar.setVisibility(View.GONE);
         tvHeaderTitle.setText(getString(R.string.survey));
-        replaceFragment(SurveyFragment.newInstance(),false,R.id.frameLayout);
-
-        iv_addSurvey.setVisibility(View.GONE);
+        iv_addSurvey.setVisibility(View.VISIBLE);
         main_tool_bar.setVisibility(View.VISIBLE);
 
         ivNewsFeed.setImageResource(R.drawable.ic_inactive_newsfeed);
@@ -179,10 +228,9 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
         view_profile_selected.setVisibility(View.GONE);
     }
 
-    private void setChatActive(){
+    private void setChatActive() {
 
         tvHeaderTitle.setText(getString(R.string.messages));
-        replaceFragment(ChatHistoryFragment.newInstance(),false,R.id.frameLayout);
         main_tool_bar.setVisibility(View.VISIBLE);
         iv_addSurvey.setVisibility(View.GONE);
 
@@ -202,9 +250,8 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
         view_profile_selected.setVisibility(View.GONE);
     }
 
-    private void setProfileActive(){
+    private void setProfileActive() {
 
-        replaceFragment(ProfileFragment.newInstance(),false,R.id.frameLayout);
 
         main_tool_bar.setVisibility(View.GONE);
 
@@ -230,27 +277,24 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
         Handler handler = new Handler();
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-
             final FragmentManager.OnBackStackChangedListener listener = new FragmentManager.OnBackStackChangedListener() {
                 @Override
                 public void onBackStackChanged() {
                     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
-
                     if (fragment instanceof NewsFeedFragment) {
-                      //  newsFeedActive();
+                        //  newsFeedActive();
 
                     } else if (fragment instanceof NearYouFragment) {
-                     //   setNearYouActive();
+                        //   setNearYouActive();
 
                     } else if (fragment instanceof SurveyFragment) {
-                         // setSurveyActive();
+                        // setSurveyActive();
 
                     } else if (fragment instanceof ChatHistoryFragment) {
-                      //  setChatActive();
+                        //  setChatActive();
 
                     } else if (fragment instanceof ProfileFragment) {
-                       // setProfileActive();
-
+                        // setProfileActive();
                     }
                 }
             };
@@ -268,6 +312,17 @@ public class MainActivity extends BangParentActivity implements View.OnClickList
             }, 2000);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.frameLayout);
+        if (fragment instanceof NewsFeedFragment) {
+            NewsFeedFragment infoFragment = (NewsFeedFragment) fragment;
+            infoFragment.apiCalling(0);
         }
     }
 }

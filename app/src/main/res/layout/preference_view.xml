@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llPreferenceParentLayout"
+    android:layout_width="@dimen/_150sdp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_2sdp"
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/cvPreferenceFirstCheck"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_toStartOf="@+id/rlPreferenceFirstLayout"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:checked="false"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/check_box_selector"
+        android:button="@null"
+        android:gravity="center" />
+
+    <RelativeLayout
+        android:id="@+id/rlPreferenceFirstLayout"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/not_selected_image_border"
+        android:layout_margin="@dimen/_10sdp">
+
+        <com.github.siyamed.shapeimageview.RoundedImageView
+            android:id="@+id/ivPreference"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/_8sdp"
+            app:siBorderColor="@color/colorPrimaryDark"
+            app:siBorderWidth="1dp"
+            app:siRadius="@dimen/_8sdp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

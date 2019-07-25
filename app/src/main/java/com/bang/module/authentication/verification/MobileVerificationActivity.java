@@ -1,7 +1,6 @@
 package com.bang.module.authentication.verification;
 
 import android.content.Intent;
-import android.os.SystemClock;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,19 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bang.R;
-import com.bang.application.session.Session;
-import com.bang.helper.CustomPhoneTextWatcher;
+import com.bang.base.BangParentActivity;
 import com.bang.helper.CustomToast;
 import com.bang.helper.Utils;
-import com.bang.module.authentication.baseactivity.BangParentActivity;
+import com.bang.helper.Validation;
 import com.bang.module.authentication.country.CountrySelectionActivity;
 import com.bang.module.authentication.country.model.Country;
-import com.bang.module.authentication.login.LoginActivity;
 import com.bang.module.authentication.login.manager.SendOtpManager;
-import com.bang.module.authentication.otpverification.OtpVerificationActivity;
 import com.bang.module.authentication.login.model.SendOtpResponse;
-import com.bang.module.authentication.verification.model.LoginResponse;
-import com.bang.serverhandling.ApiCallback;
+import com.bang.module.authentication.otpverification.OtpVerificationActivity;
+import com.bang.network.ApiCallback;
 import com.bang.utils.Utility;
 import com.google.gson.Gson;
 
@@ -34,14 +30,19 @@ import static com.bang.module.authentication.login.LoginActivity.SECOND_ACTIVITY
 public class MobileVerificationActivity extends BangParentActivity implements View.OnClickListener, ApiCallback.SendOtpCallback {
 
     private TextView tvSendOtpButton;
-    private EditText edtSignUpNumber;
+    private EditText etLoginEmail;
     private LinearLayout llMobileVerificationGoingToCountryCode;
-    private long mLastClickTime = 0;
+  //  private long mLastClickTime = 0;
     private String country_code = "";
     private ImageView ivMobileVerifyFlag;
     private String verifyingKey = "";
-    private String myCode = "1";
-    private String phoneNumber="";
+    private String myCode = "";
+    private String emailAddress = "";
+    private String fb_name = "",
+            fb_image = "",
+            socialType = "",
+            socialId = "",
+            socialEmail = "";
 
 
     @Override
@@ -49,15 +50,21 @@ public class MobileVerificationActivity extends BangParentActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mobile_verification);
         init();
-        if (getIntent().getStringExtra("verifyingKey") != null)
+        if (getIntent().getStringExtra("verifyingKey") != null) {
             verifyingKey = getIntent().getStringExtra("verifyingKey");
-
+        } else {
+            fb_name = getIntent().getStringExtra("fullname");
+            fb_image = getIntent().getStringExtra("fb_image");
+            socialType = getIntent().getStringExtra("socialType");
+            socialId = getIntent().getStringExtra("socialId");
+            socialEmail = getIntent().getStringExtra("social_email");
+        }
         tvSendOtpButton.setOnClickListener(this);
         llMobileVerificationGoingToCountryCode.setOnClickListener(this);
     }
 
     private void init() {
-        edtSignUpNumber = findViewById(R.id.edtSignUpNumber);
+        etLoginEmail = findViewById(R.id.edtSignUpNumber);
         tvSendOtpButton = findViewById(R.id.tvSendOtpButton);
         llMobileVerificationGoingToCountryCode = findViewById(R.id.llMobileVerificationGoingToCountryCode);
         ivMobileVerifyFlag = findViewById(R.id.ivMobileVerifyFlag);
@@ -66,8 +73,10 @@ public class MobileVerificationActivity extends BangParentActivity implements Vi
             Country country = getCurrentCountry();
             country_code = "+" + country.getPhoneCode();
             ivMobileVerifyFlag.setImageResource(country.getFlag());
+        } else {
+            country_code = "+1";
         }
-        edtSignUpNumber.addTextChangedListener(new CustomPhoneTextWatcher(edtSignUpNumber));
+        // edtSignUpNumber.addTextChangedListener(new CustomPhoneTextWatcher(edtSignUpNumber));
 
 
     }
@@ -80,20 +89,21 @@ public class MobileVerificationActivity extends BangParentActivity implements Vi
 
     @Override
     public void onClick(View v) {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+      /*  if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();
+        mLastClickTime = SystemClock.elapsedRealtime();*/
+        Validation validation = new Validation();
         switch (v.getId()) {
             case R.id.tvSendOtpButton:
-                country_code = "+" + myCode;
-                phoneNumber = edtSignUpNumber.getText().toString().trim();
-                phoneNumber = phoneNumber.replace("-", "");
-                if (phoneNumber.equals("")) {
-                    CustomToast.getInstance(MobileVerificationActivity.this).showToast(MobileVerificationActivity.this, "Please enter mobile number");
+                emailAddress = etLoginEmail.getText().toString().trim();
+                if (emailAddress.equals("")) {
+                    CustomToast.getInstance(MobileVerificationActivity.this).showToast(MobileVerificationActivity.this, "Please enter email");
+                } else if (!validation.isEmailValid(etLoginEmail)) {
+                    CustomToast.getInstance(MobileVerificationActivity.this).showToast(MobileVerificationActivity.this, "Please enter valid email");
                 } else {
                     new SendOtpManager(this, MobileVerificationActivity.this).
-                            callSendOtp("signup", country_code, phoneNumber);
+                            callSendOtp("signup", emailAddress);
                 }
                 break;
             case R.id.llMobileVerificationGoingToCountryCode:
@@ -139,13 +149,26 @@ public class MobileVerificationActivity extends BangParentActivity implements Vi
     public void onSuccessSendOtp(SendOtpResponse sendOtpResponse) {
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^" + sendOtpResponse.getOtp());
         int otp = sendOtpResponse.getOtp();
-        startActivity(new Intent(MobileVerificationActivity.this, OtpVerificationActivity.class)
-                .putExtra("mobileNumber",phoneNumber)
-                .putExtra("countryCode", country_code)
-                .putExtra("loginOtp", String.valueOf(otp))
-                .putExtra("verifyingKey", "SignUpKey")
-                .putExtra("type", "signup"));
-        finish();
+        if (verifyingKey != null && !verifyingKey.equals("")) {
+            startActivity(new Intent(MobileVerificationActivity.this, OtpVerificationActivity.class)
+                    .putExtra("emailAddress", emailAddress)
+                    .putExtra("countryCode", country_code)
+                    .putExtra("loginOtp", String.valueOf(otp))
+                    .putExtra("verifyingKey", verifyingKey)
+                    .putExtra("type", "signup"));
+            finish();
+        } else {
+            startActivity(new Intent(MobileVerificationActivity.this, OtpVerificationActivity.class)
+                    .putExtra("fullname", fb_name)
+                    .putExtra("fb_image", fb_image)
+                    .putExtra("socialType", socialType )
+                    .putExtra("loginOtp", String.valueOf(otp))
+                    .putExtra("socialId", socialId)
+                    .putExtra("social_email", emailAddress));
+            finish();
+        }
+
+
     }
 
     private Country getCurrentCountry() {
@@ -157,7 +180,6 @@ public class MobileVerificationActivity extends BangParentActivity implements Vi
         for (int i = 0; i < mCountries.size(); i++) {
             mCountries.get(i).setFlag(flags[i]);
         }
-
         for (Country c : mCountries) {
             {
                 if (c.getCode().equals(cCode)) {

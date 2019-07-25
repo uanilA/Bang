@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLoginBg">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/tvQuestionTitle"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/selecting_partner"
+                android:textColor="@color/colorWelcomeText"
+                android:textSize="@dimen/_15ssp" />
+
+            <TextView
+                android:id="@+id/tvQuestionDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:text="@string/was_your_experience_with_a_male_female_transgender_male_transgender_female_non_gender"
+                android:textColor="@color/colorLoginText"
+                android:textSize="@dimen/_12ssp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcvSelectedList"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvSelectedGenderNext"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_35sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/login_rounded_border"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="@string/next"
+                android:textColor="@color/colorWelcomeText"
+                android:textSize="@dimen/_13ssp" />
+
+            <TextView
+                android:id="@+id/tvSelectingGenderSkip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="@string/skip"
+                android:textColor="@color/colorSkip"
+                android:textSize="@dimen/_13ssp" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

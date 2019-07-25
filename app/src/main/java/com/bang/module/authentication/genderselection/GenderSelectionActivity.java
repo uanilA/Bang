@@ -1,39 +1,62 @@
 package com.bang.module.authentication.genderselection;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bang.R;
 import com.bang.application.session.Session;
+import com.bang.base.BangParentActivity;
+import com.bang.helper.Constant;
 import com.bang.helper.CustomToast;
-import com.bang.module.authentication.baseactivity.BangParentActivity;
+import com.bang.helper.LocationRuntimePermission;
 import com.bang.module.authentication.genderselection.manager.GenderManager;
 import com.bang.module.authentication.genderselection.model.UpdateGenderResponse;
+import com.bang.module.authentication.genderselection.model.UpdateLocationResponse;
 import com.bang.module.home.MainActivity;
-import com.bang.serverhandling.ApiCallback;
+import com.bang.module.preference.PreferenceActivity;
+import com.bang.network.ApiCallback;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-public class GenderSelectionActivity extends BangParentActivity implements View.OnClickListener, ApiCallback.GenderSelectionCallback {
+public class GenderSelectionActivity extends BangParentActivity implements View.OnClickListener,
+        ApiCallback.GenderSelectionCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private RelativeLayout rlMalePrefers,rlFemalePrefers,rlTransgenderMalePrefers
-            ,rlTransgenderFemalePrefersMalePrefers,rlNonGenderPrefers;
+    private RelativeLayout rlMalePrefers, rlFemalePrefers, rlTransgenderMalePrefers, rlTransgenderFemalePrefersMalePrefers, rlNonGenderPrefers;
 
-    private ImageView ivNonGenderSelected,ivTransGenderFamaleSelected,ivTransGenderMaleSelected
-            ,ivFemaleSelected,ivMaleSelected;
+    private ImageView ivNonGenderSelected, ivTransGenderFamaleSelected, ivTransGenderMaleSelected, ivFemaleSelected, ivMaleSelected;
 
-    private TextView tvNonGenderPrefer,tvTransgenderFemalePrefer,tvTransgenderMalePrefer
-            ,tvFemalePrefer,tvMalePrefer;
+    private TextView tvNonGenderPrefer, tvTransgenderFemalePrefer, tvTransgenderMalePrefer, tvFemalePrefer, tvMalePrefer;
 
-    private LinearLayout llMaleGender,llFemaleGender,llTransgenderMale,llTransgemderFemale,llNonGender;
+    private LinearLayout llMaleGender, llFemaleGender, llTransgenderMale, llTransgemderFemale, llNonGender;
 
-    private TextView tvNotGender,tvTransgenderFemale,txtTransGenderMale,tvFemaleGender,tvMaleGender;
+    private TextView tvNotGender, tvTransgenderFemale, txtTransGenderMale, tvFemaleGender, tvMaleGender;
 
-    private TextView tvGenderSelectionSkip,tvGenderSelectionNext;
-    private String preference="",myGender="";
-    Session session;
+    private TextView tvGenderSelectionSkip, tvGenderSelectionNext;
+    private String preference = "", myGender = "";
+    private Session session;
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private LocationManager locationManager;
+   // private long mLastClickTime = 0;
+    private String mLatitude = "", mLongitude = "", full_address = "", city = "", getFull_address = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +77,17 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         llNonGender.setOnClickListener(this);
         tvGenderSelectionSkip.setOnClickListener(this);
         tvGenderSelectionNext.setOnClickListener(this);
+
+        // Get Current Latitude and Longitude
+        callToGetCurrentLocation();
     }
 
-    private void init(){
+    private void callUpdateLocationAPi() {
+        new GenderManager(this, GenderSelectionActivity.this).callUpdateLocationApi(mLatitude, mLongitude);
+    }
+
+
+    private void init() {
         rlMalePrefers = findViewById(R.id.rlMalePrefers);
         rlFemalePrefers = findViewById(R.id.rlFemalePrefers);
         rlTransgenderMalePrefers = findViewById(R.id.rlTransgenderMalePrefers);
@@ -92,57 +123,61 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
 
     @Override
     public void onClick(View v) {
-         switch (v.getId()){
-             case R.id.rlMalePrefers:
-                 selectMalePrefer();
-                 break;
-             case R.id.rlFemalePrefers:
-                 selectFemalePrefer();
-                 break;
-             case R.id.rlTransgenderMalePrefers:
-                 selectTransgenderMalePrefer();
-                 break;
-             case R.id.rlTransgenderFemalePrefersMalePrefers:
-                 selectTransgenderFemalePrefer();
-                 break;
-             case R.id.rlNonGenderPrefers:
-                 selectNonGenderPrefer();
-                 break;
-             case R.id.llMaleGender:
-                  selectedMaleGender();
-                 break;
-             case R.id.llFemaleGender:
-                 selectedFemaleGender();
-                 break;
-             case R.id.llTransgenderMale:
-                 selectedTransgenderMaleGender();
-                 break;
-             case R.id.llTransgemderFemale:
-                 selectedTransgenderFemaleGender();
-                 break;
-             case R.id.llNonGender:
-                 selectedNonGender();
-                 break;
-             case R.id.tvGenderSelectionSkip:
-                 startActivity(new Intent(GenderSelectionActivity.this, MainActivity.class));
-                 break;
-             case R.id.tvGenderSelectionNext:
-                 if (myGender.equals("")){
-                     CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this,"Please select Preference");
-                 }else if (preference.equals("")){
-                     CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this,"Please select your gender");
-                 }else {
-                     new GenderManager(this,GenderSelectionActivity.this).callUpdateGenderApi(myGender,preference);
+       /* if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();*/
+        switch (v.getId()) {
+            case R.id.rlMalePrefers:
+                selectMalePrefer();
+                break;
+            case R.id.rlFemalePrefers:
+                selectFemalePrefer();
+                break;
+            case R.id.rlTransgenderMalePrefers:
+                selectTransgenderMalePrefer();
+                break;
+            case R.id.rlTransgenderFemalePrefersMalePrefers:
+                selectTransgenderFemalePrefer();
+                break;
+            case R.id.rlNonGenderPrefers:
+                selectNonGenderPrefer();
+                break;
+            case R.id.llMaleGender:
+                selectedMaleGender();
+                break;
+            case R.id.llFemaleGender:
+                selectedFemaleGender();
+                break;
+            case R.id.llTransgenderMale:
+                selectedTransgenderMaleGender();
+                break;
+            case R.id.llTransgemderFemale:
+                selectedTransgenderFemaleGender();
+                break;
+            case R.id.llNonGender:
+                selectedNonGender();
+                break;
+            case R.id.tvGenderSelectionSkip:
+                startActivity(new Intent(GenderSelectionActivity.this, MainActivity.class));
+                break;
+            case R.id.tvGenderSelectionNext:
+                if (myGender.equals("")) {
+                    CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this, "Please select Preference");
+                } else if (preference.equals("")) {
+                    CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this, "Please select your gender");
+                } else {
+                    new GenderManager(this, GenderSelectionActivity.this).callUpdateGenderApi(myGender, preference);
 
-                 }
-                 break;
-         }
+                }
+                break;
+        }
     }
 
 
-    private void selectMalePrefer(){
+    private void selectMalePrefer() {
 
-        myGender="0";
+        myGender = "0";
 
         rlMalePrefers.setBackgroundResource(R.drawable.gender_selected_background);
         rlFemalePrefers.setBackgroundResource(R.drawable.login_background);
@@ -163,9 +198,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNonGenderPrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
     }
 
-    private void selectFemalePrefer(){
+    private void selectFemalePrefer() {
 
-        myGender="1";
+        myGender = "1";
 
         rlMalePrefers.setBackgroundResource(R.drawable.login_background);
         rlFemalePrefers.setBackgroundResource(R.drawable.gender_selected_background);
@@ -186,9 +221,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNonGenderPrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
     }
 
-    private void selectTransgenderMalePrefer(){
+    private void selectTransgenderMalePrefer() {
 
-        myGender="2";
+        myGender = "2";
 
         rlMalePrefers.setBackgroundResource(R.drawable.login_background);
         rlFemalePrefers.setBackgroundResource(R.drawable.login_background);
@@ -209,9 +244,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNonGenderPrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
     }
 
-    private void selectTransgenderFemalePrefer(){
+    private void selectTransgenderFemalePrefer() {
 
-        myGender="3";
+        myGender = "3";
 
         rlMalePrefers.setBackgroundResource(R.drawable.login_background);
         rlFemalePrefers.setBackgroundResource(R.drawable.login_background);
@@ -232,9 +267,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNonGenderPrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
     }
 
-    private void selectNonGenderPrefer(){
+    private void selectNonGenderPrefer() {
 
-        myGender="4";
+        myGender = "4";
 
         rlMalePrefers.setBackgroundResource(R.drawable.login_background);
         rlFemalePrefers.setBackgroundResource(R.drawable.login_background);
@@ -255,9 +290,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNonGenderPrefer.setTextColor(getResources().getColor(R.color.colorBang));
     }
 
-    private void selectedMaleGender(){
+    private void selectedMaleGender() {
 
-        preference="0";
+        preference = "0";
 
         llMaleGender.setBackgroundResource(R.drawable.doted_background_corners);
         llFemaleGender.setBackgroundResource(R.drawable.not_selected_image_border);
@@ -273,9 +308,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
 
     }
 
-    private void selectedFemaleGender(){
+    private void selectedFemaleGender() {
 
-        preference="1";
+        preference = "1";
 
         llMaleGender.setBackgroundResource(R.drawable.not_selected_image_border);
         llFemaleGender.setBackgroundResource(R.drawable.doted_background_corners);
@@ -290,9 +325,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNotGender.setTextColor(getResources().getColor(R.color.colorSelectCountry));
     }
 
-    private void selectedTransgenderMaleGender(){
+    private void selectedTransgenderMaleGender() {
 
-        preference="2";
+        preference = "2";
 
         llMaleGender.setBackgroundResource(R.drawable.not_selected_image_border);
         llFemaleGender.setBackgroundResource(R.drawable.not_selected_image_border);
@@ -307,9 +342,9 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNotGender.setTextColor(getResources().getColor(R.color.colorSelectCountry));
     }
 
-    private void selectedTransgenderFemaleGender(){
+    private void selectedTransgenderFemaleGender() {
 
-        preference="3";
+        preference = "3";
 
         llMaleGender.setBackgroundResource(R.drawable.not_selected_image_border);
         llFemaleGender.setBackgroundResource(R.drawable.not_selected_image_border);
@@ -324,7 +359,7 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         tvNotGender.setTextColor(getResources().getColor(R.color.colorSelectCountry));
     }
 
-    private void selectedNonGender(){
+    private void selectedNonGender() {
 
         preference = "4";
         llMaleGender.setBackgroundResource(R.drawable.not_selected_image_border);
@@ -341,28 +376,174 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
     }
 
     @Override
-    public void onGenderSelectionResponse(UpdateGenderResponse sliderRespone) {
-        startActivity(new Intent(GenderSelectionActivity.this, MainActivity.class));
+    public void onGenderSelectionResponse(UpdateGenderResponse updateGenderResponse) {
+        session.createRegistration(updateGenderResponse.getData());
+        session.setUserLoggedIn();
+        startActivity(new Intent(GenderSelectionActivity.this, PreferenceActivity.class)
+                .putExtra("prefer_gender", myGender)
+                .putExtra("preference_key", "notSelectedPref"));
         finish();
     }
 
     @Override
+    public void onUpdateLocationResponse(UpdateLocationResponse updateLocationResponse) {
+       // CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this, updateLocationResponse.getMessage());
+    }
+
+
+    @Override
     public void onTokenChangeError(String errorMessage) {
-           session.logout();
+       showDialog(GenderSelectionActivity.this,errorMessage);
     }
 
     @Override
     public void onShowBaseLoader() {
-           showLoader();
+        showLoader();
     }
 
     @Override
     public void onHideBaseLoader() {
-          hideLoader();
+        hideLoader();
     }
 
     @Override
     public void onError(String errorMessage) {
-        CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this,errorMessage);
+        CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this, errorMessage);
     }
+
+
+    // Get Current Latitude and Longitude
+    private void callToGetCurrentLocation() {
+        // Get Latitude and Longitude
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (checkPlayServices()) {
+            // Building the GoogleApi client
+            buildGoogleApiClient();
+            createLocationRequest();
+        }
+        displayCurrentLocation();
+    }
+
+
+    /**
+     * Method to verify google play services on the device
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil
+                .isGooglePlayServicesAvailable(GenderSelectionActivity.this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, GenderSelectionActivity.this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Creating google api client object
+     */
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(GenderSelectionActivity.this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+    }
+
+    /**
+     * Creating location request object
+     */
+    protected void createLocationRequest() {
+        int UPDATE_INTERVAL = 10000;
+        int FASTEST_INTERVAL = 5000;
+        int DISPLACEMENT = 10;
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkPlayServices();
+        // Resuming the periodic location updates
+    }
+
+
+    /**
+     * Get Current L0cation
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constant.MY_PERMISSIONS_REQUEST_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                displayCurrentLocation();
+            } /*else {
+              //  displayCurrentLocation();
+            }*/
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        // Assign the new location
+        mLastLocation = location;
+        displayCurrentLocation();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        displayCurrentLocation();
+       // boolean mRequestingLocationUpdates = false;
+      /*  if (mRequestingLocationUpdates) {
+            // startLocationUpdates();
+        }*/
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    // Display current location using Fused Location Api
+    synchronized private void displayCurrentLocation() {
+        // Runtime Location Permission
+        if (LocationRuntimePermission.checkLocationPermission(GenderSelectionActivity.this)) {
+            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (isGPSEnabled) {
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if (mLastLocation != null) {
+                    mLatitude = String.valueOf(mLastLocation.getLatitude());
+                    mLongitude = String.valueOf(mLastLocation.getLongitude());
+                   // LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    System.out.println("&&&&&&&&&&&&&&&&&" + mLatitude + "\n" + mLongitude);
+                    session.setFilterCity(Double.toString(mLastLocation.getLatitude()), Double.toString(mLastLocation.getLongitude()));
+                    callUpdateLocationAPi();
+                }
+            } else {
+                if (session.getUserGetRegistered()) {
+                    session.setUserGetRegistered(false);
+                    CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this, getString(R.string.enable_gps));
+                }
+            }
+        }
+    }
+
 }

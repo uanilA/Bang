@@ -24,7 +24,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:orientation="vertical">
 
@@ -58,7 +58,7 @@
                     android:fontFamily="@font/roboto_light"
                     android:textColor="@color/colorLoginText"
                     android:gravity="center"
-                    android:text="Please enter your mobile number we will send verification code."/>
+                    android:text="@string/please_enter_your_mobile_number_we_will_send_verification_code"/>
 
 
                 <LinearLayout
@@ -76,8 +76,9 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:id="@+id/llMobileVerificationGoingToCountryCode"
-                        android:layout_marginLeft="@dimen/_15sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:visibility="gone"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight=".4">
 
                         <android.support.v7.widget.AppCompatImageView
@@ -87,7 +88,7 @@
                             android:id="@+id/ivMobileVerifyFlag"
                             android:src="@drawable/flag_us"/>
 
-                        <ImageView
+                        <android.support.v7.widget.AppCompatImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_marginStart="@dimen/_5sdp"
@@ -97,16 +98,13 @@
 
                     </LinearLayout>
 
-
                     <View
                         android:layout_width="@dimen/_1sdp"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
                         android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@color/colorShapeLine"
-                        />
-
-
+                        android:background="@color/colorShapeLine" />
 
                     <EditText
                         android:layout_width="match_parent"
@@ -114,14 +112,15 @@
                         android:layout_weight=".6"
                         android:paddingStart="@dimen/_30sdp"
                         android:paddingEnd="@dimen/_10sdp"
-                        android:hint="568-56985-023"
+                        android:hint="@string/email"
                         android:textSize="@dimen/_11sdp"
                         android:id="@+id/edtSignUpNumber"
-                        android:inputType="number"
+                        android:inputType="textEmailAddress|textCapSentences"
                         android:fontFamily="@font/roboto_regular"
-                        android:textColor="@color/colorTextHint"
+                        android:textColor="@color/colorWelcomeText"
                         android:textColorHint="@color/colorTextHint"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        tools:ignore="Autofill,TextFields" />
 
 
                 </LinearLayout>

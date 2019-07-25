@@ -1,5 +1,6 @@
 package com.bang.module.authentication.country.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,8 +34,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
     private List<Country> mCountries;
     private List<Country> globlemCountry;
     private int[] flags = Utility.countryFlags;
-   // private int selectedPosition = -1;
-    private CountryAdapterPositionListener listener;
+    // private int selectedPosition = -1;
     private Handler mHandler = new Handler();
     private Runnable mRunnable;
 
@@ -46,28 +46,27 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
             mCountries.addAll(globlemCountry);
         } else {
             for (int i = 0; i < globlemCountry.size(); i++) {
-                if (globlemCountry.get(i).getCountryName().toLowerCase().startsWith(charText)){
+                if (globlemCountry.get(i).getCountryName().toLowerCase().startsWith(charText)) {
                     mCountries.add(globlemCountry.get(i));
                 }
             }
         }
-     notifyDataSetChanged();
-   }
+        notifyDataSetChanged();
+    }
 
 
-    public CountryAdapter(Context mContext, List<Country> mCountries, CountryAdapterPositionListener listener) {
+    public CountryAdapter(Context mContext, List<Country> mCountries) {
         this.mContext = mContext;
         this.mCountries = mCountries;
         this.globlemCountry = new ArrayList<>();
-        this.listener = listener;
-        if (mCountries!=null) {
+        if (mCountries != null) {
             globlemCountry.addAll(mCountries);
         }
 
         for (int i = 0; i < mCountries.size(); i++) {
             globlemCountry.get(i).setFlag(flags[i]);
         }
-       // Collections.reverse(mCountries);
+        // Collections.reverse(mCountries);
     }
 
     @NonNull
@@ -78,38 +77,32 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CountryAdapter.MyViewHolder viewHolder, final int i) {
-           viewHolder.tvCountryName.setText(mCountries.get(i).getCountryName());
-           viewHolder.tvCountryCode.setText("+"+mCountries.get(i).getPhoneCode());
-           Glide.with(mContext).load(mCountries.get(i).getFlag()).into(viewHolder.ivCountryImage);
-           viewHolder.rbSelectCountry.setOnCheckedChangeListener(null);
-         //  viewHolder.rbSelectCountry.setChecked(i == selectedPosition);
-         /*  viewHolder.cvCountryLayout.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-             }
-           });*/
+    public void onBindViewHolder(@NonNull final CountryAdapter.MyViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
+        viewHolder.tvCountryName.setText(mCountries.get(i).getCountryName());
+        viewHolder.tvCountryCode.setText("+" + mCountries.get(i).getPhoneCode());
+        Glide.with(mContext).load(mCountries.get(i).getFlag()).error(R.drawable.logo).into(viewHolder.ivCountryImage);
+        viewHolder.rbSelectCountry.setOnCheckedChangeListener(null);
 
         viewHolder.rbSelectCountry.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-              if (isChecked){
-                  Utils.hideKeyboard(((Activity)mContext));
-                  //    selectedPosition = getAdapterPosition();
-                  viewHolder.rbSelectCountry.setChecked(true);
-                  mRunnable = new Runnable() {
-                      @Override
-                      public void run() {
-                          Intent resultIntent = new Intent();
-                          resultIntent.putExtra("country_flag",mCountries.get(i).getFlag());
-                          resultIntent.putExtra("country_code", String.valueOf(mCountries.get(i).getPhoneCode()));
-                          ((Activity)mContext).setResult(Activity.RESULT_OK, resultIntent);
-                          ((Activity)mContext).finish();
+                if (isChecked) {
+                    Utils.hideKeyboard(((Activity) mContext));
+                    //    selectedPosition = getAdapterPosition();
+                    viewHolder.rbSelectCountry.setChecked(true);
+                    mRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("country_flag", mCountries.get(i).getFlag());
+                            resultIntent.putExtra("country_code", String.valueOf(mCountries.get(i).getPhoneCode()));
+                            ((Activity) mContext).setResult(Activity.RESULT_OK, resultIntent);
+                            ((Activity) mContext).finish();
 
-                      }
-                  };
-                  mHandler.postDelayed(mRunnable, 500);
-              }
+                        }
+                    };
+                    mHandler.postDelayed(mRunnable, 500);
+                }
             }
         });
     }
@@ -121,15 +114,15 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CircularImageView ivCountryImage;
-        private TextView tvCountryName,tvCountryCode;
+        private TextView tvCountryName, tvCountryCode;
         private RadioButton rbSelectCountry;
         private CardView cvCountryLayout;
 
-        public MyViewHolder(@NonNull View itemView) {
+         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ivCountryImage = itemView.findViewById(R.id.ivCountryImage);
-            tvCountryName= itemView.findViewById(R.id.tvCountryName);
-            tvCountryCode= itemView.findViewById(R.id.tvCountryCode);
+            tvCountryName = itemView.findViewById(R.id.tvCountryName);
+            tvCountryCode = itemView.findViewById(R.id.tvCountryCode);
             rbSelectCountry = itemView.findViewById(R.id.rbSelectCountry);
             cvCountryLayout = itemView.findViewById(R.id.cvCountryLayout);
             cvCountryLayout.setOnClickListener(this);
@@ -137,24 +130,21 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.cvCountryLayout:
-                    Utils.hideKeyboard(((Activity)mContext));
-                //    selectedPosition = getAdapterPosition();
-                    rbSelectCountry.setChecked(true);
-                    mRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent resultIntent = new Intent();
-                            resultIntent.putExtra("country_flag",mCountries.get(getAdapterPosition()).getFlag());
-                            resultIntent.putExtra("country_code", String.valueOf(mCountries.get(getAdapterPosition()).getPhoneCode()));
-                            ((Activity)mContext).setResult(Activity.RESULT_OK, resultIntent);
-                            ((Activity)mContext).finish();
+            if (v.getId() == R.id.cvCountryLayout) {
+                Utils.hideKeyboard(((Activity) mContext));
+                rbSelectCountry.setChecked(true);
+                mRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("country_flag", mCountries.get(getAdapterPosition()).getFlag());
+                        resultIntent.putExtra("country_code", String.valueOf(mCountries.get(getAdapterPosition()).getPhoneCode()));
+                        ((Activity) mContext).setResult(Activity.RESULT_OK, resultIntent);
+                        ((Activity) mContext).finish();
 
-                        }
-                    };
-                    mHandler.postDelayed(mRunnable, 500);
-                    break;
+                    }
+                };
+                mHandler.postDelayed(mRunnable, 500);
             }
         }
     }

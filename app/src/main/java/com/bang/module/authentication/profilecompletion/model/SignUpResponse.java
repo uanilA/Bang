@@ -1,5 +1,6 @@
 package com.bang.module.authentication.profilecompletion.model;
 
+import com.bang.module.authentication.verification.model.LoginData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,7 +14,7 @@ public class SignUpResponse implements Serializable {
     @SerializedName("message")
     private String message;
     @SerializedName("data")
-    private SignUpData data;
+    private LoginData data;
     private final static long serialVersionUID = -82969396551613795L;
 
     public Integer getCode() {
@@ -40,11 +41,11 @@ public class SignUpResponse implements Serializable {
         this.message = message;
     }
 
-    public SignUpData getData() {
+    public LoginData getData() {
         return data;
     }
 
-    public void setData(SignUpData data) {
+    public void setData(LoginData data) {
         this.data = data;
     }
 }

@@ -25,7 +25,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:orientation="vertical">
 
@@ -65,12 +65,12 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:focusableInTouchMode="true"
                     android:background="@drawable/login_background"
+                    android:focusableInTouchMode="true"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -79,9 +79,10 @@
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_15sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_weight=".4">
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_weight=".4"
+                        android:visibility="gone">
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/ivCountryFlag"
@@ -90,7 +91,7 @@
                             android:layout_gravity="center"
                             android:src="@drawable/flag_us" />
 
-                        <ImageView
+                        <android.support.v7.widget.AppCompatImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center|end"
@@ -105,23 +106,57 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@color/colorShapeLine" />
+                        android:background="@color/colorShapeLine"
+                        android:visibility="gone" />
 
 
                     <EditText
+                        android:id="@+id/etLoginEmail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight=".6"
-                        android:id="@+id/etLoginMobileNumber"
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/roboto_regular"
-                        android:hint="@string/_568_56985_023"
-                        android:inputType="number"
+                        android:hint="@string/email"
+                        android:importantForAutofill="no"
+                        android:inputType="textEmailAddress|textCapWords"
+                        android:maxLines="1"
                         android:paddingStart="@dimen/_30sdp"
                         android:paddingEnd="@dimen/_10sdp"
-                        android:textColor="@color/colorTextHint"
+                        android:textColor="@color/colorWelcomeText"
                         android:textColorHint="@color/colorTextHint"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_11sdp"
+                        tools:ignore="TextFields,UnusedAttribute" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_background"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <EditText
+                        android:id="@+id/etLoginPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".6"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/_30sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/colorWelcomeText"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_11sdp"
+                        tools:ignore="Autofill,InefficientWeight" />
 
 
                 </LinearLayout>
@@ -179,6 +214,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_24sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -192,39 +228,37 @@
 
                         <com.facebook.login.widget.LoginButton
                             android:id="@+id/btn_facebook"
-                            style="@style/FacebookLoginButton"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_25sdp"
-                            android:layout_marginTop="@dimen/_1sdp"
-                            android:layout_marginRight="@dimen/_25sdp"
-                            android:paddingStart="@dimen/_20sdp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center_horizontal"
                             android:visibility="gone" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            tools:ignore="UseCompoundDrawables">
 
 
                             <ImageView
                                 android:layout_width="@dimen/_15sdp"
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_facebook_logo" />
+                                android:src="@drawable/ic_facebook_logo"
+                                tools:ignore="ContentDescription" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/roboto_regular"
-                                android:paddingLeft="@dimen/_5sdp"
+                                android:paddingStart="@dimen/_5sdp"
                                 android:text="@string/facebook"
                                 android:textColor="@color/colorFacebookGmail"
-                                android:textSize="@dimen/_13ssp" />
+                                android:textSize="@dimen/_13ssp"
+                                tools:ignore="RtlSymmetry" />
 
 
                         </LinearLayout>
@@ -244,10 +278,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
 
 
-                            <ImageView
+                            <android.support.v7.widget.AppCompatImageView
                                 android:layout_width="@dimen/_15sdp"
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_gravity="center"
@@ -258,10 +293,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/roboto_regular"
-                                android:paddingLeft="@dimen/_5sdp"
+                                android:paddingStart="@dimen/_5sdp"
                                 android:text="@string/gmail"
                                 android:textColor="@color/colorFacebookGmail"
-                                android:textSize="@dimen/_13ssp" />
+                                android:textSize="@dimen/_13ssp"
+                                tools:ignore="RtlSymmetry" />
 
 
                         </LinearLayout>
@@ -274,6 +310,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:orientation="horizontal">
 
                     <TextView

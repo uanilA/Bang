@@ -59,6 +59,8 @@
                 android:background="@android:color/transparent"
                 android:paddingLeft="@dimen/_10sdp"
                 android:id="@+id/etFilterField"
+                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/colorSelectCountry"
                 android:textColor="@color/colorSelectCountry"
                 android:fontFamily="@font/roboto_regular"

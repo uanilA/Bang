@@ -24,7 +24,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:orientation="vertical">
 
@@ -44,7 +44,6 @@
                     android:textColor="@color/colorWelcomeText"
                     android:textSize="@dimen/_18ssp" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,7 +56,6 @@
                     android:text="@string/lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry"
                     android:textColor="@color/colorLoginText"
                     android:textSize="@dimen/_13ssp" />
-
 
                 <RelativeLayout
                     android:layout_width="@dimen/_85sdp"
@@ -76,37 +74,88 @@
                         android:id="@+id/ivCameraSelect"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:src="@drawable/camera_icon" />
-
 
                 </RelativeLayout>
 
                 <EditText
                     android:id="@+id/etFullName"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_25sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/login_background"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
-                    android:singleLine="true"
                     android:hint="@string/full_name"
-                    android:textColor="@color/colorTextHint"
+                    android:singleLine="true"
+                    android:textColor="@color/colorWelcomeText"
                     android:textColorHint="@color/colorTextHint"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="Autofill,TextFields" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/login_background"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/etLoginEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".6"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:hint="@string/email"
+                        android:importantForAutofill="no"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/colorWelcomeText"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_11sdp"
+                        tools:ignore="InefficientWeight,TextFields,UnusedAttribute" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llChangeEmail"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="0sp"
+                    android:layout_gravity="center|end"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_weight=".4"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/change"
+                        android:textColor="@color/colorBang" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llMobileNumberAtCompletePro"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/login_background"
                     android:focusableInTouchMode="true"
@@ -118,8 +167,8 @@
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_15sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight=".4">
 
                         <android.support.v7.widget.AppCompatImageView
@@ -129,7 +178,7 @@
                             android:layout_gravity="center"
                             android:src="@drawable/flag_us" />
 
-                        <ImageView
+                        <android.support.v7.widget.AppCompatImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center|end"
@@ -142,28 +191,58 @@
                     <View
                         android:layout_width="@dimen/_1sdp"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@color/colorShapeLine" />
 
-
                     <EditText
-                        android:id="@+id/etLoginMobileNumber"
+                        android:id="@+id/edtSignUpNumber"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight=".6"
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/roboto_regular"
                         android:hint="@string/_568_56985_023"
-                        android:inputType="number"
-                        android:singleLine="true"
                         android:imeOptions="flagNoFullscreen"
+                        android:inputType="number"
                         android:isScrollContainer="true"
                         android:paddingStart="@dimen/_30sdp"
                         android:paddingEnd="@dimen/_10sdp"
-                        android:textColor="@color/colorTextHint"
+                        android:singleLine="true"
+                        android:textColor="@color/colorWelcomeText"
                         android:textColorHint="@color/colorTextHint"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_11sdp"
+                        tools:ignore="Autofill" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:id="@+id/llSignUpPassword"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@drawable/login_background"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <EditText
+                        android:id="@+id/etSignUpPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".6"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/colorWelcomeText"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_11sdp"
+                        tools:ignore="Autofill,InefficientWeight" />
 
 
                 </LinearLayout>
@@ -173,12 +252,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_35sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/login_rounded_border"
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
-                    android:layout_marginBottom="@dimen/_20sdp"
                     android:text="@string/done"
                     android:textColor="@color/colorWelcomeText"
                     android:textSize="@dimen/_13ssp" />

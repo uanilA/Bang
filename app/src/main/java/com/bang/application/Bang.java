@@ -3,29 +3,31 @@ package com.bang.application;
 import android.app.Application;
 
 import com.bang.module.home.nearyou.DiscreteScrollViewOptions;
+import com.google.firebase.FirebaseApp;
 
 
 public class Bang extends Application implements LifeCycleDelegateListner {
     public static final String TAG = Bang.class.getSimpleName();
-  //  private RequestQueue mRequestQueue;
+    //  private RequestQueue mRequestQueue;
     private static Bang mInstance;
-
     public static Bang getInstance() {
         return mInstance;
     }
 
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    mInstance = this;
-    DiscreteScrollViewOptions.init(this);
-  }
-
-   /* @Override
+    @Override
     public void onCreate() {
         super.onCreate();
-       *//* Fabric.with(this, new Crashlytics());
+        mInstance = this;
+        FirebaseApp.initializeApp(this);
+        DiscreteScrollViewOptions.init(this);
+    }
+
+
+    /* @Override
+     public void onCreate() {
+         super.onCreate();
+        *//* Fabric.with(this, new Crashlytics());
         mInstance = this;
         FirebaseApp.initializeApp(getApplicationContext());
 
@@ -123,6 +125,6 @@ public class Bang extends Application implements LifeCycleDelegateListner {
 
     @Override
     public void onAppForegrounded() {
-       // Utils.goToOnlineStatus(getApplicationContext(), Constant.ONLINE_STATUS);
+        // Utils.goToOnlineStatus(getApplicationContext(), Constant.ONLINE_STATUS);
     }
 }
