@@ -2,13 +2,14 @@ package com.bang.module.home.survey.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bang.R;
@@ -30,6 +31,7 @@ public class SentFragment extends BaseFragment implements ApiCallback.GetSurveyC
 
     private TextView tvTitleNotYet;
     private View no_survey_avail;
+    private ImageView ivNoRecordFound;
     private ArrayList<SurveySentResponse.DataBean.SurveyListBean> surveySentListBeans;
     private Session session;
     private RecyclerView rcvListSentSurvey;
@@ -56,7 +58,7 @@ public class SentFragment extends BaseFragment implements ApiCallback.GetSurveyC
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sent, container, false);
         session = new Session(mContext);
         init(view);
@@ -75,12 +77,15 @@ public class SentFragment extends BaseFragment implements ApiCallback.GetSurveyC
 
     private void init(View view) {
         surveySentListBeans = new ArrayList<>();
+        surveySentListBeans.clear();
         no_survey_avail = view.findViewById(R.id.no_survey_avail);
+        ivNoRecordFound = view.findViewById(R.id.ivNoRecordFound);
         tvTitleNotYet = view.findViewById(R.id.tvTitleNotYet);
         rcvListSentSurvey = view.findViewById(R.id.rcvListSentSurvey);
       //  simpleSwipeRefreshLayout = view.findViewById(R.id.simpleSwipeRefreshLayout);
       //  simpleSwipeRefreshLayout.setColorSchemeResources(R.color.colorBang);
         tvTitleNotYet.setText("No Survey Sent Yet!");
+        ivNoRecordFound.setVisibility(View.VISIBLE);
         /* For Grid Layout */
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
         rcvListSentSurvey.setLayoutManager(layoutManager);
@@ -115,7 +120,8 @@ public class SentFragment extends BaseFragment implements ApiCallback.GetSurveyC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        apiCalling(offset);
+       // surveySentListBeans.clear();
+       // apiCalling(offset);
     }
 
     private void apiCalling(int myoffset) {
@@ -156,7 +162,7 @@ public class SentFragment extends BaseFragment implements ApiCallback.GetSurveyC
 
 
     @Override
-    public void OnSuccessSurveyResponse(SurveySentResponse surveySentResponse) {
+    public void OnSuccessSentSurveyResponse(SurveySentResponse surveySentResponse) {
        // surveySentListBeans.clear();
         surveySentListBeans.addAll(surveySentResponse.getData().getSurveyList());
         if (surveySentListBeans.size() > 0) {
@@ -168,7 +174,6 @@ public class SentFragment extends BaseFragment implements ApiCallback.GetSurveyC
             rcvListSentSurvey.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public void onResume() {

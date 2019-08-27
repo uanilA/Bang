@@ -2,8 +2,8 @@ package com.bang.module.authentication.country;
 
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -40,7 +40,7 @@ public class CountrySelectionActivity extends BangParentActivity implements View
 
         mCountries= new ArrayList<>();
         mCountries.addAll(Arrays.asList(
-                new Gson().fromJson(Utility.loadJSONFromAsset(this,"country_code.json"), Country[].class)));
+                new Gson().fromJson(Utility.loadJSONFromAsset(this,"countries.json"), Country[].class)));
         setChatHistoryAdapter();
         ivSelectCountryBack.setOnClickListener(this);
         etFilterField.addTextChangedListener(new TextWatcher() {

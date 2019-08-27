@@ -1,8 +1,8 @@
 package com.bang.module.home.survey.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +17,6 @@ public class SurveyDetailActivity extends BangParentActivity {
     private TextView tvHeaderTitle;
     private ImageView ivDetailMenu;
     private String surveyId = "";
-    private String type =  "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,6 @@ public class SurveyDetailActivity extends BangParentActivity {
         setContentView(R.layout.activity_survey_detail);
         if (getIntent().getStringExtra("surveyId") != null){
            surveyId = getIntent().getStringExtra("surveyId");
-           type=  getIntent().getStringExtra("type");
         }
         addFragment(SurveyDetailFragment.newInstance(getIntent().getStringExtra("surveyId"),getIntent().getStringExtra("type")), false, R.id.frameSurveyDetail);
         init();

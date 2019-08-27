@@ -17,6 +17,8 @@ public class LoginData implements Serializable {
     private String password;
     @SerializedName("country_code")
     private String countryCode;
+    @SerializedName("country_flag_code")
+    private String countryFlagCode;
     @SerializedName("social_type")
     private Object socialType;
     @SerializedName("social_id")
@@ -32,17 +34,17 @@ public class LoginData implements Serializable {
     @SerializedName("prefers")
     private String prefers;
     @SerializedName("location")
-    private Object location;
+    private String location;
     @SerializedName("city")
-    private Object city;
+    private String city;
     @SerializedName("state")
-    private Object state;
+    private String state;
     @SerializedName("country")
-    private Object country;
+    private String country;
     @SerializedName("latitude")
-    private Object latitude;
+    private Float latitude;
     @SerializedName("longitude")
-    private Object longitude;
+    private Float longitude;
     @SerializedName("signup_from")
     private Object signupFrom;
     @SerializedName("device_type")
@@ -55,7 +57,7 @@ public class LoginData implements Serializable {
     private String createdOn;
     @SerializedName("updated_on")
     private String updatedOn;
-    private final static long serialVersionUID = -547221136134188600L;
+    private final static long serialVersionUID = 2382124768356848418L;
 
     public Integer getUserId() {
         return userId;
@@ -103,6 +105,14 @@ public class LoginData implements Serializable {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public String getCountryFlagCode() {
+        return countryFlagCode;
+    }
+
+    public void setCountryFlagCode(String countryFlagCode) {
+        this.countryFlagCode = countryFlagCode;
     }
 
     public Object getSocialType() {
@@ -161,51 +171,51 @@ public class LoginData implements Serializable {
         this.prefers = prefers;
     }
 
-    public Object getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Object location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
-    public Object getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(Object city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public Object getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(Object state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    public Object getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(Object country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    public Object getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Object latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
-    public Object getLongitude() {
+    public Float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Object longitude) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 

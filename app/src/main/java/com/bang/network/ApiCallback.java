@@ -5,14 +5,21 @@ import com.bang.base.BaseInterface;
 import com.bang.module.authentication.genderselection.model.UpdateGenderResponse;
 import com.bang.module.authentication.genderselection.model.UpdateLocationResponse;
 import com.bang.module.authentication.login.model.CheckSocialResponse;
+import com.bang.module.authentication.login.model.ForgotPasswordResponse;
 import com.bang.module.authentication.verification.model.LoginResponse;
 import com.bang.module.authentication.profilecompletion.model.SignUpResponse;
 import com.bang.module.authentication.login.model.SendOtpResponse;
 import com.bang.module.home.addsurvey.model.CreateSurveyResponse;
+import com.bang.module.home.addsurvey.model.ShareSurveyModel;
 import com.bang.module.home.addsurvey.model.SurveyQuestionResponse;
+import com.bang.module.home.nearyou.model.NearbyUsersModel;
 import com.bang.module.home.newsfeed.model.AddNewsResponse;
 import com.bang.module.home.newsfeed.model.LikeListResponse;
 import com.bang.module.home.newsfeed.model.NewsFeedResponse;
+import com.bang.module.home.newsfeed.model.ReportUserModel;
+import com.bang.module.home.newsfeed.model.SelectReasonsModel;
+import com.bang.module.home.profile.bandrequest.model.AcceptRejectModel;
+import com.bang.module.home.profile.bandrequest.model.BangRequestsModel;
 import com.bang.module.home.profile.followersfollowing.model.FollowersResponse;
 import com.bang.module.home.profile.followersfollowing.model.FollowingResponse;
 import com.bang.module.home.profile.followersfollowing.model.LikeResponse;
@@ -41,6 +48,7 @@ public interface ApiCallback {
 
     interface SendOtpCallback extends BaseInterface {
         void onSuccessSendOtp(SendOtpResponse sendOtpResponse);
+        void onSuccessForgotPassword(ForgotPasswordResponse forgotPasswordResponse);
     }
 
     interface LoginManagerCallback extends BaseInterface {
@@ -91,6 +99,7 @@ public interface ApiCallback {
 
     interface SelectedPreferenceCallback extends BaseInterface {
         void onSuccessSelectedPreference(SelectedReferencesResponse selectedReferencesResponse);
+
         void onTokenChangeError(String errorMessage);
     }
 
@@ -100,7 +109,7 @@ public interface ApiCallback {
     }
 
     interface GetSurveyCallback extends BaseInterface {
-        void OnSuccessSurveyResponse(SurveySentResponse surveySentResponse);
+        void OnSuccessSentSurveyResponse(SurveySentResponse surveySentResponse);
         void onTokenChangeError(String errorMessage);
     }
 
@@ -121,9 +130,18 @@ public interface ApiCallback {
 
     }
 
+    interface FollowUserCallback extends BaseInterface{
+        void onSuccessFollowResponse(FollowUnFollowResponse followUnFollowResponse);
+        void onTokenChangeError(String errorMessage);
+    }
+
     interface OtherUserCallback extends BaseInterface {
         void onSuccessOtherProfile(OtherUserProfileResponse otherUserProfileResponse);
-        void onSuccessFollowResponse(FollowUnFollowResponse followUnFollowResponse);
+        void onTokenChangeError(String errorMessage);
+    }
+
+    interface SendBangRequestCallback extends BaseInterface{
+        void onBangRequestSuccess(BangRequestsModel bangRequestsModel);
         void onTokenChangeError(String errorMessage);
     }
 
@@ -144,26 +162,39 @@ public interface ApiCallback {
         void onTokenChangeError(String errorMessage);
     }
 
-    interface MyPostCallback extends BaseInterface{
+    interface MyPostCallback extends BaseInterface {
         void onSuccessMyPost(MyPostResponse myPostResponse);
-        void onSuccessListList(LikeListResponse likeListResponse);
+        void onSuccessLikeList(LikeListResponse likeListResponse);
         void onTokenChangeError(String errorMessage);
     }
 
-
-
-
-   /*   interface SubCategoryManager extends BaseInterface{
-        void onSuccessSubCategory(SubCategoryResponse categoryResponse);
+    interface ShareSurveyCallback extends BaseInterface {
+        void onSuccessSharePost(ShareSurveyModel shareSurveyModel);
         void onTokenChangeError(String errorMessage);
     }
 
-
-    interface BloodDonorManagerCallBack extends BaseInterface{
-        void onSuccessBloodDonor(BloodDonorResponse bloodDonorResponse);
+    interface ReportToUserCallback extends BaseInterface {
+        void onSuccessSelectReasons(SelectReasonsModel selectReasonsModel);
+        void onSuccessReportToUser(ReportUserModel reportUserModel);
         void onTokenChangeError(String errorMessage);
     }
 
+    interface BangRequestsDataCallback extends BaseInterface{
+        void onSuccessRequests(BangRequestsModel bangRequestsModel);
+        void onTokenChangeError(String errorMessage);
+    }
+
+    interface BangRequestUpdateCallback extends  BaseInterface{
+        void onSuccessRequestUpdate(AcceptRejectModel acceptRejectModel);
+        void onTokenChangeError(String errorMessage);
+    }
+
+    interface NearByUserCallback extends BaseInterface{
+        void onSuccessNearUsers(NearbyUsersModel nearbyUsersModel);
+        void onTokenChangeError(String errorMessage);
+    }
+
+   /*
     interface UpdateProfileManagerCallBack extends BaseInterface{
         void onSuccessUpdateProfie(UpdateProfileResponse updateProfileResponse);
         void onTokenChangeError(String errorMessage);

@@ -45,7 +45,7 @@
                 android:textColor="@color/colorLoginText"
                 android:textSize="@dimen/_12ssp" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvSelectedList"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -74,7 +74,7 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
-                android:text="@string/skip"
+                android:text="@string/cancel"
                 android:textColor="@color/colorSkip"
                 android:textSize="@dimen/_13ssp" />
 

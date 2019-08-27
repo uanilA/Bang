@@ -3,8 +3,8 @@ package com.bang.module.home.addsurvey.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,12 +73,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 }
             }
         }
-        Collections.sort(contactList,new Comparator<ContactModel>() {
-            @Override
-            public int compare(ContactModel o1, ContactModel o2) {
-                return o2.sort.compareTo(o1.sort);
-            }
-        });
+        Collections.sort(contactList, (o1, o2) -> o2.sort.compareTo(o1.sort));
 
     }
 
@@ -94,11 +89,16 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
         viewHolder.tvContactName.setText(contactList.get(i).name);
         Glide.with(mContext).load(contactList.get(i).photo).error(R.drawable.user_img).into(viewHolder.ivContact);
+        String phoneCode = contactList.get(i).mobileNumber;
+        phoneCode = phoneCode.replaceAll("\\s","");
+        /*viewHolder.rbSelectContact.setVisibility(View.VISIBLE);*/
         viewHolder.rbSelectContact.setVisibility(View.GONE);
         viewHolder.tvInvite.setVisibility(View.VISIBLE);
         for (int j = 0; j < userListBeans.size(); j++) {
-            if (userListBeans.get(j).getPhone_number().equals(contactList.get(i).mobileNumber)) {
-                viewHolder.rbSelectContact.setVisibility(View.VISIBLE);
+            String mobileWithCode = userListBeans.get(j).getCountry_code()+userListBeans.get(j).getPhone_number();
+            String wihoutCode = userListBeans.get(j).getPhone_number();
+            if (wihoutCode.equals(phoneCode) || mobileWithCode.equals(phoneCode)) {
+                viewHolder.rbSelectContact.setVisibility(View.GONE);
                 viewHolder.tvInvite.setVisibility(View.GONE);
                 break;
             }
@@ -110,23 +110,21 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             viewHolder.rbSelectContact.setChecked(false);
         }
 
-        viewHolder.rlContactListener.setOnClickListener(new View.OnClickListener() {
+       /* viewHolder.rlContactListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (i != -1) {
                     notifyItemChanged(selected_position);
                     selected_position = i;
                     notifyItemChanged(selected_position);
-                    if (viewHolder.tvInvite.getVisibility() == View.VISIBLE) {
-
-                    } else {
-
-                        clickListener.onContactClick(contactList.get(i).mobileNumber);
-                    }
+                  //  if (viewHolder.tvInvite.getVisibility() == View.VISIBLE) {
+                  //  } else {
+                        clickListener.onContactClick(contactList.get(i).mobileNumber,contactList.get(i).name);
+                  //  }
 
                 }
             }
-        });
+        });*/
 
         viewHolder.tvInvite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +134,13 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 txtIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Bang App");
                 txtIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Invited for the Bang App");
                 mContext.startActivity(Intent.createChooser(txtIntent, "Share"));
+            }
+        });
+
+        viewHolder.tvAddSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onContactClick(contactList.get(i).mobileNumber,contactList.get(i).name);
             }
         });
 
@@ -155,6 +160,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         private TextView tvInvite;
         private CheckBox rbSelectContact;
         private RelativeLayout rlContactListener;
+        private TextView tvAddSurvey;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -163,6 +169,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             tvInvite = itemView.findViewById(R.id.tvInvite);
             rbSelectContact = itemView.findViewById(R.id.rbSelectContact);
             rlContactListener = itemView.findViewById(R.id.rlContactListener);
+            tvAddSurvey = itemView.findViewById(R.id.tvAddSurvey);
+
         }
     }
 }

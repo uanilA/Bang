@@ -1,6 +1,6 @@
 package com.bang.utils;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 /**
  * Created by mindiii on 26/3/18.

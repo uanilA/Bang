@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.helper.ProgressDialog;
+
+import java.util.Objects;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -52,7 +54,7 @@ public class BangParentActivity extends AppCompatActivity {
     public void showDialog(Context mContext, String msg){
         final Session session = new Session(mContext);
         final Dialog dialog = new Dialog(mContext);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.confirmation_dialog_view);
@@ -61,13 +63,9 @@ public class BangParentActivity extends AppCompatActivity {
         tvTitleOfVal.setText(msg);
 
         TextView tvOk =  dialog.findViewById(R.id.tvOk);
-        tvOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                session.logout();
-
-            }
+        tvOk.setOnClickListener(v -> {
+            dialog.dismiss();
+            session.logout();
         });
         dialog.show();
         Window window = dialog.getWindow();
@@ -84,7 +82,7 @@ public class BangParentActivity extends AppCompatActivity {
             fm.popBackStackImmediate();
             i--;
         }
-        boolean fragmentPopped = getFragmentManager().popBackStackImmediate(backStackName, 0);
+        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate(backStackName, 0);
         if (!fragmentPopped) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(containerId, fragment, backStackName).

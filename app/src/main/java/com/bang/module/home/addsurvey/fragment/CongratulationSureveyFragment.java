@@ -2,7 +2,6 @@ package com.bang.module.home.addsurvey.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,12 +10,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
+import androidx.annotation.NonNull;
+
+import com.bang.helper.AppHelper;
+import com.bang.module.home.addsurvey.manager.SurveyManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,12 @@ import android.widget.TextView;
 
 import com.bang.R;
 import com.bang.application.session.Session;
+import com.bang.base.BaseFragment;
+import com.bang.helper.CustomToast;
 import com.bang.module.home.MainActivity;
+import com.bang.module.home.addsurvey.manager.ShareSurveyPresenter;
+import com.bang.module.home.addsurvey.model.ShareSurveyModel;
+import com.bang.network.ApiCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +43,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class CongratulationSureveyFragment extends Fragment implements View.OnClickListener {
+public class CongratulationSureveyFragment extends BaseFragment implements View.OnClickListener, ApiCallback.ShareSurveyCallback {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -47,9 +53,9 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
 
     private String mParam1;
     private String mParam2;
-    private String mParam3;
-    private String mParam4;
-    private String mParam5;
+    private String survey_score;
+    private String surveyUserId;
+    private String surveyId;
 
     private RelativeLayout rlPrivateSelected;
     private RelativeLayout rlPublicSelected;
@@ -57,22 +63,15 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
     private TextView tvPublic;
     private ImageView ivPrivateSelected;
     private ImageView ivPublicSelected;
-    private Context mContext;
     private BottomSheetDialog dialog;
-    public String sharePath = "no";
     private RelativeLayout rlAddictedBg;
-    private ImageView ivBackImage;
-    private TextView tvUserName;
     private Session session;
     private long mLastClickTime = 0;
+    private String is_anonymous = "";
 
-    String[] permissions = new String[]{
-          //  Manifest.permission.INTERNET,
-           // Manifest.permission.READ_PHONE_STATE,
+    private String[] permissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            //Manifest.permission.VIBRATE,
-           // Manifest.permission.RECORD_AUDIO,
     };
 
 
@@ -93,8 +92,9 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
         return fragment;
     }
 
-  /**
-   *  External storage permission in run time  */
+    /**
+     * External storage permission in run time
+     */
     private boolean checkPermissions() {
         int result;
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -106,23 +106,21 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
             }
         }
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(getActivity(), listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 100);
+            ActivityCompat.requestPermissions(activity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 100);
             return false;
         }
         return true;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 100) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 screenShot(rlAddictedBg);
             }
-            return;
         }
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,9 +128,9 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            mParam3 = getArguments().getString(ARG_PARAM3);
-            mParam4 = getArguments().getString(ARG_PARAM4);
-            mParam5 = getArguments().getString(ARG_PARAM5);
+            survey_score = getArguments().getString(ARG_PARAM3);
+            surveyUserId = getArguments().getString(ARG_PARAM4);
+            surveyId = getArguments().getString(ARG_PARAM5);
         }
     }
 
@@ -146,9 +144,10 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
 
     private void BottomDialog() {
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.bottom_sheet_view, null);
-        dialog = new BottomSheetDialog(mContext,R.style.CustomBottomSheetDialogTheme);
+        dialog = new BottomSheetDialog(mContext, R.style.CustomBottomSheetDialogTheme);
         dialog.setContentView(view);
         dialog.setCancelable(false);
+        dialog.findViewById(R.id.llShareWithBangFollower).setOnClickListener(this);
         dialog.findViewById(R.id.iv_CloseDialog).setOnClickListener(this);
         dialog.findViewById(R.id.tvShareWithSocialMedia).setOnClickListener(this);
         dialog.show();
@@ -157,11 +156,14 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
     private void init(View view) {
 
         ImageView ivCong = view.findViewById(R.id.ivCong);
-        ivBackImage = view.findViewById(R.id.ivBackImage);
-        tvUserName = view.findViewById(R.id.tvUserName);
+        ImageView ivBackImage = view.findViewById(R.id.ivBackImage);
+        TextView tvUserName = view.findViewById(R.id.tvUserName);
         TextView tvSurveyDescription = view.findViewById(R.id.tvSurveyDescription);
         view.findViewById(R.id.tvSkipCongrate).setOnClickListener(this);
-        view.findViewById(R.id.tvShareCongrate).setOnClickListener(this);
+        TextView tvShareCongrate = view.findViewById(R.id.tvShareCongrate);
+        tvShareCongrate.setOnClickListener(this);
+        RelativeLayout rlShowOrHideLayout = view.findViewById(R.id.rlShowOrHideLayout);
+
         rlAddictedBg = view.findViewById(R.id.rlAddictedBg);
         tvUserName.setText(session.getRegistration().getFullName());
 
@@ -194,17 +196,18 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
         rlPrivateSelected.setOnClickListener(this);
         rlPublicSelected.setOnClickListener(this);
 
-    }
+        if (surveyUserId.equals("0")){
+            rlShowOrHideLayout.setVisibility(View.VISIBLE);
+            rlPrivateSelected.setEnabled(false);
+            rlPublicSelected.setEnabled(false);
+            tvShareCongrate.setEnabled(false);
+        }else {
+            rlShowOrHideLayout.setVisibility(View.GONE);
+            rlPrivateSelected.setEnabled(true);
+            rlPublicSelected.setEnabled(true);
+            tvShareCongrate.setEnabled(true);
+        }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mContext = context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -221,23 +224,24 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
                 break;
 
             case R.id.rlPrivateSelected:
+                is_anonymous = "1";
                 rlPrivateSelected.setBackgroundResource(R.drawable.gender_selected_background);
                 rlPublicSelected.setBackgroundResource(R.drawable.login_background);
                 ivPublicSelected.setVisibility(View.GONE);
                 ivPrivateSelected.setVisibility(View.VISIBLE);
-                tvPublic.setTextColor(getResources().getColor(R.color.colorSelectCountry));
+                tvPublic.setTextColor(ContextCompat.getColor(mContext,R.color.colorSelectCountry));
                 tvPrivateSelected.setTextColor(getResources().getColor(R.color.colorBang));
 
                 break;
 
             case R.id.rlPublicSelected:
-
+                is_anonymous = "0";
                 rlPublicSelected.setBackgroundResource(R.drawable.gender_selected_background);
                 rlPrivateSelected.setBackgroundResource(R.drawable.login_background);
                 ivPublicSelected.setVisibility(View.VISIBLE);
                 ivPrivateSelected.setVisibility(View.GONE);
                 tvPrivateSelected.setTextColor(getResources().getColor(R.color.colorSelectCountry));
-                tvPublic.setTextColor(getResources().getColor(R.color.colorBang));
+                tvPublic.setTextColor(ContextCompat.getColor(mContext,R.color.colorBang));
 
                 break;
             case R.id.tvShareCongrate:
@@ -252,6 +256,23 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
                 checkPermissions();
                 screenShot(rlAddictedBg);
                 break;
+
+            case R.id.llShareWithBangFollower:
+                if (is_anonymous.equals("")){
+                    CustomToast.getInstance(mContext).showToast(mContext,"Please select type.");
+                }else {
+                    shareApiCalling();
+                }
+                break;
+        }
+    }
+
+    private void shareApiCalling() {
+        String bangTitle = "["+session.getRegistration().getUserId()+ "] is "+ mParam1 + " with @ ["+ surveyUserId+"]";
+        if (AppHelper.isConnectingToInternet(mContext)) {
+            new ShareSurveyPresenter(this, mContext).shareSurveyApiCall(bangTitle,surveyUserId,surveyId,is_anonymous,survey_score);
+        } else {
+            CustomToast.getInstance(mContext).showToast(mContext, getString(R.string.alert_no_network));
         }
     }
 
@@ -301,4 +322,31 @@ public class CongratulationSureveyFragment extends Fragment implements View.OnCl
     }
 
 
+    @Override
+    public void onSuccessSharePost(ShareSurveyModel shareSurveyModel) {
+       dialog.dismiss();
+       CustomToast.getInstance(mContext).showToast(mContext,shareSurveyModel.getMessage());
+       startActivity(new Intent(mContext,MainActivity.class));
+       activity.finish();
+    }
+
+    @Override
+    public void onTokenChangeError(String errorMessage) {
+        activity.showDialog(mContext, errorMessage);
+    }
+
+    @Override
+    public void onShowBaseLoader() {
+        activity.showLoader();
+    }
+
+    @Override
+    public void onHideBaseLoader() {
+        activity.hideLoader();
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+        CustomToast.getInstance(mContext).showToast(mContext, errorMessage);
+    }
 }

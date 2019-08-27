@@ -2,19 +2,18 @@ package com.bang.module.preference.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bang.R;
-import com.bang.module.preference.model.SelectedPrefList;
 import com.bang.base.GetClickListener;
 import com.bang.module.preference.model.SelectedReferencesResponse;
 
@@ -86,19 +85,19 @@ public class SelectedPrefAdapter extends RecyclerView.Adapter<SelectedPrefAdapte
             viewHolder.llPreferGender.setBackgroundResource(R.drawable.doted_background_corners);
             viewHolder.ivComplete.setVisibility(View.VISIBLE);
             viewHolder.ivComplete.setImageResource(R.drawable.completed_ico);
-            viewHolder.tvSelectedGenderPref.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+            viewHolder.tvSelectedGenderPref.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             viewHolder.tvAnswers.setText(mContext.getString(R.string.complete));
             viewHolder.tvAnswers.setTextColor(mContext.getResources().getColor(R.color.completeTextColor));
 
         } else if (selectedPrefLists.get(position).getTotal_answered() == 0) {
             viewHolder.ivComplete.setImageResource(R.drawable.pending_ico);
             viewHolder.tvAnswers.setText(mContext.getString(R.string.pending));
-            viewHolder.tvAnswers.setTextColor(mContext.getResources().getColor(R.color.pendingTextColor));
+            viewHolder.tvAnswers.setTextColor(ContextCompat.getColor(mContext,R.color.pendingTextColor));
         } else {
             int remainingAns = selectedPrefLists.get(position).getTotal_question() - selectedPrefLists.get(position).getTotal_answered();
             viewHolder.ivComplete.setVisibility(View.GONE);
             viewHolder.tvAnswers.setText(remainingAns + " " + mContext.getString(R.string.out_of_cat) + " " + selectedPrefLists.get(position).getTotal_question());
-            viewHolder.tvAnswers.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+            viewHolder.tvAnswers.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
         }
     }
 

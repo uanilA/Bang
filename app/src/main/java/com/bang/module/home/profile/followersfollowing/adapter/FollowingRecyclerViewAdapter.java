@@ -2,8 +2,8 @@ package com.bang.module.home.profile.followersfollowing.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import com.bang.R;
 import com.bang.base.ClickListener;
 import com.bang.module.home.profile.followersfollowing.model.FollowersResponse;
 import com.bang.module.home.profile.followersfollowing.model.FollowingResponse;
-import com.bang.module.home.survey.model.ContactModel;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -108,7 +107,9 @@ public class FollowingRecyclerViewAdapter extends RecyclerView.Adapter<Following
             viewHolder.tvFollowerName.setText(followerListBeans.get(i).getFull_name());
             if (followerCount.equals("0")) {
                 viewHolder.tvCountFollowers.setText(mContext.getString(R.string.no_followers));
-            } else {
+            } else if (followerCount.equals("1")){
+                viewHolder.tvCountFollowers.setText(followerCount + " " + mContext.getString(R.string.follower));
+            }else {
                 viewHolder.tvCountFollowers.setText(followerCount + " " + mContext.getString(R.string.followers));
             }
         } else {
@@ -117,7 +118,9 @@ public class FollowingRecyclerViewAdapter extends RecyclerView.Adapter<Following
             viewHolder.tvFollowerName.setText(followingListBeans.get(i).getFull_name());
             if (followerCount.equals("0")) {
                 viewHolder.tvCountFollowers.setText(mContext.getString(R.string.no_followers));
-            } else {
+            } else if (followerCount.equals("1")){
+                viewHolder.tvCountFollowers.setText(followerCount + " " + mContext.getString(R.string.follower));
+            }else {
                 viewHolder.tvCountFollowers.setText(followerCount + " " + mContext.getString(R.string.followers));
             }
         }

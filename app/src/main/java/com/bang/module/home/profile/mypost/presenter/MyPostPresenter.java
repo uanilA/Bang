@@ -1,7 +1,7 @@
 package com.bang.module.home.profile.mypost.presenter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bang.R;
 import com.bang.application.session.Session;
@@ -81,7 +81,7 @@ public class MyPostPresenter {
                 public void onResponse(@NonNull Call<LikeListResponse> call, @NonNull Response<LikeListResponse> response) {
                     myPostCallback.onHideBaseLoader();
                     if(response.isSuccessful()){
-                        myPostCallback.onSuccessListList(response.body());
+                        myPostCallback.onSuccessLikeList(response.body());
                     }else {
                         try {
                             APIErrors apiErrors = ErrorUtils.parseError(response);

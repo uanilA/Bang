@@ -1,127 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="270dp"
-    android:layout_height="wrap_content"
-    android:id="@+id/parenLayoutCardNear"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="@dimen/_5sdp"
-    android:layout_gravity="center">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/image"
-        android:scaleType="centerCrop"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/parenLayoutCardNear"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_230sdp" />
-
-    <android.support.v7.widget.CardView
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_20sdp"
-        app:cardCornerRadius="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_55sdp"
-        android:layout_gravity="start|center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:id="@+id/tvMiles"
-            android:layout_gravity="center"
-            android:textSize="@dimen/_10sdp"
-            android:textColor="@color/colorBang"/>
-
-    </android.support.v7.widget.CardView>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_230sdp">
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        app:cardCornerRadius="@dimen/_5sdp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/oliver_smith"
-                android:textSize="@dimen/_13sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginBottom="@dimen/_2sdp"
-                android:id="@+id/tvNearYouUserName"
-                android:fontFamily="@font/roboto_medium"
-                android:textColor="@color/colorNearYouText" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_210sdp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:scaleType="centerCrop" />
 
-
-                <TextView
-                    android:layout_width="@dimen/_75sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:text="@string/follow"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:textSize="@dimen/_10sdp"
-                    android:id="@+id/tvFollow"
-                    android:layout_gravity="center"
-                    android:paddingEnd="@dimen/_10sdp"
-                    android:textColor="@color/colorNearYouText"
-                    android:background="@drawable/follow_rounded_corner_background"/>
-
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/nearyou_bang_request"/>
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="@dimen/_10sdp"
+                    app:cardCornerRadius="@dimen/_10sdp">
 
-            </LinearLayout>
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvMiles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_3sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_3sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/colorBang"
+                        android:textSize="@dimen/_10sdp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
-            android:layout_margin="@dimen/_10sdp"
-            android:layout_alignParentEnd="true"
-            tools:ignore="RelativeOverlap">
+                </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_width="wrap_content"
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:id="@+id/tvNumbersOfFollowers"
-                android:gravity="center"
-                android:textColor="@color/colorNearYouText"
-                android:layout_gravity="center"
-                android:textSize="@dimen/_11sdp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/followers"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center"
-                android:layout_margin="@dimen/_2sdp"
-                android:textColor="@color/colorLoginText"
-                android:textSize="@dimen/_11sdp"
-                />
+                android:paddingBottom="@dimen/_10sdp">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvNearYouUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/oliver_smith"
+                        android:textColor="@color/colorNearYouText"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:id="@+id/tvFollow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/follow_rounded_corner_background"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:paddingStart="@dimen/_8sdp"
+                            android:paddingTop="@dimen/_3sdp"
+                            android:paddingEnd="@dimen/_8sdp"
+                            android:paddingBottom="@dimen/_3sdp"
+                            android:text="@string/follow"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorNearYouText"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/llBang"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            android:layout_gravity="center" />
+
+                        <TextView
+                            android:id="@+id/tvBangRequest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:singleLine="true"
+                            android:text="@string/bang"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorNearYouText"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llFollowPosition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    tools:ignore="RelativeOverlap">
+
+                    <TextView
+                        android:id="@+id/tvNumbersOfFollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center|bottom"
+                        android:textColor="@color/colorNearYouText"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/tvFollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center|top"
+                        android:text="@string/followers"
+                        android:textColor="@color/colorLoginText"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
-
-
-
-    </RelativeLayout>
-</android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

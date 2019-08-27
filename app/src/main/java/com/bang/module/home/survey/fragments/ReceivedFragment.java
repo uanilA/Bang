@@ -2,13 +2,14 @@ package com.bang.module.home.survey.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bang.R;
@@ -16,7 +17,6 @@ import com.bang.application.session.Session;
 import com.bang.base.BaseFragment;
 import com.bang.base.ClickListener;
 import com.bang.helper.CustomToast;
-import com.bang.module.home.MainActivity;
 import com.bang.module.home.survey.activity.SurveyDetailActivity;
 import com.bang.module.home.survey.adapter.ReceiveSurveyAdapter;
 import com.bang.module.home.survey.manager.ReceivedSurveyManager;
@@ -74,11 +74,12 @@ public class ReceivedFragment extends BaseFragment implements ApiCallback.GetRec
 
     private void init(View view) {
         surveyReceiveListBeans = new ArrayList<>();
-
+        ImageView ivNoRecordFound = view.findViewById(R.id.ivNoRecordFound);
         no_survey_avail = view.findViewById(R.id.no_survey_avail);
         rcvListReceiveSurvey = view.findViewById(R.id.rcvListReceiveSurvey);
         tvTitleNotYet = view.findViewById(R.id.tvTitleNotYet);
         tvTitleNotYet.setText("No Survey Received Yet!");
+        ivNoRecordFound.setVisibility(View.VISIBLE);
         layoutManager = new GridLayoutManager(mContext, 2);
         rcvListReceiveSurvey.setLayoutManager(layoutManager);
 

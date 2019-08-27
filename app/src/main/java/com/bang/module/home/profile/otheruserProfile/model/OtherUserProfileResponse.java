@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 public class OtherUserProfileResponse implements Serializable {
 
+
     /**
      * code : 200
      * status : success
      * message : User public profile retrieved successfully.
-     * data : {"full_name":"Rahul Singh V","user_profile_photo":"http://34.236.130.86/uploads/profile/thumb/dovies_img_smaple_1561618503439.jpg","phone_number":"9713578048","country_code":"+91","total_addictive":0,"total_satisfied":0,"total_unsatisfied":8,"total_send_survey":34,"total_received_survey":8,"total_followers":0,"total_following":0,"is_following":0,"total_post":0}
+     * data : {"userId":4,"full_name":"Rahul Singh V","user_profile_photo":"http://34.236.130.86/uploads/profile/thumb/dovies_img_smaple_1561618503439.jpg","phone_number":"9713578048","country_code":"+91","total_addictive":0,"total_satisfied":0,"total_unsatisfied":8,"total_send_survey":34,"total_received_survey":8,"total_followers":0,"total_following":1,"is_following":0,"total_post":0,"bang_request_status":"","request_sender_user_id":"","bang_connection_id":""}
      */
 
     private int code;
@@ -50,6 +51,7 @@ public class OtherUserProfileResponse implements Serializable {
 
     public static class DataBean {
         /**
+         * userId : 4
          * full_name : Rahul Singh V
          * user_profile_photo : http://34.236.130.86/uploads/profile/thumb/dovies_img_smaple_1561618503439.jpg
          * phone_number : 9713578048
@@ -60,11 +62,15 @@ public class OtherUserProfileResponse implements Serializable {
          * total_send_survey : 34
          * total_received_survey : 8
          * total_followers : 0
-         * total_following : 0
+         * total_following : 1
          * is_following : 0
          * total_post : 0
+         * bang_request_status :
+         * request_sender_user_id :
+         * bang_connection_id :
          */
 
+        private int userId;
         private String full_name;
         private String user_profile_photo;
         private String phone_number;
@@ -78,6 +84,17 @@ public class OtherUserProfileResponse implements Serializable {
         private int total_following;
         private int is_following;
         private int total_post;
+        private String bang_request_status;
+        private String request_sender_user_id;
+        private String bang_connection_id;
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
 
         public String getFull_name() {
             return full_name;
@@ -181,6 +198,30 @@ public class OtherUserProfileResponse implements Serializable {
 
         public void setTotal_post(int total_post) {
             this.total_post = total_post;
+        }
+
+        public String getBang_request_status() {
+            return bang_request_status;
+        }
+
+        public void setBang_request_status(String bang_request_status) {
+            this.bang_request_status = bang_request_status;
+        }
+
+        public String getRequest_sender_user_id() {
+            return request_sender_user_id;
+        }
+
+        public void setRequest_sender_user_id(String request_sender_user_id) {
+            this.request_sender_user_id = request_sender_user_id;
+        }
+
+        public String getBang_connection_id() {
+            return bang_connection_id;
+        }
+
+        public void setBang_connection_id(String bang_connection_id) {
+            this.bang_connection_id = bang_connection_id;
         }
     }
 }

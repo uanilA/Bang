@@ -1,10 +1,10 @@
 package com.bang.module.home.addsurvey.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,31 +61,26 @@ public class SurveyPagerAdapter extends PagerAdapter {
         });
 
         TextView tvFirstPreferenceSkip = itemView.findViewById(R.id.tvFirstPreferenceSkip);
-        tvFirstPreferenceSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickListener.onSingleClick(position);
-            }
-        });
-
+        tvFirstPreferenceSkip.setText(mContext.getString(R.string.na));
         if (questionLists.size() - 1 == position && count==0) {
+            tvFirstPreferenceSkip.setEnabled(false);
             tvFirstPreferenceSkip.setVisibility(View.GONE);
         } else {
             tvFirstPreferenceSkip.setVisibility(View.VISIBLE);
         }
+        tvFirstPreferenceSkip.setOnClickListener(v ->
+                clickListener.onSingleClick(position));
+
+
 
         tvQuestionTitle.setText(questionLists.get(position).getQuestionTitle().toUpperCase());
         tvQuestionDesc.setText(questionLists.get(position).getSurvey_question());
         rcvAnsList.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         rcvAnsList.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new SurveyQuestionAdapter(new GetClickListener() {
-            @Override
-            public void onClick(int i) {
-                SurveyId = String.valueOf(questionLists.get(position).getOption().get(i).getOptionId());
-                count++;
-
-            }
+        RecyclerView.Adapter adapter = new SurveyQuestionAdapter(i -> {
+            SurveyId = String.valueOf(questionLists.get(position).getOption().get(i).getOptionId());
+            count++;
         }, questionLists.get(position).getOption(), mContext);
         rcvAnsList.setAdapter(adapter);
         container.addView(itemView);

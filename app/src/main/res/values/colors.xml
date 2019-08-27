@@ -26,4 +26,5 @@
     <color name="commentBackColor">#F8F7F7</color>
     <color name="colorBackNumber">#f2f2f2</color>
     <color name="colorFollowerName">#242424</color>
+    <color name="colorForLocation">#434343</color>
 </resources>

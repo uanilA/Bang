@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +16,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bang.R;
-import com.bang.helper.AppHelper;
 import com.bang.helper.Utils;
-import com.bang.module.authentication.country.listener.CountryAdapterPositionListener;
 import com.bang.module.authentication.country.model.Country;
 import com.bang.utils.Utility;
 import com.bumptech.glide.Glide;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHolder> {
@@ -96,6 +93,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.MyViewHo
                             Intent resultIntent = new Intent();
                             resultIntent.putExtra("country_flag", mCountries.get(i).getFlag());
                             resultIntent.putExtra("country_code", String.valueOf(mCountries.get(i).getPhoneCode()));
+                            resultIntent.putExtra("countryFlagCode",mCountries.get(i).getCode());
                             ((Activity) mContext).setResult(Activity.RESULT_OK, resultIntent);
                             ((Activity) mContext).finish();
 

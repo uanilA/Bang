@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#666666">
+    android:background="@color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_13sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_25sdp"
             android:id="@+id/likeCount"
@@ -23,17 +23,18 @@
             android:textColor="@color/colorWelcomeText"
             android:textSize="@dimen/_12ssp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvLikesList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:clipToPadding="false"
             android:overScrollMode="never" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_CloseLikesDialog"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"

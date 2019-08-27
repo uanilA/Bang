@@ -2,9 +2,9 @@ package com.bang.base;
 
 
 /**
- * Created by anil
- * Date: 23/05/19
- * Time: 03:07 PM
+ *   Created by anil
+ *   Date: 23/05/19
+ *   Time: 03:07 PM
  */
 
 public interface ClickListener {
@@ -25,7 +25,7 @@ public interface ClickListener {
     }
 
     interface ContactNumberClick{
-         void onContactClick(String number);
+         void onContactClick(String number,String name);
     }
 
     interface FollowersClick{
@@ -37,11 +37,23 @@ public interface ClickListener {
         void onReportTUserClick(int position);
         void onVideoPlayClick(int position);
         void onSingleLikeClick(int position);
+        void onUserNameClick(int position);
     }
 
     interface MyPostClick{
         void onReportTUserClick(int position);
         void onVideoPlayClick(int position);
         void onSingleLikeClick(int position);
+    }
+
+    interface RequestStatusClick{
+        void StatusUpdateClick(String val , int position);
+    }
+
+    interface NearYouUserClick{
+        void NearYouFollowClick(int position);
+        void NearFollowingListClick(int position);
+        void NearYouProfileClick(int position);
+        void NearYouBangRequest(int position);
     }
 }

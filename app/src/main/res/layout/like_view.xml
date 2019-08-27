@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_5sdp"
         android:gravity="center"
+        android:paddingStart="@dimen/_5sdp"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.errorResponse.APIErrors;
@@ -35,12 +35,15 @@ public class UpdateProfileManager {
         this.mContext=mContext;
     }
 
-    public void callGetMyProfile(String fullName1, Uri uri, String mobileNumber1 , String countryCode1){
+    public void callGetMyProfile(String fullName1, Uri uri, String mobileNumber1 , String countryCode1
+    ,String countryFlagCode1){
         Session session = new Session(mContext);
         updateProfileCallback.onShowBaseLoader();
         RequestBody fullName = RequestBody.create(MediaType.parse("text/plain"), fullName1);
         RequestBody mobileNumber = RequestBody.create(MediaType.parse("text/plain"), mobileNumber1);
         RequestBody countryCode = RequestBody.create(MediaType.parse("text/plain"), countryCode1);
+        RequestBody countryFlagCode = RequestBody.create(MediaType.parse("text/plain"),countryFlagCode1);
+
         MultipartBody.Part body = null;
         if (uri !=null) {
             if (String.valueOf(uri).contains("file:")){
@@ -65,7 +68,8 @@ public class UpdateProfileManager {
         }
         if (AppHelper.isConnectingToInternet(mContext)) {
             API api = ServiceGenerator.createService(API.class);
-            Call<UpdateProfileResponse> updateProfileResponseCall = api.callUpdateProfileApi(session.getAuthToken(),fullName,mobileNumber,countryCode,body);
+            Call<UpdateProfileResponse> updateProfileResponseCall = api.callUpdateProfileApi(session.getAuthToken(),fullName,mobileNumber,countryCode,
+                    countryFlagCode,body);
             updateProfileResponseCall.enqueue(new Callback<UpdateProfileResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<UpdateProfileResponse> call, @NonNull Response<UpdateProfileResponse> response) {
@@ -80,7 +84,6 @@ public class UpdateProfileManager {
                             } else {
                                 updateProfileCallback.onError(apiErrors.getMessage());
                             }
-
                         }
                     }catch (Exception e){e.printStackTrace();}
                 }

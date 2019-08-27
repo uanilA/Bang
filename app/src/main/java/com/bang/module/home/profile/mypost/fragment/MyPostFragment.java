@@ -4,10 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +22,20 @@ import com.bang.module.home.profile.mypost.adapter.LikesListAdapter;
 import com.bang.module.home.profile.mypost.adapter.MyPostAdapter;
 import com.bang.module.home.profile.mypost.model.MyPostResponse;
 import com.bang.module.home.profile.mypost.presenter.MyPostPresenter;
+import com.bang.module.home.profile.otheruserProfile.OtherUserProfileActivity;
 import com.bang.network.ApiCallback;
 import com.bang.utils.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
- * Created by anil
- * Date: 23/07/19
- * Time: 03:07 PM
+   * Created by anil
+   * Date: 23/07/19
+   * Time: 03:07 PM
  */
+
 public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCallback, View.OnClickListener {
 
     private RecyclerView rcvMyPost;
@@ -43,17 +44,15 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
     private int offset = 0;
     private int likeOffset = 0;
     private BottomSheetDialog dialog;
-
     private LikesListAdapter likesListAdapter;
     private List<LikeListResponse.DataBean.FeedLikeListBean> feedLikeListBeans;
     private RecyclerView rcvLikesList;
     private TextView likeCount;
     private String newsfeedId;
+    private TextView tvNoPost;
 
     public MyPostFragment() {
-        // Required empty public constructor
     }
-
 
     public static MyPostFragment newInstance() {
         MyPostFragment fragment = new MyPostFragment();
@@ -85,7 +84,9 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
         myPostAdapter = new MyPostAdapter(myfeedListBeans, mContext, new ClickListener.MyPostClick() {
             @Override
             public void onReportTUserClick(int position) {
-                /* ReportUserDilaog();*/
+                startActivity(new Intent(mContext, OtherUserProfileActivity.class)
+                        .putExtra("OtherUserId", String.valueOf(myfeedListBeans.get(position).getSurveyed_user_id())));
+
             }
 
             @Override
@@ -100,8 +101,7 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
             }
             @Override
             public void onSingleLikeClick(int position) {
-                feedLikeListBeans.clear();
-                newsfeedId = String.valueOf(myfeedListBeans.get(position).getNewsfeedId());
+                newsfeedId = String.valueOf(myfeedListBeans.get(position).getNewsfeed_id());
                 BottomDialog();
             }
         });
@@ -114,6 +114,7 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
 
     private void init(View view) {
         rcvMyPost = view.findViewById(R.id.rcvMyPost);
+        tvNoPost = view.findViewById(R.id.tvNoPost);
         myfeedListBeans   = new ArrayList<>();
         feedLikeListBeans = new ArrayList<>();
         rcvMyPost.setHasFixedSize(true);
@@ -134,29 +135,39 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
 
     @Override
     public void onSuccessMyPost(MyPostResponse myPostResponse) {
-        myPostAdapter.showLoading(false);
+         myPostAdapter.showLoading(false);
         if (myPostResponse.getData().getMyfeed_list().size() > 0) {
+          //  rcvLikesList.setVisibility(View.VISIBLE);
             myfeedListBeans.addAll(myPostResponse.getData().getMyfeed_list());
             myPostAdapter.notifyDataSetChanged();
         } else {
-           // myfeedListBeans.clear();
+           // rcvLikesList.setVisibility(View.GONE);
             myPostAdapter.notifyDataSetChanged();
         }
+
+        if (myfeedListBeans.size() > 0){
+            tvNoPost.setVisibility(View.GONE);
+        }else {
+            tvNoPost.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onSuccessListList(LikeListResponse likeListResponse) {
+    public void onSuccessLikeList(LikeListResponse likeListResponse) {
         likesListAdapter.showLoading(false);
+        if (likeListResponse.getData().getFeed_like_count() == 1){
+            likeCount.setText(likeListResponse.getData().getFeed_like_count() + " Like");
+        }else {
+            likeCount.setText(likeListResponse.getData().getFeed_like_count() + " Likes");
+        }
+
         if (likeListResponse.getData().getFeed_like_list().size() > 0) {
             feedLikeListBeans.addAll(likeListResponse.getData().getFeed_like_list());
-            if (likeListResponse.getData().getFeed_like_count() == 1){
-                likeCount.setText(likeListResponse.getData().getFeed_like_count() + " Like");
-            }else {
-                likeCount.setText(likeListResponse.getData().getFeed_like_count() + " Likes");
-            }
             likesListAdapter.notifyDataSetChanged();
         } else {
-            feedLikeListBeans.clear();
             likesListAdapter.notifyDataSetChanged();
         }
     }
@@ -181,13 +192,12 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
         CustomToast.getInstance(mContext).showToast(mContext, errorMessage);
     }
 
-
     private void BottomDialog() {
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.likes_list_layout, null);
         dialog = new BottomSheetDialog(mContext, R.style.CustomBottomSheetDialogTheme);
         dialog.setContentView(view);
         dialog.setCancelable(false);
-        Objects.requireNonNull(dialog.findViewById(R.id.iv_CloseLikesDialog)).setOnClickListener(this);
+        dialog.findViewById(R.id.iv_CloseLikesDialog).setOnClickListener(this);
         rcvLikesList = dialog.findViewById(R.id.rcvLikesList);
         likeCount = dialog.findViewById(R.id.likeCount);
         likePostSetAdapter();
@@ -197,7 +207,7 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
         EndlessRecyclerViewScrollListener scrollListener1 = new EndlessRecyclerViewScrollListener(layoutManager1) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (page != 0) {
+                if (page != 1) {
                     likesListAdapter.showLoading(true);
                     likeOffset = likeOffset + 10; //load 10 items in recyclerView
                     callLikeListApi(likeOffset);
@@ -209,6 +219,7 @@ public class MyPostFragment extends BaseFragment implements ApiCallback.MyPostCa
     }
 
     private void callLikeListApi(int myOffset) {
+        feedLikeListBeans.clear();
         new MyPostPresenter(this, mContext).myPostLikeListApi(newsfeedId, myOffset); //newsfeedId
     }
 

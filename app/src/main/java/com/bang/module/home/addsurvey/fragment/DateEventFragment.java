@@ -2,11 +2,17 @@ package com.bang.module.home.addsurvey.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +20,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bang.R;
-import com.bang.TimeWheel.LoopListener;
 import com.bang.TimeWheel.LoopView;
 import com.bang.base.BangParentActivity;
+import com.bang.base.BaseFragment;
 import com.bang.helper.CustomToast;
 import com.bang.module.home.addsurvey.AddSurveyActivity;
 import com.mikesu.horizontalexpcalendar.HorizontalExpCalendar;
 import com.mikesu.horizontalexpcalendar.common.Config;
+
+import org.joda.time.DateTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,16 +38,14 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class DateEventFragment extends Fragment implements View.OnClickListener {
+public class DateEventFragment extends BaseFragment implements View.OnClickListener {
 
 
-    private Context mContext;
     private View main_tool_bar;
     private TextView tv_am_pm_btn;
     private TextView tv_hour_time;
     private TextView tv_min_time;
     private String default_slot = "AM";
-    HorizontalExpCalendar calendar;
 
     /**
      * For Time selection
@@ -53,29 +59,29 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
     private static final int DEFAULT_MAX_SEC = 59;
 
     // public Button confirmBtn;
-    public LoopView hourLoopView;
-    public LoopView minLoopView;
-    public LoopView secLoopView;
-    public LoopView timeMeridiemView;
+    private LoopView hourLoopView;
+    private LoopView minLoopView;
+    private LoopView secLoopView;
+    private LoopView timeMeridiemView;
 
     private int hourPos = 0;
     private int minPos = 0;
     private int secPos = 0;
     private int timeMeridiemPos = 0;
     private String date;
-    ArrayList hourList = new ArrayList();
-    ArrayList minList = new ArrayList();
-    ArrayList secList = new ArrayList();
-    ArrayList merediumList = new ArrayList();
+    private ArrayList hourList = new ArrayList();
+    private ArrayList minList = new ArrayList();
+    private ArrayList secList = new ArrayList();
+    private ArrayList merediumList = new ArrayList();
 
-    int minHour;
-    int maxHour;
-    int minMin;
-    int maxMin;
-    int minSec;
-    int maxSec;
-
-    //private long mLastClickTime = 0;
+    private int minHour;
+    private int maxHour;
+    private int minMin;
+    private int maxMin;
+    private int minSec;
+    private int maxSec;
+    private long mLastClickTime = 0;
+    private CardView dateEventParentCard;
 
 
     public DateEventFragment() {
@@ -95,6 +101,7 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_date_event, container, false);
@@ -108,10 +115,10 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
         //Option
         minHour = DEFAULT_MIN_HOUR;
         maxHour = DEFAULT_MAX_HOUR;
-        minMin = DEFAULT_MIN_MIN;
-        maxMin = DEFAULT_MAX_MIN;
-        minSec = DEFAULT_MIN_SEC;
-        maxSec = DEFAULT_MAX_SEC;
+        minMin  = DEFAULT_MIN_MIN;
+        maxMin  = DEFAULT_MAX_MIN;
+        minSec  = DEFAULT_MIN_SEC;
+        maxSec  = DEFAULT_MAX_SEC;
 
         long milliseconds = getLongFromyyyyMMdd(getStrTime());
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -133,11 +140,14 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
         tv_min_time.setText(format2LenStr(minPos));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void init(View view) {
 
         main_tool_bar = ((AddSurveyActivity) mContext).findViewById(R.id.main_tool_bar);
         main_tool_bar.setVisibility(View.GONE);
         tv_am_pm_btn = view.findViewById(R.id.tv_am_pm_btn);
+        dateEventParentCard = view.findViewById(R.id.dateEventParentCard);
+        dateEventParentCard.setNestedScrollingEnabled(true);
         tv_am_pm_btn.setOnClickListener(this);
 
         tv_hour_time = view.findViewById(R.id.tv_hour_time);
@@ -146,15 +156,16 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
         view.findViewById(R.id.tvDateEventNext).setOnClickListener(this);
         view.findViewById(R.id.tvDateEventSkip).setOnClickListener(this);
 
-        calendar = view.findViewById(R.id.calendar);
+        /*Get Current date */
+        date = getCurrentDateString();
+        HorizontalExpCalendar calendar = view.findViewById(R.id.calendar);
         calendar.setHorizontalExpCalListener(new HorizontalExpCalendar.HorizontalExpCalListener() {
             @Override
             public void onChangeViewPager(Config.ViewPagerType viewPagerType) {
                 Log.i("Calender", "onChangeViewPager: " + viewPagerType.name());
             }
-
             @Override
-            public void onDateSelected(org.joda.time.DateTime dateTime) {
+            public void onDateSelected(DateTime dateTime) {
                 String dateStr = dateTime.toString();
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
                 Date dateObj = null;
@@ -168,18 +179,21 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
             }
 
             @Override
-            public void onCalendarScroll(org.joda.time.DateTime dateTime) {
+            public void onCalendarScroll(DateTime dateTime) {
                 Log.i("Calender", "onCalendarScroll: " + dateTime.toString());
             }
         });
     }
 
-    public void initialiseTimeWheel(View view) {
-        // confirmBtn = (Button) findViewById(R.id.btn_confirm);
+    private void initialiseTimeWheel(View view) {
         hourLoopView = view.findViewById(R.id.picker_hour);
         minLoopView = view.findViewById(R.id.picker_min);
         secLoopView = view.findViewById(R.id.picker_sec);
         timeMeridiemView = view.findViewById(R.id.picker_meridiem);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            hourLoopView.setNestedScrollingEnabled(true);
+            minLoopView.setNestedScrollingEnabled(true);
+        }
 
         //do not loop,default can loop
         hourLoopView.setNotLoop();
@@ -195,33 +209,17 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
         timeMeridiemView.setTextSize(viewTextSize);
 
         //set checked listen
-        hourLoopView.setListener(new LoopListener() {
-            @Override
-            public void onItemSelect(int item) {
-                hourPos = item;
-                int hours = hourPos + 1;
-                tv_hour_time.setText(format2LenStr(hours));
-            }
+        hourLoopView.setListener(item -> {
+            hourPos = item;
+            int hours = hourPos + 1;
+            tv_hour_time.setText(format2LenStr(hours));
         });
-        minLoopView.setListener(new LoopListener() {
-            @Override
-            public void onItemSelect(int item) {
-                minPos = item;
-                tv_min_time.setText(format2LenStr(minPos));
-            }
+        minLoopView.setListener(item -> {
+            minPos = item;
+            tv_min_time.setText(format2LenStr(minPos));
         });
-        secLoopView.setListener(new LoopListener() {
-            @Override
-            public void onItemSelect(int item) {
-                secPos = item;
-            }
-        });
-        timeMeridiemView.setListener(new LoopListener() {
-            @Override
-            public void onItemSelect(int item) {
-                timeMeridiemPos = item;
-            }
-        });
+        secLoopView.setListener(item -> secPos = item);
+        timeMeridiemView.setListener(item -> timeMeridiemPos = item);
         initPickerViews();
     }
 
@@ -245,10 +243,10 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
 
-       /* if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();*/
+        mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (v.getId()) {
             case R.id.tvDateEventNext:
@@ -262,7 +260,7 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 sb.append(hour);
                 sb.append(":");
                 sb.append(format2LenStr(min));
@@ -280,7 +278,7 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
 
                 break;
             case R.id.tvDateEventSkip:
-                getActivity().finish();
+                activity.finish();
                 break;
             case R.id.tv_am_pm_btn:
                 if (default_slot.equals("AM")) {
@@ -299,7 +297,7 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
      * For Time Selection data
      */
 
-    public static long getLongFromyyyyMMdd(String time) {
+    private static long getLongFromyyyyMMdd(String time) {
         SimpleDateFormat mFormat = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault());
         Date parse = null;
         try {
@@ -314,7 +312,7 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    public static String getStrTime() {
+    private static String getStrTime() {
         SimpleDateFormat dd = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault());
         return dd.format(new Date());
     }
@@ -355,7 +353,7 @@ public class DateEventFragment extends Fragment implements View.OnClickListener 
 
     }
 
-    public static String format2LenStr(int num) {
+    private static String format2LenStr(int num) {
         return (num < 10) ? "0" + num : String.valueOf(num);
     }
 

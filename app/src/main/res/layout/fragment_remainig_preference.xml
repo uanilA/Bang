@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_15sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    tools:context=".module.home.addsurvey.fragment.RemainingPreferenceFragment">
+
+    <com.bang.helper.ViewPagerNoSwipe
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_5sdp" />
+
+
+    <LinearLayout
+        android:id="@+id/llDataNotFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_28sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_28sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/currently_there_is_no_question_s_available_for_this_gender"
+            android:textColor="@color/colorWelcomeText"
+            android:textSize="@dimen/_13ssp" />
+
+
+        <TextView
+            android:id="@+id/tvFirstPreferenceNext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/login_rounded_border"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="@string/go_back"
+            android:textColor="@color/colorWelcomeText"
+            android:textSize="@dimen/_13ssp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

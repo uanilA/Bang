@@ -1,7 +1,7 @@
 package com.bang.module.home.survey.manager;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bang.R;
 import com.bang.application.session.Session;
@@ -32,11 +32,11 @@ public class SurveyDetailManager {
         session = new Session(mContext);
     }
 
-    public void callViewSurveyDetail(String surveyId, String type , String offset , String limit){
+    public void callViewSurveyDetail(String surveyId, String offset , String limit){
         viewSurveyDetailCallback.onShowBaseLoader();
         if (AppHelper.isConnectingToInternet(mContext)) {
             API api = ServiceGenerator.createService(API.class);
-            Call<SurveyDetailModel> loginResponseCall = api.callSurveyDetailsApi(session.getAuthToken(),surveyId ,type,offset,limit);
+            Call<SurveyDetailModel> loginResponseCall = api.callSurveyDetailsApi(session.getAuthToken(),surveyId,offset,limit);
             loginResponseCall.enqueue(new Callback<SurveyDetailModel>() {
                 @Override
                 public void onResponse(@NonNull Call<SurveyDetailModel> call, @NonNull Response<SurveyDetailModel> response) {

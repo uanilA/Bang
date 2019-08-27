@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 public class MyProfileResponse implements Serializable {
 
+
     /**
      * code : 200
      * status : success
      * message : successfully retrived user record
-     * data : {"userId":23,"email":"a@gmail.com","full_name":"Rohit Singh","phone_number":"7999788855","country_code":"+355","social_type":"1","social_id":null,"profile_photo":"http://34.236.130.86/uploads/profile/thumb/file_1562676704694.jpeg","is_profile_url":0,"gender":"0","profile_step":2,"prefers":"1","location":null,"city":null,"state":null,"country":null,"latitude":null,"longitude":null,"signup_from":null,"device_type":0,"device_token":"ePK0Abd8WHc:APA91bHFo-RLavzIRkeXU9Ero04Jh5z_uG3kFes8fNo8j3jnL_1q92QqLJTS4Bhf8FQ5ZO7oeRllkH_nQYJ6-wpPV1pJPEfL-VWdOrUAKZUm3fcsrkpj7u5aikxgUxDrmh3r0q6Tnoe1","status":1,"auth_token":"2aee461d395bd39c14639336ac9525cf","created_on":"2019-07-04T11:18:52.000Z","updated_on":"2019-07-04T11:18:52.000Z","total_addictive":0,"total_satisfied":0,"total_unsatisfied":0,"total_followers":1,"total_following":2,"total_post":0}
+     * data : {"userId":21,"email":"anilupadhyay.mindiii@gmail.com","full_name":"hemant","phone_number":"9987676780","country_code":"+91","country_flag_code":"","social_type":null,"social_id":null,"profile_photo":"https://bang-development.s3.amazonaws.com/uploads/profile/thumb/1565673977650.png","is_profile_url":0,"gender":"0","profile_step":2,"prefers":"1","location":"Indore - Bhopal Rd, Brajeshwari Extension, Greater Brajeshwari, Indore, Madhya Pradesh 452016, India","city":"Indore","state":"Madhya Pradesh","country":"India","latitude":22.7051,"longitude":75.9092,"signup_from":null,"device_type":1,"device_token":"1","status":1,"auth_token":"eb80a3369879c3ae6a245f2b2c7c9ec3","created_on":"2019-07-04T09:10:22.000Z","updated_on":"2019-07-04T09:10:22.000Z","total_addictive":0,"total_satisfied":2,"total_unsatisfied":1,"total_followers":3,"total_following":8,"total_post":9}
      */
 
     private int code;
@@ -50,37 +51,38 @@ public class MyProfileResponse implements Serializable {
 
     public static class DataBean {
         /**
-         * userId : 23
-         * email : a@gmail.com
-         * full_name : Rohit Singh
-         * phone_number : 7999788855
-         * country_code : +355
-         * social_type : 1
+         * userId : 21
+         * email : anilupadhyay.mindiii@gmail.com
+         * full_name : hemant
+         * phone_number : 9987676780
+         * country_code : +91
+         * country_flag_code :
+         * social_type : null
          * social_id : null
-         * profile_photo : http://34.236.130.86/uploads/profile/thumb/file_1562676704694.jpeg
+         * profile_photo : https://bang-development.s3.amazonaws.com/uploads/profile/thumb/1565673977650.png
          * is_profile_url : 0
          * gender : 0
          * profile_step : 2
          * prefers : 1
-         * location : null
-         * city : null
-         * state : null
-         * country : null
-         * latitude : null
-         * longitude : null
+         * location : Indore - Bhopal Rd, Brajeshwari Extension, Greater Brajeshwari, Indore, Madhya Pradesh 452016, India
+         * city : Indore
+         * state : Madhya Pradesh
+         * country : India
+         * latitude : 22.7051
+         * longitude : 75.9092
          * signup_from : null
-         * device_type : 0
-         * device_token : ePK0Abd8WHc:APA91bHFo-RLavzIRkeXU9Ero04Jh5z_uG3kFes8fNo8j3jnL_1q92QqLJTS4Bhf8FQ5ZO7oeRllkH_nQYJ6-wpPV1pJPEfL-VWdOrUAKZUm3fcsrkpj7u5aikxgUxDrmh3r0q6Tnoe1
+         * device_type : 1
+         * device_token : 1
          * status : 1
-         * auth_token : 2aee461d395bd39c14639336ac9525cf
-         * created_on : 2019-07-04T11:18:52.000Z
-         * updated_on : 2019-07-04T11:18:52.000Z
+         * auth_token : eb80a3369879c3ae6a245f2b2c7c9ec3
+         * created_on : 2019-07-04T09:10:22.000Z
+         * updated_on : 2019-07-04T09:10:22.000Z
          * total_addictive : 0
-         * total_satisfied : 0
-         * total_unsatisfied : 0
-         * total_followers : 1
-         * total_following : 2
-         * total_post : 0
+         * total_satisfied : 2
+         * total_unsatisfied : 1
+         * total_followers : 3
+         * total_following : 8
+         * total_post : 9
          */
 
         private int userId;
@@ -88,19 +90,20 @@ public class MyProfileResponse implements Serializable {
         private String full_name;
         private String phone_number;
         private String country_code;
-        private String social_type;
+        private String country_flag_code;
+        private Object social_type;
         private Object social_id;
         private String profile_photo;
         private int is_profile_url;
         private String gender;
         private int profile_step;
         private String prefers;
-        private Object location;
-        private Object city;
-        private Object state;
-        private Object country;
-        private Object latitude;
-        private Object longitude;
+        private String location;
+        private String city;
+        private String state;
+        private String country;
+        private double latitude;
+        private double longitude;
         private Object signup_from;
         private int device_type;
         private String device_token;
@@ -155,11 +158,19 @@ public class MyProfileResponse implements Serializable {
             this.country_code = country_code;
         }
 
-        public String getSocial_type() {
+        public String getCountry_flag_code() {
+            return country_flag_code;
+        }
+
+        public void setCountry_flag_code(String country_flag_code) {
+            this.country_flag_code = country_flag_code;
+        }
+
+        public Object getSocial_type() {
             return social_type;
         }
 
-        public void setSocial_type(String social_type) {
+        public void setSocial_type(Object social_type) {
             this.social_type = social_type;
         }
 
@@ -211,51 +222,51 @@ public class MyProfileResponse implements Serializable {
             this.prefers = prefers;
         }
 
-        public Object getLocation() {
+        public String getLocation() {
             return location;
         }
 
-        public void setLocation(Object location) {
+        public void setLocation(String location) {
             this.location = location;
         }
 
-        public Object getCity() {
+        public String getCity() {
             return city;
         }
 
-        public void setCity(Object city) {
+        public void setCity(String city) {
             this.city = city;
         }
 
-        public Object getState() {
+        public String getState() {
             return state;
         }
 
-        public void setState(Object state) {
+        public void setState(String state) {
             this.state = state;
         }
 
-        public Object getCountry() {
+        public String getCountry() {
             return country;
         }
 
-        public void setCountry(Object country) {
+        public void setCountry(String country) {
             this.country = country;
         }
 
-        public Object getLatitude() {
+        public double getLatitude() {
             return latitude;
         }
 
-        public void setLatitude(Object latitude) {
+        public void setLatitude(double latitude) {
             this.latitude = latitude;
         }
 
-        public Object getLongitude() {
+        public double getLongitude() {
             return longitude;
         }
 
-        public void setLongitude(Object longitude) {
+        public void setLongitude(double longitude) {
             this.longitude = longitude;
         }
 

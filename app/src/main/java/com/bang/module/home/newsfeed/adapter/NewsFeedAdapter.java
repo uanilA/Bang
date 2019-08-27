@@ -2,8 +2,8 @@ package com.bang.module.home.newsfeed.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import com.bang.module.home.newsfeed.model.NewsFeedResponse;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,6 +38,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final int VIEWTYPE_ITEM = 1;
     private final int VIEWTYPE_LOADER = 2;
     private boolean showLoader;
+
 
 
     public NewsFeedAdapter(Context mContext, List<NewsFeedResponse.DataBean.NewsfeedListBean> newsFeedListBeans, ClickListener.NewsFeedClick clickListener) {
@@ -63,39 +65,80 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return;
         }
         NewsFeedAdapter.MyViewHolder myviewHolder = ((NewsFeedAdapter.MyViewHolder) holder);
-        myviewHolder.tc_addiction.setText(newsFeedListBeans.get(listPosition).getTitle());
-        myviewHolder.tvUserNameNews.setText(newsFeedListBeans.get(listPosition).getFull_name());
-        myviewHolder.tvUserLikes.setText(newsFeedListBeans.get(listPosition).getTotal_like_count()+" Likes");
+
+        if (newsFeedListBeans.get(listPosition).getIs_survey_post() == 1) {
+            myviewHolder.ivBadgeIcon.setVisibility(View.VISIBLE);
+            myviewHolder.imageView.setImageResource(R.drawable.news_feed_pos);
+            myviewHolder.rlBottomGradient.setVisibility(View.GONE);
+            myviewHolder.ivTopGradient.setVisibility(View.GONE);
+
+            if (newsFeedListBeans.get(listPosition).getPhoto().contains("unsatisfied") || newsFeedListBeans.get(listPosition).getPhoto().contains("Unsatisfied")) {
+                myviewHolder.ivBadgeIcon.setImageResource(R.drawable.unsatisfied_ico);
+            } else if (newsFeedListBeans.get(listPosition).getPhoto().contains("addictive") || newsFeedListBeans.get(listPosition).getPhoto().contains("Addictive")) {
+                myviewHolder.ivBadgeIcon.setImageResource(R.drawable.addicted_ico);
+            } else {
+                myviewHolder.ivBadgeIcon.setImageResource(R.drawable.satisfied_ico);
+            }
+
+            // Glide.with(mContext).load(newsFeedListBeans.get(listPosition).getPhoto()).error(R.drawable.news_feed_pos).into(myviewHolder.ivBadgeIcon);
+            if (newsFeedListBeans.get(listPosition).getIs_anonymous() == 1) {
+                String s = newsFeedListBeans.get(listPosition).getTitle();
+                StringTokenizer st = new StringTokenizer(s, " ");
+                String one = st.nextToken();
+                String two = st.nextToken();
+                String lastToken = st.nextToken();
+                System.out.println("!!!!!!!!!!!!!!!" + lastToken);
+                myviewHolder.tvLastUserName.setVisibility(View.GONE);
+                myviewHolder.tc_addiction.setText("Someone special is " + lastToken + ".");
+            } else {
+                String s = newsFeedListBeans.get(listPosition).getTitle();
+                StringTokenizer st = new StringTokenizer(s, "[]");
+                String community = st.nextToken();
+                String helpDesk = st.nextToken();
+                System.out.println("!!!!!!!!!!!!!!!" + community + "\n" + helpDesk);
+                myviewHolder.tvLastUserName.setVisibility(View.VISIBLE);
+                myviewHolder.tc_addiction.setText(newsFeedListBeans.get(listPosition).getPosted_by_user_full_name() + helpDesk);
+                myviewHolder.tvLastUserName.setText(newsFeedListBeans.get(listPosition).getSurveyed_user_full_name());
+            }
+        } else {
+            myviewHolder.ivBadgeIcon.setVisibility(View.GONE);
+            myviewHolder.tc_addiction.setText(newsFeedListBeans.get(listPosition).getTitle());
+            myviewHolder.rlBottomGradient.setVisibility(View.VISIBLE);
+            myviewHolder.ivTopGradient.setVisibility(View.VISIBLE);
+            if (newsFeedListBeans.get(listPosition).getPhoto().equals("")) {
+                myviewHolder.ivVideoPlay.setVisibility(View.VISIBLE);
+                Glide.with(mContext).load(newsFeedListBeans.get(listPosition).getVideo_thumb()).error(R.drawable.background_img).into(myviewHolder.imageView);
+            } else {
+                myviewHolder.ivVideoPlay.setVisibility(View.GONE);
+                Glide.with(mContext).load(newsFeedListBeans.get(listPosition).getPhoto()).error(R.drawable.background_img).into(myviewHolder.imageView);
+            }
+        }
+
+        myviewHolder.tvUserNameNews.setText(newsFeedListBeans.get(listPosition).getPosted_by_user_full_name());
+
+        /*if (newsFeedListBeans.get(listPosition).getTotal_like_count() == 0) {
+            myviewHolder.tvUserLikes.setText(newsFeedListBeans.get(listPosition).getTotal_like_count() + " Like");
+        } else if (newsFeedListBeans.get(listPosition).getTotal_like_count() == 1) {
+            myviewHolder.tvUserLikes.setText(newsFeedListBeans.get(listPosition).getTotal_like_count() + " Like");
+        } else {
+            myviewHolder.tvUserLikes.setText(newsFeedListBeans.get(listPosition).getTotal_like_count() + " Likes");
+        }*/
+        myviewHolder.tvUserLikes.setText(String.valueOf(newsFeedListBeans.get(listPosition).getTotal_like_count()));
         Glide.with(mContext).load(newsFeedListBeans.get(listPosition).getProfile_photo()).error(R.drawable.logo).into(myviewHolder.ivUserNewsFeed);
 
-        if (newsFeedListBeans.get(listPosition).getIs_like() == 1){
+        if (newsFeedListBeans.get(listPosition).getIs_like() == 1) {
             myviewHolder.ivHeartImage.setImageResource(R.drawable.ic_like_icon);
-        }else {
+        } else {
             myviewHolder.ivHeartImage.setImageResource(R.drawable.ic_unlike_icon);
         }
 
-        if (newsFeedListBeans.get(listPosition).getPhoto().equals("") &&
-                newsFeedListBeans.get(listPosition).getVideo_thumb().equals("")){
-            myviewHolder.ivGradient.setVisibility(View.GONE);
-        }else {
-            myviewHolder.ivGradient.setVisibility(View.VISIBLE);
-        }
-
-        if (newsFeedListBeans.get(listPosition).getPhoto().equals("") ) {
-            myviewHolder.ivVideoPlay.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(newsFeedListBeans.get(listPosition).getVideo_thumb()).error(R.drawable.news_feed_pos).into(myviewHolder.imageView);
-        } else {
-            myviewHolder.ivVideoPlay.setVisibility(View.GONE);
-            Glide.with(mContext).load(newsFeedListBeans.get(listPosition).getPhoto()).error(R.drawable.news_feed_pos).into(myviewHolder.imageView);
-        }
-
-        /** Dummy Check
-         **/
+        /*
+         * Dummy Check
+         */
         if (newsFeedListBeans.get(listPosition).getPhoto().equals("") && newsFeedListBeans.get(listPosition).getVideo_thumb().equals("")
-         && newsFeedListBeans.get(listPosition).getVideo_thumb().equals("")){
+                && newsFeedListBeans.get(listPosition).getVideo_thumb().equals("")) {
             myviewHolder.ivVideoPlay.setVisibility(View.GONE);
         }
-
 
         String input = newsFeedListBeans.get(listPosition).getCreated_on();
         int index = input.lastIndexOf("T");
@@ -131,8 +174,6 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-
-
     @Override
     public int getItemCount() {
         return newsFeedListBeans.size();
@@ -149,8 +190,11 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private TextView tvCreatedOnDate;
         private LinearLayout llUserProfile;
         private RelativeLayout rlLikes;
-        private ImageView ivGradient;
         private ImageView ivHeartImage;
+        private ImageView ivBadgeIcon;
+        private TextView tvLastUserName;
+        private  ImageView ivTopGradient;
+        private RelativeLayout rlBottomGradient;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -164,32 +208,37 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvCreatedOnDate = itemView.findViewById(R.id.tvCreatedOnDate);
             llUserProfile = itemView.findViewById(R.id.llUserProfile);
             rlLikes = itemView.findViewById(R.id.rlLikes);
-            ivGradient = itemView.findViewById(R.id.ivGradient);
+            ivTopGradient = itemView.findViewById(R.id.ivTopGradient);
             ivHeartImage = itemView.findViewById(R.id.ivHeartImage);
+            ivBadgeIcon = itemView.findViewById(R.id.ivBadgeIcon);
+            tvLastUserName = itemView.findViewById(R.id.tvLastUserName);
+            rlBottomGradient = itemView.findViewById(R.id.rlBottomGradient);
             rlLikes.setOnClickListener(this);
             llUserProfile.setOnClickListener(this);
             ivVideoPlay.setOnClickListener(this);
             rlReportUser.setOnClickListener(this);
+            tvLastUserName.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-          switch (v.getId()){
-              case R.id.rlLikes:
-                  clickListener.onSingleLikeClick(getAdapterPosition());
-              break;
-              case R.id.llUserProfile:
-                  clickListener.onProfileClick(getAdapterPosition());
-                  break;
-              case R.id.ivVideoPlay:
-                  clickListener.onVideoPlayClick(getAdapterPosition());
-                  break;
-              case R.id.rlReportUser:
-                  clickListener.onReportTUserClick(getAdapterPosition());
-                  break;
-          }
+            switch (v.getId()) {
+                case R.id.rlLikes:
+                    clickListener.onSingleLikeClick(getAdapterPosition());
+                    break;
+                case R.id.llUserProfile:
+                    clickListener.onProfileClick(getAdapterPosition());
+                    break;
+                case R.id.ivVideoPlay:
+                    clickListener.onVideoPlayClick(getAdapterPosition());
+                    break;
+                case R.id.rlReportUser:
+                    clickListener.onReportTUserClick(getAdapterPosition());
+                    break;
+                case R.id.tvLastUserName:
+                    clickListener.onUserNameClick(getAdapterPosition());
+                    break;
+            }
         }
     }
-
-
 }

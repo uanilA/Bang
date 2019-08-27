@@ -4,14 +4,21 @@ package com.bang.network;
 import com.bang.module.authentication.genderselection.model.UpdateGenderResponse;
 import com.bang.module.authentication.genderselection.model.UpdateLocationResponse;
 import com.bang.module.authentication.login.model.CheckSocialResponse;
+import com.bang.module.authentication.login.model.ForgotPasswordResponse;
 import com.bang.module.authentication.verification.model.LoginResponse;
 import com.bang.module.authentication.profilecompletion.model.SignUpResponse;
 import com.bang.module.authentication.login.model.SendOtpResponse;
 import com.bang.module.home.addsurvey.model.CreateSurveyResponse;
+import com.bang.module.home.addsurvey.model.ShareSurveyModel;
 import com.bang.module.home.addsurvey.model.SurveyQuestionResponse;
+import com.bang.module.home.nearyou.model.NearbyUsersModel;
 import com.bang.module.home.newsfeed.model.AddNewsResponse;
 import com.bang.module.home.newsfeed.model.LikeListResponse;
 import com.bang.module.home.newsfeed.model.NewsFeedResponse;
+import com.bang.module.home.newsfeed.model.ReportUserModel;
+import com.bang.module.home.newsfeed.model.SelectReasonsModel;
+import com.bang.module.home.profile.bandrequest.model.AcceptRejectModel;
+import com.bang.module.home.profile.bandrequest.model.BangRequestsModel;
 import com.bang.module.home.profile.followersfollowing.model.FollowersResponse;
 import com.bang.module.home.profile.followersfollowing.model.FollowingResponse;
 import com.bang.module.home.profile.followersfollowing.model.LikeResponse;
@@ -63,6 +70,10 @@ public interface API {
             , @Field("deviceType") String deviceType);
 
 
+    @FormUrlEncoded
+    @POST("user/forgotPassword")
+    Call<ForgotPasswordResponse> callForgotApi(@Field("email") String email);
+
     @Multipart
     @POST("auth/signup")
     Call<SignUpResponse> callSignUpApi(@Part("fullName") RequestBody fullName
@@ -72,6 +83,7 @@ public interface API {
             , @Part("phoneNumber") RequestBody phoneNumber
             , @Part("deviceToken") RequestBody deviceToken
             , @Part("deviceType") RequestBody deviceType
+            , @Part("countryFlagCode") RequestBody countryFlagCode
             , @Part MultipartBody.Part file);
 
     @FormUrlEncoded
@@ -84,6 +96,7 @@ public interface API {
             , @Field("deviceType") String deviceType
             , @Field("profilePhoto") String profilePhoto
             , @Field("socialType") String socialType
+            , @Field("countryFlagCode") String countryFlagCode
             , @Field("socialId") String socialId);
 
 
@@ -97,6 +110,7 @@ public interface API {
             , @Part("deviceType") RequestBody deviceType
             , @Part("socialType") RequestBody socialType
             , @Part("socialId") RequestBody socialId
+            , @Part("countryFlagCode") RequestBody countryFlagCode
             , @Part MultipartBody.Part file);
 
 
@@ -122,6 +136,7 @@ public interface API {
             , @Part("fullName") RequestBody fullName
             , @Part("phoneNumber") RequestBody phoneNumber
             , @Part("countryCode") RequestBody countryCode
+            , @Part("countryFlagCode") RequestBody countryFlagCode
             , @Part MultipartBody.Part file);
 
 
@@ -158,7 +173,8 @@ public interface API {
             , @Field("time") String time
             , @Field("forUserId") String forUserId
             , @Field("forUserGender") String forUserGender
-            , @Field("surveyAnswers") String surveyAnswers);
+            , @Field("surveyAnswers") String surveyAnswers
+            , @Field("userFullname") String userFullname);
 
 
     @GET("survey/getSurveyList")
@@ -182,7 +198,6 @@ public interface API {
     @GET("survey/getSurveyDetails")
     Call<SurveyDetailModel> callSurveyDetailsApi(@Header("auth-token") String token,
                                                  @Query("surveyId") String surveyId,
-                                                 @Query("type") String type,
                                                  @Query("offset") String offset,
                                                  @Query("limit") String limit);
 
@@ -266,14 +281,48 @@ public interface API {
 
     @FormUrlEncoded
     @POST("survey/share")
-    Call<LikeListResponse> shareApi(@Header("auth-token") String token,
-                                              @Field("title") String title,
-                                              @Field("surveyId") String surveyId,
-                                              @Field("surveyedUserId") String surveyedUserId,
-                                              @Field("is_anonymous") String is_anonymous,
-                                              @Field("survey_score") String survey_score);
+    Call<ShareSurveyModel> shareApi(@Header("auth-token") String token,
+                                    @Field("title") String title,
+                                    @Field("surveyId") String surveyId,
+                                    @Field("surveyedUserId") String surveyedUserId,
+                                    @Field("is_anonymous") String is_anonymous,
+                                    @Field("survey_score") String survey_score);
 
 
+    @GET("user/getUserReportReasonsList")
+    Call<SelectReasonsModel> callGetReasonsApi(@Header("auth-token") String token);
+
+    @FormUrlEncoded
+    @POST("user/report")
+    Call<ReportUserModel> callReportUserApi(@Header("auth-token") String token,
+                                            @Field("reportedForUserId") String reportedForUserId,
+                                            @Field("newsfeedId") String newsfeedId,
+                                            @Field("reason") String reason,
+                                            @Field("description") String description);
+
+    @FormUrlEncoded
+    @POST("bang/sendRequest")
+    Call<BangRequestsModel> callsendRequestApi(@Header("auth-token") String token,
+                                               @Field("receiverUserId") String receiverUserId);
+
+    @GET("bang/getRequestList")
+    Call<BangRequestsModel> callBangRequestApi(@Header("auth-token") String token,
+                                               @Query("offset") String offset,
+                                               @Query("limit") String limit);
+
+
+    @FormUrlEncoded
+    @POST("bang/requestAction")
+    Call<AcceptRejectModel> callAcceptRejectApi(@Header("auth-token") String token,
+                                                @Field("bangConnectionId") String bangConnectionId,
+                                                @Field("requestStatus") String requestStatus);
+
+    @GET("user/getNearbyUserList")
+    Call<NearbyUsersModel> callNearbyUserApi(@Header("auth-token") String token,
+                                             @Query("latitude") String latitude,
+                                             @Query("longitude") String longitude,
+                                             @Query("offset") String offset,
+                                             @Query("limit") String limit);
 
 /*
 
@@ -290,8 +339,6 @@ public interface API {
             , @Part("c_id") RequestBody c_id
             , @Part MultipartBody.Part file);
 
-    @POST("returnurl")
-    Call<ReturnUrlResponse> callreturnurlApi(@Header("ACCESS-TOKEN") String token, @Body ReturnUrlParameter returnUrlParameter);
 
     @GET("allclasified")
     Call<AllClassifiedResponse> callAllClasifiedListApi(@Query("city") String city);

@@ -2,6 +2,7 @@ package com.bang.module.authentication.otpverification;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -10,15 +11,15 @@ import android.widget.Toast;
 
 import com.bang.R;
 import com.bang.application.session.Session;
+import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.base.BangParentActivity;
-import com.bang.module.authentication.genderselection.GenderSelectionActivity;
+import com.bang.module.authentication.login.LoginActivity;
 import com.bang.module.authentication.login.manager.SendOtpManager;
+import com.bang.module.authentication.login.model.ForgotPasswordResponse;
 import com.bang.module.authentication.login.model.SendOtpResponse;
 import com.bang.module.authentication.profilecompletion.CompleteProfileActivity;
-import com.bang.module.authentication.verification.manager.LoginManager;
-import com.bang.module.authentication.verification.model.LoginResponse;
-import com.bang.module.home.MainActivity;
+import com.bang.module.authentication.verification.manager.LoginPresenter;
 import com.bang.network.ApiCallback;
 import com.goodiebag.pinview.Pinview;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,7 +29,7 @@ import com.google.firebase.iid.InstanceIdResult;
 public class OtpVerificationActivity extends BangParentActivity implements View.OnClickListener, ApiCallback.SendOtpCallback {
 
     private TextView tvSendOtpButton;
-   // private long mLastClickTime = 0;
+    private long mLastClickTime = 0;
     private EditText etOtpOne, etOtpTwo, etOtpThree, etOtpFour;
     private Session session;
     private String myOtp = "", verifyingLKey = "";
@@ -107,14 +108,18 @@ public class OtpVerificationActivity extends BangParentActivity implements View.
     @Override
     public void onClick(View v) {
         // Preventing multiple clicks, using threshold of 1/2 second
-        /*if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();*/
+        mLastClickTime = SystemClock.elapsedRealtime();
         switch (v.getId()) {
             case R.id.llResendOtp:
-                new SendOtpManager(this, OtpVerificationActivity.this).callSendOtp(type, emailAddress);
-                break;
+                if (AppHelper.isConnectingToInternet(OtpVerificationActivity.this)) {
+                    new SendOtpManager(this, OtpVerificationActivity.this).callSendOtp(type, emailAddress);
+                } else {
+                    CustomToast.getInstance(OtpVerificationActivity.this).showToast(OtpVerificationActivity.this, getString(R.string.alert_no_network));
+                }
+                 break;
             case R.id.tvSendOtpButton:
                 String otp = etOtpOne.getText().toString().trim() + etOtpTwo.getText().toString().trim() +
                         etOtpThree.getText().toString().trim() + etOtpFour.getText().toString().trim();
@@ -124,7 +129,7 @@ public class OtpVerificationActivity extends BangParentActivity implements View.
                     CustomToast.getInstance(OtpVerificationActivity.this).showToast(OtpVerificationActivity.this, "otp is not valid");
                 } else {
                   /*  if (verifyingLKey.equals("ForSignIn")) {
-                        new LoginManager(this, OtpVerificationActivity.this).callLoginApi(emailAddress, password,device_token,"0");
+                        new LoginPresenter(this, OtpVerificationActivity.this).callLoginApi(emailAddress, password,device_token,"0");
                     } else {*/
                         if (!verifyingLKey.equals("")) {
                             startActivity(new Intent(OtpVerificationActivity.this, CompleteProfileActivity.class)
@@ -146,22 +151,6 @@ public class OtpVerificationActivity extends BangParentActivity implements View.
         }
     }
 
-   /* @Override
-    public void onSuccessLogin(LoginResponse loginResponse) {
-        if (loginResponse.getCode().equals(200)) {
-            session.createRegistration(loginResponse.getData());
-            session.setUserLoggedIn();
-            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+loginResponse.getData().getProfileStep());
-            if (loginResponse.getData().getProfileStep().equals(1)) {
-                startActivity(new Intent(OtpVerificationActivity.this, GenderSelectionActivity.class));
-                finish();
-            } else  {
-                startActivity(new Intent(OtpVerificationActivity.this, MainActivity.class));
-                finish();
-            }
-        }
-    }*/
-
     @Override
     public void onShowBaseLoader() {
         showLoader();
@@ -180,5 +169,10 @@ public class OtpVerificationActivity extends BangParentActivity implements View.
     @Override
     public void onSuccessSendOtp(SendOtpResponse sendOtpResponse) {
         CustomToast.getInstance(OtpVerificationActivity.this).showToast(OtpVerificationActivity.this, sendOtpResponse.getMessage());
+    }
+
+    @Override
+    public void onSuccessForgotPassword(ForgotPasswordResponse forgotPasswordResponse) {
+        
     }
 }

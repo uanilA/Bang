@@ -11,12 +11,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,10 +33,12 @@ import com.bang.R;
 import com.bang.base.BangParentActivity;
 import com.bang.base.BaseFragment;
 import com.bang.base.ClickListener;
+import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.module.home.addsurvey.AddSurveyActivity;
 import com.bang.module.home.addsurvey.adapter.ContactListAdapter;
 import com.bang.module.home.addsurvey.manager.ContactListManager;
+import com.bang.module.home.addsurvey.manager.ShareSurveyPresenter;
 import com.bang.module.home.addsurvey.model.GetAllUserResponse;
 import com.bang.module.home.survey.model.ContactModel;
 import com.bang.network.ApiCallback;
@@ -53,7 +57,8 @@ public class ContactFragment extends BaseFragment implements ApiCallback.GetAllU
     private ArrayList<GetAllUserResponse.DataBean.UserListBean> userListBeans;
     private String cnctNumber = "";
     private String forUserId = "";
-    ContactListAdapter contactListAdapter;
+    private String userFullName = "";
+    private ContactListAdapter contactListAdapter;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String date = "";
@@ -86,7 +91,8 @@ public class ContactFragment extends BaseFragment implements ApiCallback.GetAllU
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
         init(view);
-        callAPi();
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> callAPi(), 1000 );
         storeContacts = new ArrayList<>();
         return view;
     }
@@ -122,24 +128,30 @@ public class ContactFragment extends BaseFragment implements ApiCallback.GetAllU
     }
 
     private void callAPi() {
-        new ContactListManager(this, mContext).callAllUserList();
+        if (AppHelper.isConnectingToInternet(mContext)) {
+            new ContactListManager(this, mContext).callAllUserList();
+        } else {
+            CustomToast.getInstance(mContext).showToast(mContext, getString(R.string.alert_no_network));
+        }
     }
 
     private void setContactList() {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-        contactListAdapter = new ContactListAdapter(new ClickListener.ContactNumberClick() {
-            @Override
-            public void onContactClick(String number) {
-                try {
-                    cnctNumber = number;
-                    for (int j = 0; j < userListBeans.size(); j++) {
-                        if (userListBeans.get(j).getPhone_number().equals(number)) {
-                            forUserId = String.valueOf(userListBeans.get(j).getUserId());
-                            break;
-                        }
+        contactListAdapter = new ContactListAdapter((number, name) -> {
+            try {
+                cnctNumber = number;
+                userFullName = name;
+                for (int j = 0; j < userListBeans.size(); j++) {
+                    if (userListBeans.get(j).getPhone_number().equals(number)) {
+                        forUserId = String.valueOf(userListBeans.get(j).getUserId());
+                        break;
+                    }else {
+                        forUserId = "0";
                     }
-                }catch (Exception e){e.printStackTrace();}
-            }
+                }
+                final Handler handler = new Handler();
+                handler.postDelayed(() -> ((BangParentActivity) mContext).replaceFragment(SelectingGenderFragment.newInstance(date,time,forUserId,userFullName), false, R.id.frameAddSurvey), 200);
+            }catch (Exception e){e.printStackTrace();}
         }, storeContacts, mContext, userListBeans);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
@@ -150,7 +162,7 @@ public class ContactFragment extends BaseFragment implements ApiCallback.GetAllU
     /**
      * Contact access code from mobile 03-06-19
      */
-    public List<ContactModel> getContacts(Context ctx) {
+     List<ContactModel> getContacts(Context ctx) {
         ContentResolver contentResolver = ctx.getContentResolver();
         Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         assert cursor != null;
@@ -254,7 +266,7 @@ public class ContactFragment extends BaseFragment implements ApiCallback.GetAllU
                 if (cnctNumber.equals("")) {
                     CustomToast.getInstance(mContext).showToast(mContext, "Please select contact first");
                 } else {
-                    ((BangParentActivity) mContext).replaceFragment(SelectingGenderFragment.newInstance(date,time,forUserId), false, R.id.frameAddSurvey);
+                    ((BangParentActivity) mContext).replaceFragment(SelectingGenderFragment.newInstance(date,time,forUserId,userFullName), false, R.id.frameAddSurvey);
                 }
                 break;
         }

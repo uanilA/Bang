@@ -2,8 +2,8 @@ package com.bang.module.home.profile.followersfollowing;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -23,7 +23,6 @@ import com.bang.module.home.profile.otheruserProfile.OtherUserProfileActivity;
 import com.bang.network.ApiCallback;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FollowersActivity extends BangParentActivity implements ApiCallback.FollowersCallback, View.OnClickListener {
 
@@ -35,6 +34,7 @@ public class FollowersActivity extends BangParentActivity implements ApiCallback
     private RecyclerView followersListRecyclerView;
     private TextView tvFollowersTitle;
     private EditText etFilterField;
+    private TextView tvNoFollowers;
     private int offset = 0;
     private FollowingRecyclerViewAdapter followingRecyclerViewAdapter;
 
@@ -78,6 +78,7 @@ public class FollowersActivity extends BangParentActivity implements ApiCallback
     private void init() {
         findViewById(R.id.ivFollowersBack).setOnClickListener(this);
         etFilterField = findViewById(R.id.etFilterField);
+        tvNoFollowers = findViewById(R.id.tvNoFollowers);
         followersListRecyclerView = findViewById(R.id.followersListRecyclerView);
         tvFollowersTitle = findViewById(R.id.tvFollowersTitle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -119,6 +120,14 @@ public class FollowersActivity extends BangParentActivity implements ApiCallback
 
     @Override
     public void onSuccessFollowing(FollowingResponse followingResponse) {
+        if (followingResponse.getData().getFollowing_list().size() > 0){
+            tvNoFollowers.setVisibility(View.GONE);
+            followersListRecyclerView.setVisibility(View.VISIBLE);
+        }else {
+            tvNoFollowers.setVisibility(View.VISIBLE);
+            followersListRecyclerView.setVisibility(View.GONE);
+            tvNoFollowers.setText(getResources().getString(R.string.no_following));
+        }
         if (followingResponse.getData().getFollowing_list() != null) {
             followingListBeans = new ArrayList<>(followingResponse.getData().getFollowing_list());
            // followingListBeans.addAll(followingResponse.getData().getFollowing_list());
@@ -133,10 +142,22 @@ public class FollowersActivity extends BangParentActivity implements ApiCallback
             followersListRecyclerView.setAdapter(followingRecyclerViewAdapter);
         }
 
+
+
     }
 
     @Override
     public void onSuccessFollowers(FollowersResponse followersResponse) {
+
+        if (followersResponse.getData().getFollower_list().size() > 0){
+            tvNoFollowers.setVisibility(View.GONE);
+            followersListRecyclerView.setVisibility(View.VISIBLE);
+        }else {
+            tvNoFollowers.setVisibility(View.VISIBLE);
+            followersListRecyclerView.setVisibility(View.GONE);
+            tvNoFollowers.setText(getResources().getString(R.string.no_followers_yet));
+        }
+
         if (followersResponse.getData().getFollower_list() != null) {
             followerListBeans = new ArrayList<>(followersResponse.getData().getFollower_list());
            // followerListBeans.addAll(followersResponse.getData().getFollower_list());
@@ -150,6 +171,8 @@ public class FollowersActivity extends BangParentActivity implements ApiCallback
                     });
             followersListRecyclerView.setAdapter(followingRecyclerViewAdapter);
         }
+
+
     }
 
     @Override

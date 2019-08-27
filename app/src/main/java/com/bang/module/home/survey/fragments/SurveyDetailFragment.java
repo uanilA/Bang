@@ -3,10 +3,10 @@ package com.bang.module.home.survey.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +53,8 @@ public class SurveyDetailFragment extends BaseFragment implements View.OnClickLi
     private int offset = 0;
     private String userId = "";
     private long mLastClickTime = 0;
+    private RelativeLayout rlTransparentLayout;
+    private ImageView ivSendComment;
 
     private SurveyDetailModel.DataBean.SurveyDataBean mSurveyData;
 
@@ -102,16 +104,18 @@ public class SurveyDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void apiCalling(int myOffset) {
-        new SurveyDetailManager(this, mContext).callViewSurveyDetail(mParam1, mParam2, String.valueOf(myOffset), "20");
+        new SurveyDetailManager(this, mContext).callViewSurveyDetail(mParam1, String.valueOf(myOffset), "20");
     }
 
     private void init(View view) {
         surveyCommentListBeans = new ArrayList<>();
         rcvCommentList = view.findViewById(R.id.rcvCommentList);
         tvNotYesComment = view.findViewById(R.id.tvNotYesComment);
+        ivSendComment = view.findViewById(R.id.ivSendComment);
         ((SurveyDetailActivity) mContext).findViewById(R.id.ivBack).setOnClickListener(this);
         TextView tvHeaderTitle = ((SurveyDetailActivity) mContext).findViewById(R.id.tvHeaderTitle);
         rlBadgeBackground = view.findViewById(R.id.rlBadgeBackground);
+        rlTransparentLayout = view.findViewById(R.id.rlTransparentLayout);
         tvHeaderTitle.setText(mContext.getString(R.string.survey_detail));
 
         ((SurveyDetailActivity) mContext).findViewById(R.id.ivDetailMenu).setOnClickListener(this);
@@ -122,7 +126,7 @@ public class SurveyDetailFragment extends BaseFragment implements View.OnClickLi
         tvBadgeUserName = view.findViewById(R.id.tvBadgeUserName);
         ivUserImageDetail = view.findViewById(R.id.ivUserImageDetail);
         ivUserImageDetail.setOnClickListener(this);
-        view.findViewById(R.id.ivSendComment).setOnClickListener(this);
+        ivSendComment.setOnClickListener(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         rcvCommentList.setLayoutManager(layoutManager);
@@ -218,6 +222,15 @@ public class SurveyDetailFragment extends BaseFragment implements View.OnClickLi
             }
             assert mSurveyData != null;
             userId = String.valueOf(mSurveyData.getUser_id());
+            if (userId.equals("0")){
+                rlTransparentLayout.setVisibility(View.VISIBLE);
+                edCommentText.setEnabled(false);
+                ivSendComment.setEnabled(false);
+            }else {
+                rlTransparentLayout.setVisibility(View.GONE);
+                edCommentText.setEnabled(true);
+                ivSendComment.setEnabled(true);
+            }
         }
     }
 

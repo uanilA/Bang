@@ -1,5 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Bang</string>
+
+    <!--Location places Api key -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBSCzFepAPHkUyfpECX13Xl0IR63xWGGjk</string>
     <string name="welcome_to">Welcome To Bang</string>
     <string name="bang">Bang</string>
     <string name="login_to_continue">Login to continue</string>
@@ -15,6 +18,7 @@
     <string name="search_country">Search Country</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="please_enter_your_mobile_number_we_will_send_verification_code" tools:ignore="ExtraTranslation">Please enter your Email address we will send verification code.</string>
+    <string name="please_enter_your_email_we_will_send_password_your_email" tools:ignore="ExtraTranslation">Please enter your registered email address we will send you password.</string>
     <string name="we_have_sent_you_access_code_via_sms_for_mobile_number_verification">We have sent you access code via SMS for mobile number verification</string>
     <string name="don_t_receive_the_otp">Don\'t receive the OTP?</string>
     <string name="resend">Resend</string>
@@ -70,8 +74,8 @@
     <string name="what_icon_best_represent_your_partners_hygiene">What Icon Best Represent Your Partners Hygiene?</string>
     <string name="connection">CONNECTION</string>
     <string name="what_image_best_represent_the_connection_you_have_with">What Image Best Represent The Connection You Have With?</string>
-    <string name="news_feed">Newsfeed</string>
-    <string name="near_you">Near You </string>
+    <string name="news_feed">Bang Journey</string>
+    <string name="near_you">Bangerverse</string>
     <string name="messages">Messages</string>
     <string name="_10">10</string>
     <string name="no_message_yet">No Message Yet !</string>
@@ -83,8 +87,8 @@
     <string name="pref_key_transition_time" translatable="false">pref_key_transition_time</string>
     <string name="may_2_2018">May 2 , 2018</string>
     <string name="smith">Smith</string>
-    <string name="william_ethan_is_addictive_with_james">William ethan is Addictive with @james</string>
-    <string name="_30_likes">30 Likes</string>
+    <string name="william_ethan_is_addictive_with_james">William ethan is Addictive with</string>
+    <string name="_30_likes">30</string>
     <string name="followers">Followers</string>
     <string name="post">Post</string>
     <string name="addictive">ADDICTIVE</string>
@@ -152,7 +156,7 @@
     <string name="email">Email address</string>
     <string name="password">Password</string>
     <string name="change">Change Email</string>
-    <string name="invalid_email">Please ener valid email</string>
+    <string name="invalid_email">Please enter valid email</string>
     <string name="invalid_password">Please enter valid password</string>
     <string name="invalid_number">Please enter valid number</string>
     <string name="enable_gps">Please Turn On Your Location</string>
@@ -164,7 +168,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="cancel">CANCEL</string>
     <string name="add_new_post">Add New Post</string>
-    <string name="give_survey">Give Survey</string>
+    <string name="give_survey">Bang Survey</string>
     <string name="total_send_survey">Total Send Survey</string>
     <string name="following">Following</string>
     <string name="add_your_post">Add Your Post</string>
@@ -187,5 +191,34 @@
     <string name="news_feed_not_found">No Newsfeed Yet!</string>
     <string name="my_post">My Post</string>
     <string name="profile">Profile</string>
+    <string name="john_smith">John Smith</string>
+    <string name="accept">ACCEPT</string>
+    <string name="reject">REJECT</string>
+    <string name="accepted">ACCEPTED</string>
+    <string name="rejected">REJECTED</string>
+    <string name="no_bang_request">No Bang Request Yet!</string>
+    <string name="follower">Follower</string>
+    <string name="changes">Change</string>
+    <string name="your_location">Your Location</string>
+    <string name="no_nearby_user_found">No NearBy User Found</string>
+    <string name="cnfm_password">Confirm Password</string>
+    <string name="na">N/A</string>
+    <string name="password_length">Password length should be 8 character</string>
+    <string name="password_match">Password and confirm password do not match</string>
+    <string name="no_post">No Post Yet</string>
+    <string name="no_following">No Following Yet</string>
+    <string name="no_followers_yet">No Followers Yet</string>
+    <string name="enter_pass">Please enter password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="submit">Submit</string>
+    <string name="forgot_password_label">Forgot Your Password ?</string>
+    <string name="send_label">SEND</string>
+    <string name="set_preference">SET PREFERENCE</string>
+    <string name="preference_not_setup_label">You have not setup any preference, please setup first to give bang survey of your partner.</string>
+    <string name="send_nda">Send NDA</string>
+    <string name="send_consent">Send Consent</string>
+    <string name="block_user">Block User</string>
+    <string name="delete_chat">Delete Chat</string>
+    <string name="type_a_message">Type a message..</string>
 
 </resources>

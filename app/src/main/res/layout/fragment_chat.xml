@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".module.home.chatmodule.ChatFragment">
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_chat_header"
+        layout="@layout/chat_header_layout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvChatList"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/cardChat"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view_chat_header"/>
+
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/chat_more_layout"
+        android:visibility="gone"
+        android:layout_margin="@dimen/_20sdp"
+        android:layout_alignParentEnd="true"/>
+
+
+     <androidx.cardview.widget.CardView
+         android:layout_width="match_parent"
+         android:id="@+id/cardChat"
+         android:layout_height="@dimen/_40sdp"
+         android:layout_alignParentBottom="true">
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="@dimen/_4sdp"
+             android:layout_marginTop="@dimen/_6sdp"
+             android:layout_marginEnd="@dimen/_4sdp"
+             android:layout_marginBottom="@dimen/_6sdp">
+
+             <ImageView
+                 android:layout_width="@dimen/_20sdp"
+                 android:layout_height="@dimen/_20sdp"
+                 android:id="@+id/ivSendImage"
+                 android:layout_margin="@dimen/_5sdp"
+                 android:layout_centerVertical="true"
+                 android:src="@drawable/ic_chat_camera_icon"/>
+
+             <EditText
+                 android:id="@+id/edCommentText"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:layout_marginTop="0dp"
+                 android:layout_toEndOf="@+id/ivSendImage"
+                 android:layout_toStartOf="@+id/ivSendComment"
+                 android:background="@color/transparent"
+                 android:hint="@string/type_a_message"
+                 android:importantForAutofill="no"
+                 android:maxLength="300"
+                 android:maxLines="5"
+                 android:paddingStart="@dimen/_8sdp"
+                 android:paddingTop="@dimen/_5sdp"
+                 android:paddingEnd="@dimen/_5sdp"
+                 android:paddingBottom="@dimen/_5sdp"
+                 android:textColor="@color/colorTextName"
+                 android:textColorHint="@color/colorTextName"
+                 android:textSize="@dimen/_12ssp"
+                 tools:ignore="TextFields,UnusedAttribute" />
+
+
+             <androidx.appcompat.widget.AppCompatImageView
+                 android:id="@+id/ivSendComment"
+                 android:layout_width="@dimen/_25sdp"
+                 android:layout_height="@dimen/_25sdp"
+                 android:layout_alignParentEnd="true"
+                 android:layout_centerVertical="true"
+                 android:layout_marginEnd="@dimen/_10sdp"
+                 android:src="@drawable/chat_send_icon" />
+
+         </RelativeLayout>
+     </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

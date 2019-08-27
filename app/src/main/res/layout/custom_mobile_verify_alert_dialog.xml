@@ -6,7 +6,7 @@
     android:layout_marginLeft="@dimen/_25sdp"
     android:layout_marginRight="@dimen/_25sdp">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorwhite"
@@ -107,6 +107,6 @@
 
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

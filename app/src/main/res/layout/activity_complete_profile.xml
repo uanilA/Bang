@@ -7,7 +7,7 @@
     android:focusableInTouchMode="true"
     tools:context=".module.authentication.profilecompletion.CompleteProfileActivity">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/_10sdp"
@@ -28,7 +28,7 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_110sdp"
                     android:layout_gravity="center"
@@ -70,7 +70,7 @@
                         android:layout_centerInParent="true"
                         android:src="@drawable/user_img" />
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivCameraSelect"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
@@ -171,14 +171,14 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight=".4">
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ivCountryFlag"
                             android:layout_width="@dimen/_26sdp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/flag_us" />
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center|end"
@@ -247,6 +247,39 @@
 
                 </LinearLayout>
 
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:id="@+id/llSignUpConfirmPassword"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@drawable/login_background"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <EditText
+                        android:id="@+id/etSignUpConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".6"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:hint="@string/cnfm_password"
+                        android:inputType="textPassword"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/colorWelcomeText"
+                        android:textColorHint="@color/colorTextHint"
+                        android:textSize="@dimen/_11sdp"
+                        tools:ignore="Autofill,InefficientWeight" />
+
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tvProfileDoneButton"
                     android:layout_width="match_parent"
@@ -264,6 +297,6 @@
 
             </LinearLayout>
         </ScrollView>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bang.R;
 import com.bang.errorResponse.APIErrors;
@@ -36,7 +36,7 @@ public class SignUpManager {
     }
 
     public void callSignUpApi(String fullName1, String email1,String password1 ,String countryCode1, String phoneNumber1, String deviceToken1, String deviceType1,
-                              String signupFrom1, Uri uri, String socialType, String socialId, String facebookimage1) {
+                              String signupFrom1, Uri uri, String socialType, String socialId,String countryFlagCode1, String facebookimage1) {
         signUpCallback.onShowBaseLoader();
         RequestBody fullName    = RequestBody.create(MediaType.parse("text/plain"), fullName1);
         RequestBody countryCode = RequestBody.create(MediaType.parse("text/plain"), countryCode1);
@@ -46,6 +46,7 @@ public class SignUpManager {
         RequestBody signupFrom  = RequestBody.create(MediaType.parse("text/plain"), signupFrom1);
         RequestBody email       = RequestBody.create(MediaType.parse("text/plain"), email1);
         RequestBody password    = RequestBody.create(MediaType.parse("text/plain"), password1);
+        RequestBody countryFlagCode = RequestBody.create(MediaType.parse("text/plain"),countryFlagCode1);
         MultipartBody.Part body = null;
         if (uri != null) {
             if (String.valueOf(uri).contains("file:")) {
@@ -69,16 +70,16 @@ public class SignUpManager {
         Call<SignUpResponse> signUpResponseCall;
         if (facebookimage1.equals("")) {
             signUpResponseCall = api.callSignUpApi(fullName,email,password, countryCode, phoneNumber, deviceToken
-                    , deviceType, body);
+                    , deviceType,countryFlagCode, body);
         } else {
             RequestBody socialType1 = RequestBody.create(MediaType.parse("text/plain"), socialType);
             RequestBody socialId1 = RequestBody.create(MediaType.parse("text/plain"), socialId);
             if (uri != null) {
                 signUpResponseCall = api.callSignUpApi2(fullName, countryCode, phoneNumber,email, deviceToken
-                        , deviceType, socialType1, socialId1,body);
+                        , deviceType, socialType1, socialId1,countryFlagCode,body);
             } else {
                 signUpResponseCall = api.callSignUpApi1(fullName1, countryCode1, phoneNumber1,email1, deviceToken1
-                        , deviceType1, facebookimage1, socialType, socialId);
+                        , deviceType1, facebookimage1, socialType,countryFlagCode1, socialId);
             }
         }
         signUpResponseCall.enqueue(new Callback<SignUpResponse>() {

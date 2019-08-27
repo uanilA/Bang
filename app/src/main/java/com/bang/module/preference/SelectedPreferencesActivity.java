@@ -3,8 +3,8 @@ package com.bang.module.preference;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,10 +12,10 @@ import android.widget.TextView;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.base.BangParentActivity;
+import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.module.preference.adapter.SelectedPrefAdapter;
 import com.bang.module.preference.manager.SelectedPreferencesManager;
-import com.bang.module.preference.model.SelectedPrefList;
 import com.bang.module.preference.model.SelectedReferencesResponse;
 import com.bang.network.ApiCallback;
 import com.bang.base.GetClickListener;
@@ -52,7 +52,11 @@ public class SelectedPreferencesActivity extends BangParentActivity implements V
 
 
     private void apiCalling() {
-        new SelectedPreferencesManager(this, SelectedPreferencesActivity.this).callPreferenceApi("preference");
+        if (AppHelper.isConnectingToInternet(SelectedPreferencesActivity.this)) {
+            new SelectedPreferencesManager(this, SelectedPreferencesActivity.this).callPreferenceApi("preference");
+        } else {
+            CustomToast.getInstance(SelectedPreferencesActivity.this).showToast(SelectedPreferencesActivity.this, getString(R.string.alert_no_network));
+        }
     }
 
     @Override

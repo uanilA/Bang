@@ -3,8 +3,8 @@ package com.bang.module.home.newsfeed.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,22 +23,27 @@ public class CreatePostActivity extends BangParentActivity implements View.OnCli
 
     private ImageView ivBack;
     private String screenPost = "";
+    private String report_To_userId = "";
+    private String report_news_feedId = "";
     private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
-        init();
-        ivBack.setOnClickListener(this);
         if (getIntent().getStringExtra("post_for_screen") != null) {
             screenPost = getIntent().getStringExtra("post_for_screen");
             if (screenPost.equals("CreatePost")) {
                 addFragment(CreatePostFragment.newInstance(), false, R.id.frameCreatePost);
             } else {
-                addFragment(ReportFragment.newInstance(), false, R.id.frameCreatePost);
+                report_To_userId = getIntent().getStringExtra("report_To_userId");
+                report_news_feedId = getIntent().getStringExtra("report_news_feedId");
+                addFragment(ReportFragment.newInstance(report_To_userId, report_news_feedId), false, R.id.frameCreatePost);
             }
         }
+        init();
+        ivBack.setOnClickListener(this);
+
     }
 
     private void init() {
@@ -46,10 +51,11 @@ public class CreatePostActivity extends BangParentActivity implements View.OnCli
         LinearLayout llHomeMenu = findViewById(R.id.llHomeMenu);
         llHomeMenu.setVisibility(View.GONE);
         TextView tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
-        if (screenPost.equals("CreatePost"))
-        tvHeaderTitle.setText(getString(R.string.create_post));
-        else
-        tvHeaderTitle.setText(getString(R.string.report));
+        if (screenPost.equals("CreatePost")) {
+            tvHeaderTitle.setText(getString(R.string.create_post));
+        } else {
+            tvHeaderTitle.setText(getString(R.string.report));
+        }
     }
 
     @Override

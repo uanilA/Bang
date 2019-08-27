@@ -8,8 +8,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +23,7 @@ import com.bang.helper.Constant;
 import com.bang.helper.CustomToast;
 import com.bang.image.picker.ImagePicker;
 import com.bang.image.picker.ImageRotator;
+import com.bang.module.home.MainActivity;
 import com.bang.module.home.newsfeed.model.AddNewsResponse;
 import com.bang.module.home.newsfeed.presenter.AddNewsFeedPresenter;
 import com.bang.network.ApiCallback;
@@ -218,6 +219,7 @@ public class CreatePostFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onSuccessAddNewsFeed(AddNewsResponse addNewsResponse) {
         CustomToast.getInstance(mContext).showToast(mContext, addNewsResponse.getMessage());
+        startActivity(new Intent(mContext, MainActivity.class));
         activity.finish();
     }
 

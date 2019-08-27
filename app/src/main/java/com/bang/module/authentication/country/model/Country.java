@@ -13,10 +13,10 @@ public class Country {
     }
 
     private int flag;
-    @SerializedName("country_name")
+    @SerializedName("name")
     @Expose
     private String countryName;
-    @SerializedName("phone_code")
+    @SerializedName("dial_code")
     @Expose
     private Integer phoneCode;
     @SerializedName("code")

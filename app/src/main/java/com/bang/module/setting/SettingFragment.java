@@ -4,7 +4,7 @@ import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.base.BaseFragment;
+import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
+import com.bang.module.authentication.genderselection.GenderSelectionActivity;
 import com.bang.module.setting.manager.LogoutManager;
 import com.bang.module.setting.model.ChangePasswordResponse;
 import com.bang.module.setting.model.LogoutResponse;
@@ -92,8 +94,13 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                 } else if (!etNewPassword.getText().toString().equals(etConfirmPassword.getText().toString())) {
                     CustomToast.getInstance(mContext).showToast(mContext, "New password and confirm password is not match");
                 } else {
-                    new LogoutManager(this, mContext).callChangePasswordApi(etOldPassword.getText().toString(),
-                            etNewPassword.getText().toString(), etConfirmPassword.getText().toString());
+                    if (AppHelper.isConnectingToInternet(mContext)) {
+                        new LogoutManager(this, mContext).callChangePasswordApi(etOldPassword.getText().toString(),
+                                etNewPassword.getText().toString(), etConfirmPassword.getText().toString());
+                    } else {
+                        CustomToast.getInstance(mContext).showToast(mContext, getString(R.string.alert_no_network));
+                    }
+
                 }
                 break;
             case R.id.ivCrossChangePass:
@@ -119,7 +126,6 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     public void onTokenChangeError(String errorMessage) {
         activity.showDialog(mContext, errorMessage);
     }
-
 
     @Override
     public void onShowBaseLoader() {

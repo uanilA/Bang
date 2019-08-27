@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,8 @@ import com.bang.base.BaseFragment;
 import com.bang.base.ClickListener;
 import com.bang.helper.CustomToast;
 import com.bang.module.home.MainActivity;
+import com.bang.module.home.addsurvey.AddSurveyActivity;
 import com.bang.module.home.newsfeed.adapter.NewsFeedAdapter;
-import com.bang.module.home.newsfeed.model.LikeListResponse;
 import com.bang.module.home.newsfeed.model.NewsFeedResponse;
 import com.bang.module.home.newsfeed.presenter.NewsFeedPresenter;
 import com.bang.module.home.profile.followersfollowing.model.LikeResponse;
@@ -40,15 +41,15 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
     private BottomSheetDialog dialog;
     private BottomSheetDialog reportUserDialog;
     private long mLastClickTime = 0;
-    private List<NewsFeedResponse.DataBean.NewsfeedListBean> newsfeedListBeans;
+    public List<NewsFeedResponse.DataBean.NewsfeedListBean> newsfeedListBeans;
     private RecyclerView rcvNewsFeedList;
     private NewsFeedAdapter adapter;
+    private SwipeRefreshLayout simpleSwipeRefreshLayout;
     private int offset = 0;
     private int index;
     private View no_survey_avail;
-    private ImageView ivNoRecordFound;
-    private TextView tvTitleNotYet;
-    private TextView tvDetailOfNewsFeed;
+    private String reportToUserId = "";
+    private String newsFeedId = "";
 
     public NewsFeedFragment() {
     }
@@ -72,12 +73,14 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
         adapter = new NewsFeedAdapter(mContext, newsfeedListBeans, new ClickListener.NewsFeedClick() {
             @Override
             public void onProfileClick(int position) {
-                startActivity(new Intent(mContext, OtherUserProfileActivity.class)
-                        .putExtra("OtherUserId", String.valueOf(newsfeedListBeans.get(position).getPosted_by_user_id())));
+                if (newsfeedListBeans.get(position).getIs_anonymous() != 1)
+                    startActivity(new Intent(mContext, OtherUserProfileActivity.class).putExtra("OtherUserId", String.valueOf(newsfeedListBeans.get(position).getPosted_by_user_id())));
             }
 
             @Override
             public void onReportTUserClick(int position) {
+                reportToUserId = String.valueOf(newsfeedListBeans.get(position).getPosted_by_user_id());
+                newsFeedId = String.valueOf(newsfeedListBeans.get(position).getNewsfeed_id());
                 ReportUserDilaog();
             }
 
@@ -97,6 +100,12 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
                 index = position;
                 likeApiCalling(position);
             }
+
+            @Override
+            public void onUserNameClick(int position) {
+                startActivity(new Intent(mContext, OtherUserProfileActivity.class)
+                        .putExtra("OtherUserId", String.valueOf(newsfeedListBeans.get(position).getSurveyed_user_id())));
+            }
         });
         rcvNewsFeedList.setAdapter(adapter);
         return view;
@@ -109,6 +118,7 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        newsfeedListBeans.clear();
         apiCalling(offset);
     }
 
@@ -119,17 +129,33 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
 
     private void init(View view) {
         newsfeedListBeans = new ArrayList<>();
+        newsfeedListBeans.clear();
         ((MainActivity) mContext).findViewById(R.id.iv_addSurvey).setOnClickListener(this);
-        no_survey_avail =view.findViewById(R.id.no_survey_avail);
-        ivNoRecordFound = view.findViewById(R.id.ivNoRecordFound);
-        tvTitleNotYet = view.findViewById(R.id.tvTitleNotYet);
-        tvDetailOfNewsFeed = view.findViewById(R.id.tvDetailOfNewsFeed);
+        no_survey_avail = view.findViewById(R.id.no_survey_avail);
+        ImageView ivNoRecordFound = view.findViewById(R.id.ivNoRecordFound);
+        TextView tvTitleNotYet = view.findViewById(R.id.tvTitleNotYet);
+        TextView tvDetailOfNewsFeed = view.findViewById(R.id.tvDetailOfNewsFeed);
         tvDetailOfNewsFeed.setVisibility(View.GONE);
 
         ivNoRecordFound.setImageResource(R.drawable.ic_unlike_icon);
         tvTitleNotYet.setText(getString(R.string.news_feed_not_found));
         rcvNewsFeedList = view.findViewById(R.id.rcvNewsFeedList);
         rcvNewsFeedList.setHasFixedSize(true);
+        simpleSwipeRefreshLayout = view.findViewById(R.id.simpleSwipeRefreshLayout);
+        simpleSwipeRefreshLayout.setColorSchemeResources(R.color.colorBang);
+        /*On Refresh listener*/
+        simpleSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // cancel the Visual indication of a refresh
+                newsfeedListBeans.clear();
+                simpleSwipeRefreshLayout.setRefreshing(false);
+                offset = 0;
+                apiCalling(offset);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         rcvNewsFeedList.setLayoutManager(layoutManager);
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -137,7 +163,7 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (page != 0) {
                     adapter.showLoading(true);
-                    offset = offset + 20; //load 20 items in recyclerview
+                    offset = offset + 20; //load 20 items in recyclerView
                     apiCalling(offset);
                 }
             }
@@ -156,8 +182,9 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
         dialog = new BottomSheetDialog(mContext, R.style.CustomBottomSheetDialogTheme);
         dialog.setContentView(view);
         dialog.setCancelable(false);
-        Objects.requireNonNull(dialog.findViewById(R.id.cardCancel)).setOnClickListener(this);
-        Objects.requireNonNull(dialog.findViewById(R.id.llAddNewPost)).setOnClickListener(this);
+        dialog.findViewById(R.id.cardCancel).setOnClickListener(this);
+        dialog.findViewById(R.id.llAddNewPost).setOnClickListener(this);
+        dialog.findViewById(R.id.llAddBangSurvey).setOnClickListener(this);
         dialog.show();
     }
 
@@ -166,8 +193,8 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
         reportUserDialog = new BottomSheetDialog(mContext, R.style.CustomBottomSheetDialogTheme);
         reportUserDialog.setContentView(view);
         reportUserDialog.setCancelable(false);
-        Objects.requireNonNull(reportUserDialog.findViewById(R.id.cardReportUserCancel)).setOnClickListener(this);
-        Objects.requireNonNull(reportUserDialog.findViewById(R.id.llReportUser)).setOnClickListener(this);
+        reportUserDialog.findViewById(R.id.cardReportUserCancel).setOnClickListener(this);
+        reportUserDialog.findViewById(R.id.llReportUser).setOnClickListener(this);
         reportUserDialog.show();
     }
 
@@ -195,7 +222,13 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
             case R.id.llReportUser:
                 reportUserDialog.dismiss();
                 startActivity(new Intent(mContext, CreatePostActivity.class)
-                        .putExtra("post_for_screen", "ReportUser"));
+                        .putExtra("post_for_screen", "ReportUser")
+                        .putExtra("report_To_userId", reportToUserId)
+                        .putExtra("report_news_feedId", newsFeedId));
+                break;
+            case R.id.llAddBangSurvey:
+                dialog.dismiss();
+                startActivity(new Intent(mContext, AddSurveyActivity.class));
                 break;
         }
     }
@@ -203,12 +236,12 @@ public class NewsFeedFragment extends BaseFragment implements ApiCallback.NewsFe
     @Override
     public void onSuccessNewsFeed(NewsFeedResponse newsFeedResponse) {
         adapter.showLoading(false);
-        if (newsFeedResponse.getData().getNewsfeed_list().size() > 0){
+        newsfeedListBeans.addAll(newsFeedResponse.getData().getNewsfeed_list());
+        if (newsfeedListBeans.size() > 0) {
             no_survey_avail.setVisibility(View.GONE);
-            newsfeedListBeans.addAll(newsFeedResponse.getData().getNewsfeed_list());
             adapter.notifyDataSetChanged();
-        }else {
-          //  newsfeedListBeans.clear();
+        } else {
+            //  newsfeedListBeans.clear();
             adapter.notifyDataSetChanged();
             no_survey_avail.setVisibility(View.VISIBLE);
         }

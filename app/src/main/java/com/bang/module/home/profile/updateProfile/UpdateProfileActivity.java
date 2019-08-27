@@ -7,9 +7,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.bang.R;
 import com.bang.base.BangParentActivity;
 import com.bang.helper.Constant;
+import com.bang.helper.CustomPhoneTextWatcher;
 import com.bang.helper.CustomToast;
 import com.bang.image.picker.ImagePicker;
 import com.bang.image.picker.ImageRotator;
@@ -55,12 +57,12 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
 
      private Uri imageUri;
      private Bitmap profileImageBitmap;
-     private String myCode="";
      private String countryCode = "";
+     private String countryFlagCode = "";
      private List<Country> mCountries;
      private int[] flags = Utility.countryFlags;
      private boolean isval=true;
-    // private long mLastClickTime = 0;
+     private long mLastClickTime = 0;
 
 
     @Override
@@ -86,6 +88,7 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
         ivCameraSelect = findViewById(R.id.ivCameraSelect);
         etFullName = findViewById(R.id.etFullName);
         etUpdateMobile = findViewById(R.id.etUpdateMobile);
+        etUpdateMobile.addTextChangedListener(new CustomPhoneTextWatcher(etUpdateMobile));
         tvProfileDoneButton = findViewById(R.id.tvProfileDoneButton);
         etUpdateEmail = findViewById(R.id.etUpdateEmail);
         ivCountryFlag = findViewById(R.id.ivCountryFlag);
@@ -98,12 +101,13 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
         countryCode = getIntent().getStringExtra("countryCode");
         String mobileNumber = getIntent().getStringExtra("mobileNumber");
         String emailAddress = getIntent().getStringExtra("emailAddress");
+        countryFlagCode = getIntent().getStringExtra("flagCode");
         etFullName.setText(userName);
         etUpdateMobile.setText(mobileNumber);
         etUpdateEmail.setText(emailAddress);
         Glide.with(UpdateProfileActivity.this).load(userImage).error(R.drawable.user_img).into(ivUserProfile);
         if (isval){
-            getCurrentCountry(countryCode);
+            getCurrentCountry(countryFlagCode);
         }
     }
 
@@ -112,13 +116,15 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
         isval = false;
         try {
             mCountries.addAll(Arrays.asList(
-                    new Gson().fromJson(Utility.loadJSONFromAsset(UpdateProfileActivity.this, "country_code.json"), Country[].class)));
+                    new Gson().fromJson(Utility.loadJSONFromAsset(UpdateProfileActivity.this, "countries.json"), Country[].class)));
             for (int i = 0; i < mCountries.size(); i++) {
                 mCountries.get(i).setFlag(flags[i]);
             }
-            String tmpString = phoneCode.replaceAll("\\D", "");
+            phoneCode = phoneCode.replaceAll("\\s", "");
             for (int i = 0; i < mCountries.size(); i++) {
-                if (mCountries.get(i).getPhoneCode().equals(Integer.parseInt(tmpString))) {
+                String myCode=mCountries.get(i).getCode();
+                myCode=myCode.replaceAll("\\s","");
+                if (myCode.equals(phoneCode) || myCode.toLowerCase().equals(phoneCode)) {
                     ivCountryFlag.setImageResource(mCountries.get(i).getFlag());
                 }
             }
@@ -164,8 +170,9 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
                 Glide.with(this).load(profileImageBitmap).apply(new RequestOptions().placeholder(ContextCompat.getDrawable(this, R.drawable.user_img))).into(ivUserProfile);
             } else if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
                     int country_flag = data.getIntExtra("country_flag", -1);
-                    myCode = data.getStringExtra("country_code");
-                    countryCode = "+"+myCode;
+                    String myCode = data.getStringExtra("country_code");
+                    countryFlagCode = data.getStringExtra("countryFlagCode");
+                    countryCode = "+"+ myCode;
                     System.out.println("*****************" + country_flag);
                     if (country_flag != -1) {
                         ivCountryFlag.setImageResource(country_flag);
@@ -177,19 +184,16 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
     @Override
     public void onClick(View v) {
 
-       /* if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();*/
-
+        mLastClickTime = SystemClock.elapsedRealtime();
         switch (v.getId()){
             case R.id.ivCameraSelect:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(
-                                new String[]{Manifest.permission.CAMERA,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                Constant.MY_PERMISSIONS_REQUEST_CAMERA);
+                                new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constant.MY_PERMISSIONS_REQUEST_CAMERA);
                     } else {
                         ImagePicker.pickImage(UpdateProfileActivity.this);
                     }
@@ -202,8 +206,7 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
                     if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(
                                 new String[]{Manifest.permission.CAMERA,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                Constant.MY_PERMISSIONS_REQUEST_CAMERA);
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constant.MY_PERMISSIONS_REQUEST_CAMERA);
                     } else {
                         ImagePicker.pickImage(UpdateProfileActivity.this);
                     }
@@ -215,10 +218,12 @@ public class UpdateProfileActivity extends BangParentActivity implements View.On
                   if (etFullName.getText().toString().equals("")){
                       CustomToast.getInstance(UpdateProfileActivity.this).showToast(UpdateProfileActivity.this,"Please enter full name");
                   }else if (etUpdateMobile.getText().toString().equals("")){
-                      CustomToast.getInstance(UpdateProfileActivity.this).showToast(UpdateProfileActivity.this,"Please enter Mobile number");
+                       CustomToast.getInstance(UpdateProfileActivity.this).showToast(UpdateProfileActivity.this,"Please enter Mobile number");
                   }else {
+                      String number = etUpdateMobile.getText().toString().trim();
+                      number = number.replace("-", "");
                       new UpdateProfileManager(this,UpdateProfileActivity.this).callGetMyProfile(etFullName.getText().toString()
-                              ,imageUri,etUpdateMobile.getText().toString(),countryCode);
+                              ,imageUri,number,countryCode,countryFlagCode);
                   }
 
                 break;

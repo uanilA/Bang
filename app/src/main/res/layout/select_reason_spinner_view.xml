@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/tvSelectReasons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:textColor="@color/colorTextHint"
+        android:textSize="@dimen/_12sdp"
+        tools:ignore="Autofill,InefficientWeight" />
+
+</RelativeLayout>

@@ -2,7 +2,9 @@ package com.bang.module.authentication.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -11,21 +13,21 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.base.BangParentActivity;
 import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.helper.Utils;
-import com.bang.helper.Validation;
 import com.bang.module.authentication.country.CountrySelectionActivity;
 import com.bang.module.authentication.country.model.Country;
 import com.bang.module.authentication.genderselection.GenderSelectionActivity;
 import com.bang.module.authentication.login.manager.CheckSocialManager;
 import com.bang.module.authentication.login.model.CheckSocialResponse;
+import com.bang.module.authentication.login.model.ForgotPasswordResponse;
 import com.bang.module.authentication.profilecompletion.CompleteProfileActivity;
 import com.bang.module.authentication.verification.MobileVerificationActivity;
+import com.bang.module.authentication.verification.manager.LoginPresenter;
 import com.bang.module.authentication.verification.model.LoginResponse;
 import com.bang.module.home.MainActivity;
 import com.bang.network.ApiCallback;
@@ -40,7 +42,9 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,16 +60,17 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoginActivity extends BangParentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, ApiCallback.LoginManagerCallback, ApiCallback.CheckSocialCallback {
+public class LoginActivity extends BangParentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener
+        , ApiCallback.LoginManagerCallback, ApiCallback.CheckSocialCallback {
 
     CallbackManager callbackManager;
     LoginManager loginManager;
-    private TextView txtLoginButton;
+    private TextView txtLoginButton,tvForgotPassword;
     private ImageView ivCountryFlag;
     private LinearLayout llSelectCountryGo;
     public static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     private LinearLayout llSignUp;
-    private GoogleApiClient gac;
+    private long mLastClickTime = 0;
     private int RC_SIGN_IN = 100;
     private RelativeLayout rlGoogleSignIn;
     private RelativeLayout rlFacebookLogin;
@@ -75,8 +80,9 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
     private String fullName = "", profileImage = "";
     private String socialType = "", socialId = "";
     private String device_token = "";
-    Session session;
+    private Session session;
 
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,50 +93,46 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 device_token = instanceIdResult.getToken();
-                System.out.println("*****************Token" + device_token);
-                // print token
-            }
+             }
         });
         init();
         session = new Session(LoginActivity.this);
+
         // initializing GoogleApiClient
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        gac = new GoogleApiClient.Builder(LoginActivity.this)
-                .enableAutoManage(LoginActivity.this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        // Facebook Integration
+         // Facebook Integration
         loginManager = LoginManager.getInstance();
-
         callbackManager = CallbackManager.Factory.create();
         loginManager.logOut();
         btn_facebook.setReadPermissions("email");
         facebookLogin();
 
-        txtLoginButton.setOnClickListener(this);
+        txtLoginButton.   setOnClickListener(this);
         llSelectCountryGo.setOnClickListener(this);
-        rlGoogleSignIn.setOnClickListener(this);
-        rlFacebookLogin.setOnClickListener(this);
-        llSignUp.setOnClickListener(this);
+        rlGoogleSignIn.   setOnClickListener(this);
+        rlFacebookLogin.  setOnClickListener(this);
+        llSignUp.         setOnClickListener(this);
+        tvForgotPassword. setOnClickListener(this);
     }
 
     private void init() {
-        etLoginEmail = findViewById(R.id.etLoginEmail);
-        etLoginPassword = findViewById(R.id.etLoginPassword);
-        txtLoginButton = findViewById(R.id.txtLoginButton);
+        tvForgotPassword  = findViewById(R.id.tvForgotPassword);
+        etLoginEmail      = findViewById(R.id.etLoginEmail);
+        etLoginPassword   = findViewById(R.id.etLoginPassword);
+        txtLoginButton    = findViewById(R.id.txtLoginButton);
         llSelectCountryGo = findViewById(R.id.llSelectCountryGo);
-        ivCountryFlag = findViewById(R.id.ivCountryFlag);
-        rlGoogleSignIn = findViewById(R.id.rlGoogleSignIn);
-        rlFacebookLogin = findViewById(R.id.rlFacebookLogin);
-        btn_facebook = findViewById(R.id.btn_facebook);
-        llSignUp = findViewById(R.id.llSignUp);
+        ivCountryFlag     = findViewById(R.id.ivCountryFlag);
+        rlGoogleSignIn    = findViewById(R.id.rlGoogleSignIn);
+        rlFacebookLogin   = findViewById(R.id.rlFacebookLogin);
+        btn_facebook      = findViewById(R.id.btn_facebook);
+        llSignUp          = findViewById(R.id.llSignUp);
+
         if (getCurrentCountry() != null) {
             Country country = getCurrentCountry();
-           // country_code = "+" + country.getPhoneCode();
             ivCountryFlag.setImageResource(country.getFlag());
         }
         // etLoginMobileNumber.addTextChangedListener(new CustomPhoneTextWatcher(etLoginMobileNumber));
@@ -138,27 +140,26 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        Validation validation = new Validation();
         // Preventing multiple clicks, using threshold of 1/2 second
-       /* if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();*/
+        mLastClickTime = SystemClock.elapsedRealtime();
         switch (view.getId()) {
             case R.id.txtLoginButton:
                 String email = etLoginEmail.getText().toString().trim();
                 String password = etLoginPassword.getText().toString().trim();
-                //  number = number.replace("-", "");
-                if (email.equals("")) {
-                    Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
-                } else if (!validation.isEmailValid(etLoginEmail)) {
-                    Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show();
+
+                if (!Utils.checkEmailForValidity(etLoginEmail.getText().toString())) {
+                    Toast.makeText(this, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
                 } else if (password.equals("")) {
-                    CustomToast.getInstance(LoginActivity.this).showToast(LoginActivity.this, "Please enter password");
-                } else if (password.length() < 8) {
-                    CustomToast.getInstance(LoginActivity.this).showToast(LoginActivity.this, "Please enter valid password");
+                    CustomToast.getInstance(LoginActivity.this).showToast(LoginActivity.this, getString(R.string.enter_pass));
                 } else {
-                    new com.bang.module.authentication.verification.manager.LoginManager(this, LoginActivity.this).callLoginApi(email, password,device_token,"0");
+                    if (AppHelper.isConnectingToInternet(LoginActivity.this)) {
+                        new LoginPresenter(this, LoginActivity.this).callLoginApi(email, password, device_token, "0");
+                    } else {
+                        CustomToast.getInstance(LoginActivity.this).showToast(LoginActivity.this, getString(R.string.alert_no_network));
+                    }
                 }
                 break;
             case R.id.llSelectCountryGo:
@@ -168,10 +169,9 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
 
             case R.id.rlGoogleSignIn:
                 socialType = "google";
-                Intent i = Auth.GoogleSignInApi.getSignInIntent(gac);
-                startActivityForResult(i, RC_SIGN_IN);
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
                 showLoader();
-                /* Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();*/
                 break;
             case R.id.btn_facebook:
             case R.id.rlFacebookLogin:
@@ -187,9 +187,13 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
                         .putExtra("verifyingKey", "ForSignUp"));
                 finish();
                 break;
+            case R.id.tvForgotPassword:
+                startActivity(new Intent(LoginActivity.this, MobileVerificationActivity.class)
+                        .putExtra("verifyingKey", "ForForgotPassword"));
+                finish();
+                break;
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -203,8 +207,6 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
         if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 int country_flag = data.getIntExtra("country_flag", -1);
-                String myCode = data.getStringExtra("country_code");
-               // country_code = "+" + myCode;
                 System.out.println("*****************" + country_flag);
                 if (country_flag != -1) {
                     ivCountryFlag.setImageResource(country_flag);
@@ -218,12 +220,11 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     // after the signing we are calling this function
     private void handleSignInResult(GoogleSignInResult result) {
-        hideLoader();
+          hideLoader();
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             assert acct != null;
@@ -237,7 +238,6 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
                 socialEmail = "";
             fullName = acct.getDisplayName();
             profileImage = String.valueOf(acct.getPhotoUrl());
-
             new CheckSocialManager(LoginActivity.this, LoginActivity.this).callSocialCheck(socialId, "google", device_token, "0");
         } else {
             CustomToast.getInstance(this).showToast(this, "fail");
@@ -269,7 +269,6 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
                                     profileImage = "https://graph.facebook.com/" + sSocialId + "/picture?width=1024&height=786";
                                     loginManager.logOut();
                                     new CheckSocialManager(LoginActivity.this, LoginActivity.this).callSocialCheck(socialId, "facebook", device_token, "0");
-                                    // checkSocialLogin(socialId);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -312,23 +311,10 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
         CustomToast.getInstance(LoginActivity.this).showToast(LoginActivity.this, errorMessage);
     }
 
-   /* @Override
-    public void onSuccessSendOtp(SendOtpResponse sendOtpResponse) {
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^" + sendOtpResponse.getOtp());
-        int otp = sendOtpResponse.getOtp();
-        startActivity(new Intent(LoginActivity.this, OtpVerificationActivity.class)
-                .putExtra("loginOtp", String.valueOf(otp))
-                .putExtra("verifyingKey", "ForSignIn")
-                .putExtra("emailAddress", email)
-                .putExtra("password", password)
-                .putExtra("type", "signin"));
-        finish();
-    }*/
-
     private Country getCurrentCountry() {
         String cCode = Utils.getUserCountry(this);
         List<Country> mCountries = Arrays.asList(
-                new Gson().fromJson(Utility.loadJSONFromAsset(this, "country_code.json"), Country[].class));
+                new Gson().fromJson(Utility.loadJSONFromAsset(this, "countries.json"), Country[].class));
         int[] flags = Utility.countryFlags;
         for (int i = 0; i < mCountries.size(); i++) {
             mCountries.get(i).setFlag(flags[i]);
@@ -346,7 +332,7 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
     @Override
     public void onSuccessCheckSocial(CheckSocialResponse checkSocialResponse) {
         if (checkSocialResponse.getSocialStatus().equals(0)) {
-            if (!socialEmail.equals("")){
+            if (!socialEmail.equals("")) {
                 startActivity(new Intent(LoginActivity.this, CompleteProfileActivity.class)
                         .putExtra("fullname", fullName)
                         .putExtra("fb_image", profileImage)
@@ -354,7 +340,8 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
                         .putExtra("socialType", socialType)
                         .putExtra("socialId", socialId));
                 finish();
-            }else {                startActivity(new Intent(LoginActivity.this, MobileVerificationActivity.class)
+            } else {
+                startActivity(new Intent(LoginActivity.this, MobileVerificationActivity.class)
                         .putExtra("fullname", fullName)
                         .putExtra("fb_image", profileImage)
                         .putExtra("social_email", socialEmail)
@@ -384,11 +371,11 @@ public class LoginActivity extends BangParentActivity implements View.OnClickLis
         if (loginResponse.getCode().equals(200)) {
             session.createRegistration(loginResponse.getData());
             session.setUserLoggedIn();
-            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+loginResponse.getData().getProfileStep());
+            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$" + loginResponse.getData().getProfileStep());
             if (loginResponse.getData().getProfileStep().equals(1)) {
                 startActivity(new Intent(LoginActivity.this, GenderSelectionActivity.class));
                 finish();
-            } else  {
+            } else {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }

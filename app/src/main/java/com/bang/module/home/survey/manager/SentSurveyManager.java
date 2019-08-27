@@ -1,7 +1,7 @@
 package com.bang.module.home.survey.manager;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bang.R;
 import com.bang.application.session.Session;
@@ -42,7 +42,7 @@ public class SentSurveyManager {
                     surveyCallback.onHideBaseLoader();
                     try {
                         if (response.isSuccessful()) {
-                            surveyCallback.OnSuccessSurveyResponse(response.body());
+                            surveyCallback.OnSuccessSentSurveyResponse(response.body());
                         } else {
                             APIErrors apiErrors = ErrorUtils.parseError(response);
                             if (apiErrors.getMessage().equals("Invalid auth token")) {

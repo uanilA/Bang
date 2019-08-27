@@ -1,7 +1,7 @@
 package com.bang.module.home.newsfeed.presenter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.errorResponse.APIErrors;
@@ -30,7 +30,7 @@ public class NewsFeedPresenter  {
 
     public void newsFeedApiCalling(int offset){
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^"+session.getAuthToken());
-       // newsFeedCallback.onShowBaseLoader();
+      //newsFeedCallback.onShowBaseLoader();
         if (AppHelper.isConnectingToInternet(mContext)) {
             API api = ServiceGenerator.createService(API.class);
             Call<NewsFeedResponse> getProfileResponseCall = api.callNewsFeedApi(session.getAuthToken(),

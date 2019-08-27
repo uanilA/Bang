@@ -11,9 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -25,6 +25,11 @@ import com.bang.helper.Utils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 public class BaseFragment extends Fragment {
    public Context mContext;
@@ -38,7 +43,27 @@ public class BaseFragment extends Fragment {
         if (context instanceof BangParentActivity){
             activity = (BangParentActivity)context;
         }
+    }
 
+    public void showDialog(Context mContext,String title, String msg){
+        final Dialog dialog = new Dialog(mContext);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.confirmation_dialog_view);
+        TextView tvHeaderTitle = dialog.findViewById(R.id.tvHeaderTitle);
+        tvHeaderTitle.setText(title);
+        TextView tvTitleOfVal =  dialog.findViewById(R.id.tvTitleOfVal);
+        tvTitleOfVal.setText(msg);
+
+        TextView tvOk =  dialog.findViewById(R.id.tvOk);
+        tvOk.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        dialog.show();
+        Window window = dialog.getWindow();
+        assert window != null;
+        window.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
@@ -47,7 +72,7 @@ public class BaseFragment extends Fragment {
     }
 
 
-    public static String numberformate(String myNumber){
+    protected static String numberformate(String myNumber){
         String numericString = Utils.removeNonnumeric(myNumber);
         int stringLength = numericString.length();
         boolean startsWithOne = numericString.startsWith("1");
@@ -71,7 +96,7 @@ public class BaseFragment extends Fragment {
 
 
 
-    public void showSetIntroVideoDialog(final Context context) {
+    protected void showSetIntroVideoDialog(final Context context) {
 
         final CharSequence[] options = {"Take Video", "Choose from Gallery"};
 
@@ -107,8 +132,14 @@ public class BaseFragment extends Fragment {
     }
 
 
+    protected String getCurrentDateString() {
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
     // from bitmap to file creater"""""""""""
-    public File savebitmap(Context mContext, Bitmap bitmap, String name) {
+    protected File savebitmap(Context mContext, Bitmap bitmap, String name) {
         File filesDir = mContext.getApplicationContext().getFilesDir();
         File imageFile = new File(filesDir, name);
 
@@ -124,5 +155,4 @@ public class BaseFragment extends Fragment {
         }
         return null;
     }
-
 }

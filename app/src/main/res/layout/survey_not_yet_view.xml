@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,7 +15,7 @@
         android:gravity="center"
         tools:ignore="UselessParent">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivNoRecordFound"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/no_survey_sent_yet"
             android:textColor="@color/colorWelcomeText"

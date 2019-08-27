@@ -1,23 +1,27 @@
 package com.bang.module.home.addsurvey.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bang.R;
 import com.bang.base.BangParentActivity;
 import com.bang.base.BaseFragment;
 import com.bang.base.ClickListener;
+import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.module.home.addsurvey.adapter.SurveyPagerAdapter;
 import com.bang.module.home.addsurvey.manager.SurveyManager;
 import com.bang.module.home.addsurvey.model.CreateSurveyResponse;
 import com.bang.module.home.addsurvey.model.SendDataModel;
 import com.bang.module.home.addsurvey.model.SurveyQuestionResponse;
+import com.bang.module.preference.SelectedPreferencesActivity;
+import com.bang.module.preference.manager.SelectedPreferencesManager;
 import com.bang.network.ApiCallback;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,29 +39,33 @@ public class AddSurveyFragment extends BaseFragment implements ApiCallback.Surve
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
+    private static final String ARG_PARAM5 = "param5";
 
-    private String mParam1;
-    private String mParam2;
-    private String mParam3;
-    private String mParam4;
+    private String date= "";
+    private String time = "";
+    private String forUserId = "";
+    private String genderVal = "";
+    private String forUserName = "";
     private LinearLayout llDataNotFound;
     private ViewPager mViewPager;
     private int globalPos;
-    JSONArray myCustomArray;
+    private JSONArray myCustomArray;
     private List<SurveyQuestionResponse.DataBean.QuestionListBean> questionLists;
-    List<SendDataModel> answers;
+    private List<SendDataModel> answers;
+    private TextView tvGoBack;
 
     public AddSurveyFragment() {
     }
 
 
-    public static AddSurveyFragment newInstance(String param1, String param2, String param3, String param4) {
+    public static AddSurveyFragment newInstance(String param1, String param2, String param3, String param4,String forUserName) {
         AddSurveyFragment fragment = new AddSurveyFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         args.putString(ARG_PARAM3, param3);
         args.putString(ARG_PARAM4, param4);
+        args.putString(ARG_PARAM5, forUserName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,11 +74,12 @@ public class AddSurveyFragment extends BaseFragment implements ApiCallback.Surve
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-            mParam3 = getArguments().getString(ARG_PARAM3);
-            mParam4 = getArguments().getString(ARG_PARAM4);
-            System.out.println("%%%%%%%%%%%%%%%%" + mParam1 + "\n" + mParam2 + "\n" + mParam3 + "\n" + mParam4);
+            date = getArguments().getString(ARG_PARAM1);
+            time = getArguments().getString(ARG_PARAM2);
+            forUserId = getArguments().getString(ARG_PARAM3);
+            genderVal = getArguments().getString(ARG_PARAM4);
+            forUserName = getArguments().getString(ARG_PARAM5);
+            System.out.println("%%%%%%%%%%%%%%%%" + date + "\n" + time + "\n" + forUserId + "\n" + genderVal);
         }
     }
 
@@ -78,6 +87,7 @@ public class AddSurveyFragment extends BaseFragment implements ApiCallback.Surve
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_survey, container, false);
         init(view);
+        tvGoBack.setOnClickListener(this);
         apiCalling();
         return view;
     }
@@ -85,16 +95,23 @@ public class AddSurveyFragment extends BaseFragment implements ApiCallback.Surve
     private void init(View view) {
         answers = new ArrayList<>();
         llDataNotFound = view.findViewById(R.id.llDataNotFound);
+        tvGoBack = view.findViewById(R.id.tvGoBack);
         mViewPager = view.findViewById(R.id.pager);
     }
 
     private void apiCalling() {
-        new SurveyManager(this, mContext).callGetSurveyQuestionApi(mParam4, "survey");
+        if (AppHelper.isConnectingToInternet(mContext)) {
+            new SurveyManager(this, mContext).callGetSurveyQuestionApi(genderVal, "survey");
+        } else {
+            CustomToast.getInstance(mContext).showToast(mContext, getString(R.string.alert_no_network));
+        }
     }
 
     @Override
     public void onClick(View v) {
-
+        if (v.getId() == R.id.tvGoBack) {
+            activity.onBackPressed();
+        }
     }
 
 
@@ -173,18 +190,26 @@ public class AddSurveyFragment extends BaseFragment implements ApiCallback.Surve
             String badge_score = String.valueOf(createSurveyResponse.getData().getBadge_data().getBadge_score());
             String badge_title = createSurveyResponse.getData().getBadge_data().getBadge_title();
             String badge_image = createSurveyResponse.getData().getBadge_data().getBadge_image();
+            String SurveyUserId= createSurveyResponse.getData().getSurveyed_user_id();
+            String SurveyId = String.valueOf(createSurveyResponse.getData().getSurvey_id());
+            System.out.println("********************"+badge_title_key+"\n"+badge_sub_title+"\n"
+            +badge_score+"\n"+badge_title);
             System.out.println("^^^^^^^^^^^^^^^^^^^^"+badge_title_key);
             ((BangParentActivity) mContext).replaceFragment(CongratulationSureveyFragment.newInstance(badge_title_key
                     , badge_sub_title
                     , badge_score
-                    , badge_title
-                    , badge_image), false, R.id.frameAddSurvey);
+                    , SurveyUserId
+                    , SurveyId), false, R.id.frameAddSurvey);
         }
     }
 
 
     private void callCreateSurveyAPi(String newJson) {
-        new SurveyManager(this, mContext).callCreateSurveyApi(mParam1, mParam2, mParam3, mParam4, newJson);
+        if (AppHelper.isConnectingToInternet(mContext)) {
+            new SurveyManager(this, mContext).callCreateSurveyApi(date, time, forUserId, genderVal,forUserName, newJson);
+        } else {
+            CustomToast.getInstance(mContext).showToast(mContext, getString(R.string.alert_no_network));
+        }
     }
 
     @Override

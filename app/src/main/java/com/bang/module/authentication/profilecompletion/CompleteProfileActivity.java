@@ -11,8 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.base.BangParentActivity;
+import com.bang.helper.AppHelper;
 import com.bang.helper.Constant;
 import com.bang.helper.CustomPhoneTextWatcher;
 import com.bang.helper.CustomToast;
@@ -35,6 +36,8 @@ import com.bang.module.authentication.country.CountrySelectionActivity;
 import com.bang.module.authentication.country.model.Country;
 import com.bang.module.authentication.genderselection.GenderSelectionActivity;
 import com.bang.module.authentication.login.LoginActivity;
+import com.bang.module.authentication.login.manager.SendOtpManager;
+import com.bang.module.authentication.otpverification.OtpVerificationActivity;
 import com.bang.module.authentication.profilecompletion.manager.SignUpManager;
 import com.bang.module.authentication.profilecompletion.model.SignUpResponse;
 import com.bang.network.ApiCallback;
@@ -56,11 +59,12 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
 
     private ImageView ivCameraSelect;
     private TextView tvProfileDoneButton;
-    private EditText etFullName,etLoginEmail,edtSignUpNumber,etSignUpPassword;
+    private EditText etFullName,etLoginEmail,edtSignUpNumber,etSignUpPassword,etSignUpConfirmPassword;
     private Bitmap profileImageBitmap;
     private CircularImageView ivUserProfile;
     private String device_token = "";
     private String countryCode = "1";
+    private String countryFlagCode = "US";
     private String emailAddress = "";
     private String fb_image = "";
     private String socialType="";
@@ -69,7 +73,7 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
     private Uri imageUri;
     private LinearLayout llSelectCountryGo;
     private Dialog verifyDialog;
-   // private long mLastClickTime = 0;
+    private long mLastClickTime = 0;
    // private LinearLayout llChangeEmail;
     Session session;
 
@@ -97,11 +101,13 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
         tvProfileDoneButton  = findViewById(R.id.tvProfileDoneButton);
         ivCountryFlag        = findViewById(R.id.ivCountryFlag);
         LinearLayout llSignUpPassword = findViewById(R.id.llSignUpPassword);
+        LinearLayout llSignUpConfirmPassword = findViewById(R.id.llSignUpConfirmPassword);
         edtSignUpNumber      = findViewById(R.id.edtSignUpNumber);
       //  llChangeEmail        = findViewById(R.id.llChangeEmail);
         etFullName           = findViewById(R.id.etFullName);
         etLoginEmail         = findViewById(R.id.etLoginEmail);
         etSignUpPassword     = findViewById(R.id.etSignUpPassword);
+        etSignUpConfirmPassword = findViewById(R.id.etSignUpConfirmPassword);
         llSelectCountryGo    = findViewById(R.id.llSelectCountryGo);
 
         ImageView ivCountryFlag = findViewById(R.id.ivCountryFlag);
@@ -109,15 +115,13 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
         edtSignUpNumber.addTextChangedListener(new CustomPhoneTextWatcher(edtSignUpNumber));
      //   llChangeEmail.setOnClickListener(this);
 
-
-
-
         Intent intent = getIntent();
         if (intent.getStringExtra("fullname") != null) {
             llMobileNumberAtCompletePro.setVisibility(View.VISIBLE);
         //    llChangeEmail.setVisibility(View.GONE);
             etLoginEmail.setFocusable(false);
             llSignUpPassword.setVisibility(View.GONE);
+            llSignUpConfirmPassword.setVisibility(View.GONE);
             String fb_name = intent.getStringExtra("fullname");
             fb_image = intent.getStringExtra("fb_image");
             socialType = intent.getStringExtra("socialType");
@@ -129,7 +133,7 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
         } else {
             etLoginEmail.setFocusable(false);
             llSignUpPassword.setVisibility(View.VISIBLE);
-        //    llChangeEmail.setVisibility(View.VISIBLE);
+            llSignUpConfirmPassword.setVisibility(View.VISIBLE);
             llMobileNumberAtCompletePro.setVisibility(View.VISIBLE);
         }
         if (getCurrentCountry() != null) {
@@ -137,16 +141,15 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
             countryCode = "+" + country.getPhoneCode();
             ivCountryFlag.setImageResource(country.getFlag());
         }
-       // edtSignUpNumber.addTextChangedListener(new CustomPhoneTextWatcher(edtSignUpNumber));
     }
 
     @Override
     public void onClick(View v) {
         Validation val = new Validation();
-       /* if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
-        mLastClickTime = SystemClock.elapsedRealtime();*/
+        mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (v.getId()) {
             case R.id.ivCameraSelect:
@@ -170,43 +173,48 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
                     CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this, getString(R.string.invalid_email));
                 } else if (edtSignUpNumber.getText().toString().equals("")){
                   CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this,getString(R.string.invalid_number));
-                } /*else if (!val.isPasswordValid(etSignUpPassword)){
-                    CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this,getString(R.string.invalid_password));
-                }*/ else if (fb_image.equals("") && imageUri == null) {
+                } else if (fb_image.equals("") && imageUri == null) {
                     CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this, getString(R.string.select_image));
                 }else{
                     String number = edtSignUpNumber.getText().toString().trim();
                     number = number.replace("-", "");
                     if (!countryCode.equals("") && !emailAddress.equals("") ) {
-                        if (val.isPasswordValid(etSignUpPassword)) {
-                            new SignUpManager(this, CompleteProfileActivity.this).callSignUpApi(etFullName.getText().toString(), etLoginEmail.getText().toString()
-                                    , etSignUpPassword.getText().toString(), countryCode, number, device_token, "0", "0", imageUri, socialType, socialId, fb_image);
-                        }else {
-                            CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this,"Please enter password");
+                        if (etSignUpPassword.getText().toString().equals("")) {
+                            CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this,getString(R.string.enter_pass));
+                        } else if (!etSignUpPassword.getText().toString().equals(etSignUpConfirmPassword.getText().toString())){
+                            CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this,getString(R.string.password_match));
+                        } else {
+                            if (AppHelper.isConnectingToInternet(CompleteProfileActivity.this)) {
+                                new SignUpManager(this, CompleteProfileActivity.this).callSignUpApi(etFullName.getText().toString(), etLoginEmail.getText().toString()
+                                        , etSignUpPassword.getText().toString(), countryCode, number, device_token, "0", "0", imageUri, socialType, socialId,countryFlagCode, fb_image);
+                            } else {
+                                CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this, getString(R.string.alert_no_network));
+                            }
                         }
                     } else if (!number.equals("")){
-                        if (val.isPasswordValid(etSignUpPassword)) {}
-                        new SignUpManager(this, CompleteProfileActivity.this).callSignUpApi(etFullName.getText().toString(),etLoginEmail.getText().toString()
-                                ,etSignUpPassword.getText().toString(), countryCode, number, device_token, "0", "0", imageUri,socialType,socialId, fb_image);
+                        if (AppHelper.isConnectingToInternet(CompleteProfileActivity.this)) {
+                            new SignUpManager(this, CompleteProfileActivity.this).callSignUpApi(etFullName.getText().toString(),etLoginEmail.getText().toString()
+                                    ,etSignUpPassword.getText().toString(), countryCode, number, device_token, "0", "0", imageUri,socialType,socialId,countryFlagCode, fb_image);
+                        } else {
+                            CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this, getString(R.string.alert_no_network));
+                        }
                     }else {
                         CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this, getString(R.string.select_mobile));
                     }
                 }
                 break;
             case R.id.llSelectCountryGo:
-                Intent intent = new Intent(CompleteProfileActivity.this, CountrySelectionActivity.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                 Intent intent = new Intent(CompleteProfileActivity.this, CountrySelectionActivity.class);
+                 startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
                 break;
             case R.id.llChangeEmail:
-               /*startActivity(new Intent(CompleteProfileActivity.this, MobileVerificationActivity.class)
-                .putExtra("verifyingKey",verifyingKey));*/
-                finish();
+                 finish();
             case R.id.tvYesDialog:
-                startActivity(new Intent(CompleteProfileActivity.this, LoginActivity.class));
-                finish();
+                 startActivity(new Intent(CompleteProfileActivity.this, LoginActivity.class));
+                 finish();
                 break;
             case R.id.tvNoDialog:
-                verifyDialog.dismiss();
+                 verifyDialog.dismiss();
                 break;
         }
     }
@@ -218,12 +226,7 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case Constant.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.pickImage(CompleteProfileActivity.this);
-                }
-            }
-            break;
+            case Constant.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
             case Constant.MY_PERMISSIONS_REQUEST_CAMERA: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     ImagePicker.pickImage(CompleteProfileActivity.this);
@@ -255,6 +258,7 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
             if (resultCode == RESULT_OK) {
                 int country_flag = data.getIntExtra("country_flag", -1);
                 String myCode = data.getStringExtra("country_code");
+                countryFlagCode = data.getStringExtra("countryFlagCode");
                 countryCode = "+"+myCode;
                 System.out.println("*****************" + country_flag);
                 if (country_flag != -1) {
@@ -293,7 +297,6 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
         if (errorMessage.equals("This email is already registered.")){
             otherMsg = "Do you want to change email?";
             openMobileRegisteredDialog(errorMessage,otherMsg);
-           // CustomToast.getInstance(CompleteProfileActivity.this).showToast(CompleteProfileActivity.this, errorMessage);
         }else if (errorMessage.equals("This mobile number is already registered.")){
             otherMsg = "Do you want to change mobile number?";
             openMobileRegisteredDialog(errorMessage,otherMsg);
@@ -306,7 +309,7 @@ public class CompleteProfileActivity extends BangParentActivity implements View.
     private Country getCurrentCountry() {
         String cCode = Utils.getUserCountry(this);
         List<Country> mCountries = Arrays.asList(
-                new Gson().fromJson(Utility.loadJSONFromAsset(this, "country_code.json"), Country[].class));
+                new Gson().fromJson(Utility.loadJSONFromAsset(this, "countries.json"), Country[].class));
         int[] flags = Utility.countryFlags;
         for (int i = 0; i < mCountries.size(); i++) {
             mCountries.get(i).setFlag(flags[i]);

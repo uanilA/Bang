@@ -1,22 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".module.home.nearyou.settingFragment.NearYouFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorLoginBg"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/llLocation"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/_5sdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/your_location"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:textColor="@color/colorForLocation"
+            android:textSize="@dimen/_12ssp" />
+
+
+        <RelativeLayout
+            android:id="@+id/rlLocationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/ic_placeholder" />
+
+            <EditText
+                android:id="@+id/edLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/tvChange"
+                android:layout_toEndOf="@+id/ivIcon"
+                android:gravity="center|start"
+                android:focusable="false"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/_12ssp"
+                android:background="@color/transparent"
+                android:fontFamily="@font/roboto_bold"
+                android:maxLines="1"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:singleLine="true"
+                android:textColor="@color/colorWelcomeText"
+                tools:ignore="Autofill,LabelFor,TextFields" />
+
+            <TextView
+                android:id="@+id/tvChange"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/changes"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWelcomeText"
+                android:textSize="@dimen/_12ssp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_below="@+id/llLocation"
+        android:layout_marginTop="@dimen/_20sdp"
         android:orientation="vertical">
 
-    <com.yarolegovich.discretescrollview.DiscreteScrollView
-        android:id="@+id/item_picker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+       <!-- <com.yarolegovich.discretescrollview.DiscreteScrollView
+            android:id="@+id/item_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:dsv_orientation="horizontal" />-->
 
-
+        <com.sandrlab.widgets.MetalRecyclerViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemMargin="32dp"/>
     </LinearLayout>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/tvUserNotFoundNear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/colorWelcomeText"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/no_nearby_user_found"/>
+
+</RelativeLayout>

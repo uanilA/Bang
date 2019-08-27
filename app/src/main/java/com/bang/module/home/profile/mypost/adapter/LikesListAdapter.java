@@ -1,8 +1,8 @@
 package com.bang.module.home.profile.mypost.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +60,7 @@ public class LikesListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
         LikesListAdapter.MyViewHolder myViewHolder = ((LikesListAdapter.MyViewHolder) viewHolder);
-         myViewHolder.tvContactName.setText(feedLikeListBeans.get(i).getFull_name());
+        myViewHolder.tvContactName.setText(feedLikeListBeans.get(i).getFull_name());
         Glide.with(mContext).load(feedLikeListBeans.get(i).getProfile_photo()).error(R.drawable.logo).into(myViewHolder.ivContact);
     }
 

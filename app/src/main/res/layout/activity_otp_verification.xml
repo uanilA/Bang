@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     tools:context=".module.authentication.otpverification.OtpVerificationActivity">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/_10sdp"
@@ -31,7 +31,7 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_110sdp"
                     android:layout_height="@dimen/_110sdp"
                     android:layout_gravity="center"
@@ -219,6 +219,6 @@
 
             </LinearLayout>
         </ScrollView>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </ScrollView>

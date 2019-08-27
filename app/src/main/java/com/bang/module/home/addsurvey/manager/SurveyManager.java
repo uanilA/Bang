@@ -2,8 +2,7 @@ package com.bang.module.home.addsurvey.manager;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-
+import androidx.annotation.NonNull;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.errorResponse.APIErrors;
@@ -13,9 +12,7 @@ import com.bang.module.home.addsurvey.model.CreateSurveyResponse;
 import com.bang.module.home.addsurvey.model.SurveyQuestionResponse;
 import com.bang.network.API;
 import com.bang.network.ApiCallback;
-
 import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,10 +64,12 @@ public class SurveyManager {
         });
     }
 
-    public void callCreateSurveyApi(String date, String time, String forUserId, String gender , String newJson) {
+    public void callCreateSurveyApi(String date, String time, String forUserId, String gender ,String userFullName
+            , String newJson) {
         surveyCallback.onShowBaseLoader();
         final API api = ServiceGenerator.createService(API.class);
-        Call<CreateSurveyResponse> genderApi = api.callCreateSurveyApi(session.getAuthToken(), date, time,forUserId ,gender,newJson);
+        Call<CreateSurveyResponse> genderApi = api.callCreateSurveyApi(session.getAuthToken(), date, time,forUserId ,gender,newJson,
+                userFullName);
         genderApi.enqueue(new Callback<CreateSurveyResponse>() {
             @Override
             public void onResponse(@NonNull Call<CreateSurveyResponse> call, @NonNull Response<CreateSurveyResponse> response) {

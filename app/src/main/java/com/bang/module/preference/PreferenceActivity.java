@@ -3,12 +3,14 @@ package com.bang.module.preference;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bang.R;
 import com.bang.application.session.Session;
+import com.bang.helper.AppHelper;
 import com.bang.helper.CustomToast;
 import com.bang.base.BangParentActivity;
 import com.bang.module.authentication.genderselection.GenderSelectionActivity;
@@ -17,6 +19,7 @@ import com.bang.module.preference.adapter.PreferencePagerAdapter;
 import com.bang.module.preference.manager.PreferenceManager;
 import com.bang.module.preference.model.PreferenceResponse;
 import com.bang.module.preference.model.SaveQuestionResponse;
+import com.bang.module.setting.manager.LogoutManager;
 import com.bang.network.ApiCallback;
 import com.bang.base.ClickListener;
 
@@ -25,13 +28,13 @@ import java.util.List;
 
 public class PreferenceActivity extends BangParentActivity implements ApiCallback.PreferenceCallback, View.OnClickListener {
 
-    Session session;
     private ViewPager mViewPager;
     private int globalPos;
     private List<PreferenceResponse.DataBean.QuestionListBean> questionLists;
     private String preferGender="";
     private String preference_key="";
     private LinearLayout llDataNotFound;
+    private TextView tvFirstPreferenceNext;
     private long mLastClickTime = 0;
 
     @Override
@@ -44,10 +47,13 @@ public class PreferenceActivity extends BangParentActivity implements ApiCallbac
             preference_key = getIntent().getStringExtra("preference_key");
         }
 
-        session = new Session(PreferenceActivity.this);
         init();
-        apiCalling();
-        llDataNotFound.setOnClickListener(this);
+        if (AppHelper.isConnectingToInternet(PreferenceActivity.this)) {
+            apiCalling();
+        } else {
+            CustomToast.getInstance(PreferenceActivity.this).showToast(PreferenceActivity.this, getString(R.string.alert_no_network));
+        }
+        tvFirstPreferenceNext.setOnClickListener(this);
     }
 
     private void apiCalling() {
@@ -55,6 +61,7 @@ public class PreferenceActivity extends BangParentActivity implements ApiCallbac
     }
 
     private void init() {
+        tvFirstPreferenceNext = findViewById(R.id.tvFirstPreferenceNext);
         llDataNotFound = findViewById(R.id.llDataNotFound);
         mViewPager = findViewById(R.id.pager);
     }
@@ -178,7 +185,7 @@ public class PreferenceActivity extends BangParentActivity implements ApiCallbac
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        if (v.getId() == R.id.llDataNotFound) {
+        if (v.getId() == R.id.tvFirstPreferenceNext) {
             startActivity(new Intent(PreferenceActivity.this, GenderSelectionActivity.class));
             finish();
         }

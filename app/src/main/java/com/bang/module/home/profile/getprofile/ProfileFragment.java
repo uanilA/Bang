@@ -3,7 +3,7 @@ package com.bang.module.home.profile.getprofile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bang.R;
-import com.bang.application.session.Session;
 import com.bang.base.BaseFragment;
 import com.bang.helper.CustomToast;
 import com.bang.module.authentication.country.model.Country;
 import com.bang.module.home.profile.followersfollowing.FollowersActivity;
-import com.bang.module.home.profile.getprofile.manager.GetProfileManager;
+import com.bang.module.home.profile.getprofile.presenter.GetProfilePresenter;
 import com.bang.module.home.profile.getprofile.model.MyProfileResponse;
 import com.bang.module.home.profile.mypost.MyPostActivity;
 import com.bang.module.home.profile.updateProfile.UpdateProfileActivity;
@@ -36,14 +35,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener, ApiCallback.GetProfileCallback {
 
-    private Session session;
     private CircleImageView ivProfile;
     private TextView tvNameProfile;
     private TextView txtMobileNumber;
     private ImageView ivEditProfile;
-    private String userName = "", userImage = "", userId = "";
-    private String countryCode = "", mobileNumber = "";
-    private String emailAddress = "";
     private ImageView ivBackProfileImage;
     private ImageView ivCountryCodeForProfile;
     private TextView tvUnsatisfiedCount;
@@ -53,6 +48,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private TextView tvMyFollowingCount;
     private TextView tvMyFollowerCount;
 
+    private String userName = "", userImage = "", userId = "";
+    private String countryCode = "", mobileNumber = "";
+    private String emailAddress = "" , flagCode = "";
 
     private List<Country> mCountries;
     private int[] flags = Utility.countryFlags;
@@ -63,7 +61,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public ProfileFragment() {
         // Required empty public constructor
     }
-
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
@@ -80,7 +77,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        session = new Session(mContext);
         init(view);
 
         mCountries = new ArrayList<>();
@@ -105,17 +101,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         tvMyFollowingCount = view.findViewById(R.id.tvMyFollowingCount);
         tvMyFollowerCount = view.findViewById(R.id.tvMyFollowerCount);
 
-
         view.findViewById(R.id.llFollowers).setOnClickListener(this);
         view.findViewById(R.id.llFollowing).setOnClickListener(this);
         view.findViewById(R.id.llPost).setOnClickListener(this);
+        view.findViewById(R.id.rlBangRequest).setOnClickListener(this);
         apiCalling();
     }
 
     private void apiCalling() {
-        new GetProfileManager(this, mContext).callGetMyProfile();
+        new GetProfilePresenter(this, mContext).callGetMyProfile();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -125,8 +120,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         mLastClickTime = SystemClock.elapsedRealtime();
         switch (v.getId()) {
             case R.id.rlProfileSetting:
-                startActivity(new Intent(mContext, SettingActivity.class));
-                // startActivity(new Intent(mContext, OtherUserProfileActivity.class));
+                startActivity(new Intent(mContext, SettingActivity.class)
+                .putExtra("setting","GoingToSetting"));
                 break;
             case R.id.ivEditProfile:
                 startActivity(new Intent(mContext, UpdateProfileActivity.class)
@@ -134,7 +129,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                         .putExtra("userImage", userImage)
                         .putExtra("countryCode", countryCode)
                         .putExtra("mobileNumber", mobileNumber)
-                        .putExtra("emailAddress", emailAddress));
+                        .putExtra("emailAddress", emailAddress)
+                        .putExtra("flagCode",flagCode));
                 break;
             case R.id.llPreferences:
                 startActivity(new Intent(mContext, SelectedPreferencesActivity.class));
@@ -152,18 +148,25 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                         .putExtra("OtherUserId", userId)
                         .putExtra("follows_data", "following"));
                 break;
+            case R.id.rlBangRequest:
+                startActivity(new Intent(mContext, SettingActivity.class)
+                        .putExtra("setting","BangRequest"));
+                break;
         }
     }
 
     @Override
     public void onSuccessGetProfile(MyProfileResponse myProfileResponse) {
         if (myProfileResponse.getCode() == 200) {
+            isval = true;
             userId = String.valueOf(myProfileResponse.getData().getUserId());
             userName = myProfileResponse.getData().getFull_name();
             userImage = String.valueOf(myProfileResponse.getData().getProfile_photo());
             countryCode = myProfileResponse.getData().getCountry_code();
             mobileNumber = myProfileResponse.getData().getPhone_number();
+          //  String output = String.format("%s (%s) %s-%s", mobileNumber.substring(0,1) ,mobileNumber.substring(1,4), mobileNumber.substring(4,7), mobileNumber.substring(7,11));
             emailAddress = myProfileResponse.getData().getEmail();
+            flagCode = myProfileResponse.getData().getCountry_flag_code();
 
             tvUnsatisfiedCount.setText(String.valueOf(myProfileResponse.getData().getTotal_unsatisfied()));
             tvMySatisfiedCount.setText(String.valueOf(myProfileResponse.getData().getTotal_satisfied()));
@@ -175,13 +178,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             Glide.with(mContext).load(userImage).error(R.drawable.user_img).error(R.drawable.logo).into(ivProfile);
             Glide.with(mContext).load(userImage).error(R.drawable.user_img).error(R.drawable.logo).into(ivBackProfileImage);
             tvNameProfile.setText(userName);
-            String myNuber = numberformate(myProfileResponse.getData().getPhone_number());
-            txtMobileNumber.setText(myNuber);
+            String myNumber = numberformate(myProfileResponse.getData().getPhone_number());
+            txtMobileNumber.setText(myNumber);
             if (isval) {
-                getCurrentCountry(myProfileResponse.getData().getCountry_code());
+                getCurrentCountry(myProfileResponse.getData().getCountry_flag_code());
             }
         }
-
     }
 
     @Override
@@ -218,14 +220,19 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void getCurrentCountry(String phoneCode) {
         isval = false;
         try {
+            mCountries.clear();
             mCountries.addAll(Arrays.asList(
-                    new Gson().fromJson(Utility.loadJSONFromAsset(mContext, "country_code.json"), Country[].class)));
+                    new Gson().fromJson(Utility.loadJSONFromAsset(mContext, "countries.json"), Country[].class)));
             for (int i = 0; i < mCountries.size(); i++) {
                 mCountries.get(i).setFlag(flags[i]);
             }
-            String tmpString = phoneCode.replaceAll("\\D", "");
+            phoneCode = phoneCode.replaceAll("\\s","");
+
+            // String tmpString = phoneCode.replaceAll("\\D", "");
             for (int i = 0; i < mCountries.size(); i++) {
-                if (mCountries.get(i).getPhoneCode().equals(Integer.parseInt(tmpString))) {
+                String myCode=mCountries.get(i).getCode();
+                myCode=myCode.replaceAll("\\s","");
+                if (myCode.equals(phoneCode) || myCode.toLowerCase().equals(phoneCode)) {
                     ivCountryCodeForProfile.setImageResource(mCountries.get(i).getFlag());
                 }
             }

@@ -1,7 +1,7 @@
-package com.bang.module.home.profile.getprofile.manager;
+package com.bang.module.home.profile.getprofile.presenter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.errorResponse.APIErrors;
@@ -19,19 +19,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GetProfileManager {
+public class GetProfilePresenter {
     private ApiCallback.GetProfileCallback getProfileCallback;
     private Context mContext;
-
-    public GetProfileManager(ApiCallback.GetProfileCallback getProfileCallback , Context mContext) {
+    private Session session;
+    public GetProfilePresenter(ApiCallback.GetProfileCallback getProfileCallback , Context mContext) {
         this.getProfileCallback = getProfileCallback;
         this.mContext=mContext;
+         session = new Session(mContext);
     }
 
     public void callGetMyProfile(){
-        Session session = new Session(mContext);
-        getProfileCallback.onShowBaseLoader();
         if (AppHelper.isConnectingToInternet(mContext)) {
+            getProfileCallback.onShowBaseLoader();
             API api = ServiceGenerator.createService(API.class);
             Call<MyProfileResponse> getProfileResponseCall = api.callMyProfileApi(session.getAuthToken());
             getProfileResponseCall.enqueue(new Callback<MyProfileResponse>() {
@@ -65,4 +65,5 @@ public class GetProfileManager {
             CustomToast.getInstance(mContext).showToast(mContext, mContext.getString(R.string.alert_no_network));
         }
     }
+
 }

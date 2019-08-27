@@ -22,7 +22,7 @@ public class FcmNotificationBuilder {
     private static final String AUTHORIZATION = "Authorization";
 
     // Dev New Key
-    private static final String AUTH_KEY = "key=" + "AAAADikjNhA:APA91bFTVvSEnY1err__oUebykSNjZW6zGsRlsz5DT8_HaWrghKDOrmBz-d_oDVwRrk-cecn1O_4rLihMks3I-PSTIFPztYdXXf7gQUl7vWwi-cDl532QW7r56XhvF7diNVrFVknevdJ";
+    private static final String AUTH_KEY = "key=" + "AAAARLA-xA4:APA91bGLpQlHUJZ3oks6J2ySxp-wzNrBFqUvEbkviqQgMTbg8wcAKKYgTFRsNt4a9CZ2bGfjY2xtWru8gvC8yziYNBzXYbyD8sKajOKKfVTdkpYe2YyAaAsm2bWlqbMN15BASmSwhGfF";
 
     // Stage New Key
     //private static final String AUTH_KEY = "key=" + "AAAAX9iiStQ:APA91bEYLyzEvhCgdRsbl_5xxogGIBNlcDPwqj6x6R70oJI27tKql_1_zUmAOnpSkWRH342MmFJgZ8xwknwPzrsbILribwZb5gAu1PaR1EyAiuhYnAF8FAGyFq71271usAESNFsf24O9";

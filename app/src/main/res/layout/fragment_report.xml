@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         android:orientation="vertical">
 
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
             android:src="@drawable/report_bg"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/report_a_user"
-            android:textSize="@dimen/_15ssp"
+            android:textSize="@dimen/_14ssp"
             android:layout_marginTop="@dimen/_20sdp"
             android:textColor="@color/colorWelcomeText"
             android:fontFamily="@font/roboto_medium"
@@ -42,15 +42,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
             android:textSize="@dimen/_14ssp"
-            android:layout_margin="@dimen/_15sdp"
-            android:text="Lorem ipsum is simly dummy text of printing and typesetting industry."/>
+            android:textColor="@color/colorTextHint"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="Lorem ipsum is simply dummy text of printing and typesetting industry."/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_38sdp"
+            android:layout_height="@dimen/_33sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/login_background"
             android:focusableInTouchMode="true"
@@ -58,34 +60,34 @@
             android:weightSum="1">
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/select_reasons"
-                android:maxLines="1"
-                android:layout_centerInParent="true"
-                android:textColor="@color/colorTextHint"
-                android:textSize="@dimen/_13sdp"
-                tools:ignore="Autofill,InefficientWeight" />
+            <Spinner
+                android:id="@+id/spinSelectReasons"
+                android:layout_toStartOf="@+id/ivSpinIcon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:spinnerMode="dropdown"
+                android:layout_marginStart="@dimen/_22sdp"
+                android:dropDownVerticalOffset="-53dp"
+                android:gravity="center"
+                android:background="@android:color/transparent" />
 
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivSpinIcon"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:src="@drawable/bottom_arrow"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_alignParentEnd="true"/>
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_75sdp"
+            android:layout_height="@dimen/_65sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/login_background"
+            android:background="@drawable/report_user_description_field"
             android:focusableInTouchMode="true"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -99,10 +101,11 @@
                 android:fontFamily="@font/roboto_regular"
                 android:hint="@string/description"
                 android:maxLines="10"
+                android:textColor="@color/colorTextHint"
                 android:gravity="center|top"
                 android:padding="@dimen/_8sdp"
                 android:textColorHint="@color/colorTextHint"
-                android:textSize="@dimen/_13sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="Autofill,InefficientWeight" />
 
         </LinearLayout>
@@ -128,4 +131,4 @@
     </LinearLayout>
     </ScrollView>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

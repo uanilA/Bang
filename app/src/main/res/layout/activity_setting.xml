@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/colorLoginBg"
+    android:orientation="vertical"
     tools:context=".module.setting.SettingActivity">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardToolSetting"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
 
@@ -15,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivSettingBack"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -28,15 +29,15 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/roboto_medium"
-                android:text="@string/settings"
                 android:textColor="@color/colorWelcomeText"
                 android:textSize="@dimen/_15sdp"
                 tools:ignore="RelativeOverlap" />
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-   <FrameLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:id="@+id/setting_frame"/>
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/setting_frame"
+        android:layout_below="@+id/cardToolSetting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

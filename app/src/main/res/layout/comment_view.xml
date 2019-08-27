@@ -13,7 +13,7 @@
         android:layout_marginEnd="@dimen/_5sdp"
         android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="@dimen/_6sdp"
             android:layout_height="@dimen/_6sdp"
             android:layout_gravity="center"

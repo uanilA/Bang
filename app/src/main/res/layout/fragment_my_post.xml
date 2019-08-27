@@ -6,12 +6,25 @@
     android:background="@color/colorLoginBg"
     tools:context=".module.home.profile.mypost.fragment.MyPostFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvMyPost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
         android:clipToPadding="false"
         android:overScrollMode="never" />
+
+    <TextView
+        android:id="@+id/tvNoPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_post"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:textColor="@color/colorWelcomeText"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/roboto_medium"/>
 
 </FrameLayout>

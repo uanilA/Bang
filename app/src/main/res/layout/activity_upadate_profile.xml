@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorLoginBg"
     tools:context=".module.home.profile.updateProfile.UpdateProfileActivity">
 
     <include
@@ -11,7 +12,6 @@
         layout="@layout/action_bar_for_all_screens"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize" />
-
 
         <ScrollView
             android:layout_width="match_parent"
@@ -22,11 +22,11 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_110sdp"
                     android:layout_gravity="center"
@@ -70,7 +70,7 @@
                         android:layout_centerInParent="true"
                         android:src="@drawable/user_img" />
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivCameraSelect"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
@@ -94,6 +94,7 @@
                     android:background="@drawable/login_background"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
+                    android:editable="false"
                     android:singleLine="true"
                     android:hint="@string/email"
                     android:textColor="@color/colorWelcomeText"
@@ -138,13 +139,13 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight=".4">
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ivCountryFlag"
                             android:layout_width="@dimen/_26sdp"
                             android:layout_height="20dp"
                             android:layout_gravity="center" />
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center|end"
@@ -172,6 +173,7 @@
                         android:fontFamily="@font/roboto_medium"
                         android:gravity="center|start"
                         android:singleLine="true"
+                        android:inputType="number"
                         android:hint="@string/number"
                         android:textColor="@color/colorWelcomeText"
                         android:textColorHint="@color/colorTextHint"

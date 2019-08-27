@@ -1,7 +1,7 @@
 package com.bang.module.authentication.login.manager;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bang.R;
 import com.bang.errorResponse.APIErrors;

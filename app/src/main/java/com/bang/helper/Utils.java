@@ -2,8 +2,8 @@ package com.bang.helper;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.res.ResourcesCompat;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
     public static Date date;
@@ -44,6 +46,23 @@ public class Utils {
 
         return format.format(date);
     }
+
+   public static boolean checkEmailForValidity(String email) {
+        email = email.trim();
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        return matcher.find();
+
+    }
+
+    public static String emailStringChecker(String email) {
+
+
+        return null;
+    }
+
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
 
    /* public static void goToOnlineStatus(Context context, String status) {
         Session session = new Session(context);

@@ -9,8 +9,14 @@ public class SignUpData {
     private String fullName;
     @SerializedName("phone_number")
     private String phoneNumber;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("password")
+    private String password;
     @SerializedName("country_code")
     private String countryCode;
+    @SerializedName("country_flag_code")
+    private String countryFlagCode;
     @SerializedName("social_type")
     private Object socialType;
     @SerializedName("social_id")
@@ -38,7 +44,7 @@ public class SignUpData {
     @SerializedName("longitude")
     private Object longitude;
     @SerializedName("signup_from")
-    private Integer signupFrom;
+    private Object signupFrom;
     @SerializedName("device_type")
     private Integer deviceType;
     @SerializedName("device_token")
@@ -49,7 +55,7 @@ public class SignUpData {
     private String createdOn;
     @SerializedName("updated_on")
     private String updatedOn;
-    private final static long serialVersionUID = -9204989071325711069L;
+    private final static long serialVersionUID = 4397018239487364175L;
 
     public Integer getUserId() {
         return userId;
@@ -75,12 +81,36 @@ public class SignUpData {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getCountryCode() {
         return countryCode;
     }
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public String getCountryFlagCode() {
+        return countryFlagCode;
+    }
+
+    public void setCountryFlagCode(String countryFlagCode) {
+        this.countryFlagCode = countryFlagCode;
     }
 
     public Object getSocialType() {
@@ -187,11 +217,11 @@ public class SignUpData {
         this.longitude = longitude;
     }
 
-    public Integer getSignupFrom() {
+    public Object getSignupFrom() {
         return signupFrom;
     }
 
-    public void setSignupFrom(Integer signupFrom) {
+    public void setSignupFrom(Object signupFrom) {
         this.signupFrom = signupFrom;
     }
 
@@ -234,5 +264,4 @@ public class SignUpData {
     public void setUpdatedOn(String updatedOn) {
         this.updatedOn = updatedOn;
     }
-
 }

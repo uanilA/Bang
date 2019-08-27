@@ -6,8 +6,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,12 +18,15 @@ import android.widget.TextView;
 import com.bang.R;
 import com.bang.application.session.Session;
 import com.bang.base.BangParentActivity;
+import com.bang.helper.AppHelper;
 import com.bang.helper.Constant;
 import com.bang.helper.CustomToast;
 import com.bang.helper.LocationRuntimePermission;
 import com.bang.module.authentication.genderselection.manager.GenderManager;
 import com.bang.module.authentication.genderselection.model.UpdateGenderResponse;
 import com.bang.module.authentication.genderselection.model.UpdateLocationResponse;
+import com.bang.module.authentication.profilecompletion.CompleteProfileActivity;
+import com.bang.module.authentication.profilecompletion.manager.SignUpManager;
 import com.bang.module.home.MainActivity;
 import com.bang.module.preference.PreferenceActivity;
 import com.bang.network.ApiCallback;
@@ -192,10 +196,10 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
         ivTransGenderFamaleSelected.setVisibility(View.GONE);
 
         tvMalePrefer.setTextColor(getResources().getColor(R.color.colorBang));
-        tvFemalePrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
-        tvTransgenderMalePrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
-        tvTransgenderFemalePrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
-        tvNonGenderPrefer.setTextColor(getResources().getColor(R.color.colorSelectCountry));
+        tvFemalePrefer.setTextColor(ContextCompat.getColor(this,R.color.colorSelectCountry));
+        tvTransgenderMalePrefer.setTextColor(ContextCompat.getColor(this,R.color.colorSelectCountry));
+        tvTransgenderFemalePrefer.setTextColor(ContextCompat.getColor(this,R.color.colorSelectCountry));
+        tvNonGenderPrefer.setTextColor(ContextCompat.getColor(this,R.color.colorSelectCountry));
     }
 
     private void selectFemalePrefer() {
@@ -535,7 +539,11 @@ public class GenderSelectionActivity extends BangParentActivity implements View.
                    // LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                     System.out.println("&&&&&&&&&&&&&&&&&" + mLatitude + "\n" + mLongitude);
                     session.setFilterCity(Double.toString(mLastLocation.getLatitude()), Double.toString(mLastLocation.getLongitude()));
-                    callUpdateLocationAPi();
+                    if (AppHelper.isConnectingToInternet(GenderSelectionActivity.this)) {
+                        callUpdateLocationAPi();
+                    } else {
+                        CustomToast.getInstance(GenderSelectionActivity.this).showToast(GenderSelectionActivity.this, getString(R.string.alert_no_network));
+                    }
                 }
             } else {
                 if (session.getUserGetRegistered()) {
